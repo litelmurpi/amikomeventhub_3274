@@ -1,10 +1,8 @@
 <div align="center">
-  <h2>👋 Halo, Saya Yudistira Azfa</h2>
+  <h2>Halo, Saya Yudistira Azfa</h2>
   <p>
     <b>Yudistira Azfa Dani Wibowo | 24.12.3274</b><br>
-      Digital Business<br>
-    🎓 Mahasiswa Semester 4 | 💻 Sistem Informasi <br>
-    🏫 Fakultas Ilmu Komputer, Universitas Amikom Yogyakarta
+      Digital Business | amikomeventhub_3274<br>
   </p>
 </div>
 
