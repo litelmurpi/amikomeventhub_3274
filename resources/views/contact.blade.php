@@ -9,57 +9,68 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Instrument Sans', sans-serif; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeInUp 0.6s ease-out forwards; }
     </style>
 </head>
-<body class="bg-[#FDFDFC] text-[#1b1b18] min-h-screen flex flex-col items-center p-8 lg:p-24">
+<body class="bg-[#FDFDFC] text-[#1b1b18] min-h-screen flex flex-col items-center p-8 lg:p-24 selection:bg-black selection:text-white">
     
-    <header class="w-full max-w-2xl flex justify-between items-center mb-24">
-        <a href="/" class="text-sm font-medium tracking-tight hover:opacity-70 transition-opacity">Amikom Event Hub</a>
-        <nav class="flex gap-8 text-sm">
-            <a href="/profil" class="hover:opacity-70 transition-opacity">Profil</a>
-            <a href="/katalog" class="hover:opacity-70 transition-opacity">Katalog</a>
-            <a href="/bantuan" class="hover:opacity-70 transition-opacity">Bantuan</a>
+    <header class="w-full max-w-2xl flex justify-between items-center mb-24 opacity-0 animate-in" style="animation-delay: 0.1s">
+        <a href="/" class="text-sm font-semibold tracking-tighter hover:opacity-50 transition-opacity">Amikom Event Hub</a>
+        <nav class="flex gap-6 text-[11px] uppercase tracking-widest text-gray-400">
+            <a href="/katalog" class="hover:text-black transition-colors">Katalog</a>
+            <a href="/profil" class="hover:text-black transition-colors">Profil</a>
+            <a href="/bantuan" class="hover:text-black transition-colors">Bantuan</a>
+            <a href="/kontak" class="text-black underline underline-offset-8 decoration-1">Kontak</a>
         </nav>
     </header>
 
-    <main class="w-full max-w-lg flex-grow">
-        <h1 class="text-2xl font-medium mb-12 tracking-tight">Kontak</h1>
+    <main class="w-full max-w-lg flex-grow opacity-0 animate-in" style="animation-delay: 0.3s">
+        <h1 class="text-3xl font-medium mb-16 tracking-tighter">Kontak</h1>
         
-        <section class="space-y-12">
-            <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+        <section class="space-y-16">
+            <p class="text-gray-400 text-sm leading-relaxed max-w-xs italic">
                 Ada pertanyaan atau ingin bekerjasama? Kami siap membantu Anda melalui formulir di bawah ini.
             </p>
 
-            <form class="space-y-8">
-                <div>
-                    <label for="name" class="block text-[10px] uppercase tracking-widest text-gray-400 mb-2">Nama</label>
-                    <input type="text" id="name" required class="w-full bg-transparent border-b border-gray-100 py-2 text-sm focus:outline-none focus:border-black transition-colors">
+            <form class="space-y-10">
+                <div class="group">
+                    <label for="name" class="block text-[9px] uppercase tracking-[0.2em] text-gray-300 mb-2 group-focus-within:text-black transition-colors">Nama</label>
+                    <input type="text" id="name" required class="w-full bg-transparent border-b border-gray-100 py-3 text-sm focus:outline-none focus:border-black transition-colors">
                 </div>
-                <div>
-                    <label for="email" class="block text-[10px] uppercase tracking-widest text-gray-400 mb-2">Email</label>
-                    <input type="email" id="email" required class="w-full bg-transparent border-b border-gray-100 py-2 text-sm focus:outline-none focus:border-black transition-colors">
+                <div class="group">
+                    <label for="email" class="block text-[9px] uppercase tracking-[0.2em] text-gray-300 mb-2 group-focus-within:text-black transition-colors">Email</label>
+                    <input type="email" id="email" required class="w-full bg-transparent border-b border-gray-100 py-3 text-sm focus:outline-none focus:border-black transition-colors">
                 </div>
-                <div>
-                    <label for="message" class="block text-[10px] uppercase tracking-widest text-gray-400 mb-2">Pesan</label>
-                    <textarea id="message" rows="3" required class="w-full bg-transparent border-b border-gray-100 py-2 text-sm focus:outline-none focus:border-black transition-colors resize-none"></textarea>
+                <div class="group">
+                    <label for="message" class="block text-[9px] uppercase tracking-[0.2em] text-gray-300 mb-2 group-focus-within:text-black transition-colors">Pesan</label>
+                    <textarea id="message" rows="3" required class="w-full bg-transparent border-b border-gray-100 py-3 text-sm focus:outline-none focus:border-black transition-colors resize-none"></textarea>
                 </div>
-                <button type="submit" class="text-xs font-medium border border-black px-6 py-2 hover:bg-black hover:text-white transition-all">Kirim Pesan</button>
+                <div class="pt-4">
+                    <button type="submit" class="text-[10px] uppercase tracking-[0.2em] font-semibold border border-black px-10 py-3 hover:bg-black hover:text-white transition-all active:scale-95">Kirim Pesan</button>
+                </div>
             </form>
 
-            <div class="pt-12 border-t border-gray-50">
-                <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-4">Informasi</p>
-                <div class="space-y-2 text-xs">
-                    <p>admin@amikomeventhub.com</p>
-                    <p>Yogyakarta, Indonesia</p>
+            <div class="pt-16 border-t border-gray-50 flex justify-between items-start">
+                <div>
+                    <p class="text-[9px] uppercase tracking-[0.2em] text-gray-300 mb-4">Email</p>
+                    <p class="text-xs font-medium">admin@amikomeventhub.com</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-[9px] uppercase tracking-[0.2em] text-gray-300 mb-4">Lokasi</p>
+                    <p class="text-xs font-medium">Yogyakarta, Indonesia</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="mt-24 w-full max-w-2xl flex justify-center gap-12 text-[10px] uppercase tracking-[0.2em] text-gray-300">
-        <a href="/profil" class="hover:text-black transition-colors">Profil Saya</a>
-        <a href="/bantuan" class="hover:text-black transition-colors">Pusat Bantuan</a>
-        <a href="/katalog" class="hover:text-black transition-colors">Katalog Event</a>
+    <footer class="mt-32 w-full max-w-2xl flex justify-center gap-10 text-[9px] uppercase tracking-[0.3em] text-gray-300 opacity-0 animate-in" style="animation-delay: 0.5s">
+        <a href="/katalog" class="hover:text-black transition-colors">Event</a>
+        <a href="/profil" class="hover:text-black transition-colors">Profil</a>
+        <a href="/bantuan" class="hover:text-black transition-colors">Bantuan</a>
     </footer>
 
 </body>
