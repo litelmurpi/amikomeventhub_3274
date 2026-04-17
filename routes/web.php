@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/events', [AdminController::class, 'events'])->name('events');
     Route::get('/transactions', [AdminController::class, 'transactions'])->name('transactions');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 });
 
 Route::get('/tentang', function () {
