@@ -1,10 +1,20 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
+Route::get('/checkout/{slug}', [EventController::class, 'checkout'])->name('checkout');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/events', [AdminController::class, 'events'])->name('events');
+    Route::get('/transactions', [AdminController::class, 'transactions'])->name('transactions');
 });
+
 Route::get('/tentang', function () {
     return "<h1>Ini adalah halaman Tentang Aplikasi Event Hub</h1>";
 });

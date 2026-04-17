@@ -1,67 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - Amikom Event Hub</title>
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { font-family: 'Instrument Sans', sans-serif; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-in { animation: fadeInUp 0.6s ease-out forwards; }
-    </style>
-</head>
-<body class="bg-[#FDFDFC] text-[#1b1b18] min-h-screen flex flex-col items-center p-8 lg:p-24 selection:bg-black selection:text-white">
-    
-    <header class="w-full max-w-2xl flex justify-between items-center mb-24 opacity-0 animate-in" style="animation-delay: 0.1s">
-        <a href="/" class="text-sm font-semibold tracking-tighter hover:opacity-50 transition-opacity">Amikom Event Hub</a>
-        <nav class="flex gap-6 text-[11px] uppercase tracking-widest text-gray-400">
-            <a href="/katalog" class="hover:text-black transition-colors">Katalog</a>
-            <a href="/profil" class="text-black underline underline-offset-8 decoration-1">Profil</a>
-            <a href="/bantuan" class="hover:text-black transition-colors">Bantuan</a>
-            <a href="/kontak" class="hover:text-black transition-colors">Kontak</a>
-        </nav>
-    </header>
+@extends('layouts.app')
 
-    <main class="w-full max-w-lg flex-grow opacity-0 animate-in" style="animation-delay: 0.3s">
-        <h1 class="text-3xl font-medium mb-16 tracking-tighter">Profil</h1>
-        
-        <section class="space-y-16">
-            <div class="flex items-center gap-6 group">
-                <div class="w-16 h-16 bg-gray-50 rounded-full border border-gray-100 flex-shrink-0 transition-transform group-hover:scale-105"></div>
-                <div>
-                    <label class="block text-[9px] uppercase tracking-[0.2em] text-gray-300 mb-1">Status</label>
-                    <p class="font-medium text-sm">Administrator</p>
-                    <p class="text-gray-400 text-xs">admin@amikom.ac.id</p>
+@section('title', 'Profil - Amikom Event Hub')
+
+@section('content')
+<div class="max-w-3xl mx-auto space-y-12">
+    <div class="space-y-2">
+        <h1 class="text-4xl font-extrabold tracking-tighter">Pengaturan <span class="text-electric">Profil</span></h1>
+        <p class="text-gray-400 font-medium">Kelola informasi akun dan preferensi Anda.</p>
+    </div>
+
+    <div class="bg-white dark:bg-dark-card rounded-[2.5rem] p-8 md:p-12 border border-gray-100 dark:border-gray-800 space-y-12">
+        <!-- Avatar Section -->
+        <div class="flex flex-col md:flex-row items-center gap-8 pb-12 border-b border-gray-50 dark:border-gray-800">
+            <div class="relative group">
+                <div class="w-32 h-32 bg-gray-100 dark:bg-gray-800 rounded-3xl border-4 border-white dark:border-dark-card overflow-hidden transition-transform group-hover:scale-105">
+                    <img src="/images/avatar.png" alt="Avatar" class="w-full h-full object-cover opacity-80" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Amikom'">
+                </div>
+                <button class="absolute -bottom-2 -right-2 p-3 bg-vibrant text-black rounded-2xl shadow-lg hover:scale-110 transition-transform">
+                    <i class="ph-bold ph-camera"></i>
+                </button>
+            </div>
+            <div class="text-center md:text-left space-y-1">
+                <h3 class="text-2xl font-extrabold">Administrator</h3>
+                <p class="text-gray-400 font-medium flex items-center justify-center md:justify-start gap-2">
+                    <i class="ph-bold ph-envelope text-electric"></i> admin@amikom.ac.id
+                </p>
+                <div class="pt-2">
+                    <span class="px-4 py-1 bg-blue-50 dark:bg-blue-900/20 text-electric text-[10px] font-extrabold uppercase tracking-widest rounded-full">Akun Terverifikasi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <form class="space-y-8">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label for="name" class="block text-[10px] uppercase tracking-[0.2em] font-extrabold text-gray-400">Nama Lengkap</label>
+                    <div class="relative">
+                        <i class="ph-bold ph-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                        <input type="text" id="name" value="Admin Amikom" class="w-full bg-gray-50 dark:bg-gray-800/50 border-2 border-transparent focus:border-vibrant rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold transition-all outline-none">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label for="nim" class="block text-[10px] uppercase tracking-[0.2em] font-extrabold text-gray-400">NIM / ID Staff</label>
+                    <div class="relative">
+                        <i class="ph-bold ph-identification-badge absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                        <input type="text" id="nim" value="24.12.3274" disabled class="w-full bg-gray-100 dark:bg-gray-800 border-2 border-transparent rounded-2xl py-4 pl-12 pr-4 text-sm font-bold text-gray-400 cursor-not-allowed">
+                    </div>
                 </div>
             </div>
 
-            <form class="space-y-10">
-                <div class="group">
-                    <label for="name" class="block text-[9px] uppercase tracking-[0.2em] text-gray-300 mb-2 group-focus-within:text-black transition-colors">Nama Lengkap</label>
-                    <input type="text" id="name" value="Admin Amikom" class="w-full bg-transparent border-b border-gray-100 py-3 text-sm focus:outline-none focus:border-black transition-colors">
-                </div>
-                <div class="group">
-                    <label for="bio" class="block text-[9px] uppercase tracking-[0.2em] text-gray-300 mb-2 group-focus-within:text-black transition-colors">Bio</label>
-                    <textarea id="bio" rows="2" class="w-full bg-transparent border-b border-gray-100 py-3 text-sm focus:outline-none focus:border-black transition-colors resize-none">Administrator of Amikom Event Hub. Passionate about organizing student events.</textarea>
-                </div>
-                <div class="pt-4">
-                    <button type="submit" class="text-[10px] uppercase tracking-[0.2em] font-semibold border border-black px-10 py-3 hover:bg-black hover:text-white transition-all active:scale-95">Simpan Perubahan</button>
-                </div>
-            </form>
-        </section>
-    </main>
+            <div class="space-y-2">
+                <label for="bio" class="block text-[10px] uppercase tracking-[0.2em] font-extrabold text-gray-400">Bio Singkat</label>
+                <textarea id="bio" rows="3" class="w-full bg-gray-50 dark:bg-gray-800/50 border-2 border-transparent focus:border-vibrant rounded-2xl py-4 px-4 text-sm font-semibold transition-all outline-none resize-none">Administrator of Amikom Event Hub. Passionate about organizing student events.</textarea>
+            </div>
 
-    <footer class="mt-32 w-full max-w-2xl flex justify-center gap-10 text-[9px] uppercase tracking-[0.3em] text-gray-300 opacity-0 animate-in" style="animation-delay: 0.5s">
-        <a href="/katalog" class="hover:text-black transition-colors">Event</a>
-        <a href="/bantuan" class="hover:text-black transition-colors">Bantuan</a>
-        <a href="/kontak" class="hover:text-black transition-colors">Kontak</a>
-    </footer>
-
-</body>
-</html>
+            <div class="pt-6 flex flex-col md:flex-row gap-4">
+                <button type="submit" class="px-10 py-4 bg-electric text-white rounded-2xl font-bold hover:shadow-lg hover:shadow-electric/30 transition-all">Simpan Perubahan</button>
+                <button type="button" class="px-10 py-4 bg-gray-50 dark:bg-gray-800 text-gray-500 rounded-2xl font-bold hover:bg-red-50 hover:text-red-500 transition-all">Keluar Sesi</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
