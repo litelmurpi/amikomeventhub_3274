@@ -20,7 +20,7 @@
 - **Nama:** Yudistira Azfa Dani Wibowo
 - **NIM:** 24.12.3274
 - **Prodi:** Digital Business
-- **Kelas:** amikomeventhub_3274
+- **Repository:** amikomeventhub_3274
 
 ---
 
