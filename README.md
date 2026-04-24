@@ -37,6 +37,7 @@
 |             | Manajemen Event    | [Lihat Event](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/events)                        |
 |             | Laporan Transaksi  | [Lihat Transaksi](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/transactions)              |
 |             | Beranda / Welcome  | [Lihat Beranda](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/)                                  |
+|             | Kategori           | [Lihat Beranda](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/categories)                                  |
 |             | Detail Event       | [Lihat Detail Event](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/event-detail/jazz-night-2024) |
 |             | Checkout Tiket     | [Lihat Checkout](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/checkout/jazz-night-2024)         |
 
