@@ -41,6 +41,21 @@ class DatabaseSeeder extends Seeder
             'slug' => 'seni',
         ]);
 
+        $esport = Category::create([
+            'name' => 'E-Sport',
+            'slug' => 'e-sport',
+        ]);
+
+        $uiux = Category::create([
+            'name' => 'UI/UX Design',
+            'slug' => 'ui-ux',
+        ]);
+
+        $cybersecurity = Category::create([
+            'name' => 'Cyber Security',
+            'slug' => 'cyber-security',
+        ]);
+
         // Events from EventController/HomeController
         Event::create([
             'category_id' => $musik->id,

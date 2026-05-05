@@ -58,20 +58,20 @@
                     </thead>
                     <tbody class="divide-y border-t">
                         @foreach($transactions as $trx)
-                        <tr class="hover:bg-slate-50/50 transition {{ $trx['status'] == 'Pending' ? 'text-slate-400' : '' }}">
+                        <tr class="hover:bg-slate-50/50 transition {{ $trx->status == 'Pending' ? 'text-slate-400' : '' }}">
                             <td class="px-8 py-6">
                                 <span
-                                    class="font-mono font-bold {{ $trx['status'] == 'Success' ? 'text-indigo-600 bg-indigo-50' : 'bg-slate-100' }} px-3 py-1 rounded-lg text-sm">#{{ $trx['id'] }}</span>
+                                    class="font-mono font-bold {{ $trx->status == 'Success' ? 'text-indigo-600 bg-indigo-50' : 'bg-slate-100' }} px-3 py-1 rounded-lg text-sm">#{{ $trx->order_id }}</span>
                             </td>
                             <td class="px-8 py-6">
-                                <p class="font-bold {{ $trx['status'] == 'Success' ? 'text-slate-800' : '' }}">{{ $trx['name'] }}</p>
-                                <p class="text-xs {{ $trx['status'] == 'Success' ? 'text-slate-500' : '' }}">{{ $trx['email'] }}</p>
+                                <p class="font-bold {{ $trx->status == 'Success' ? 'text-slate-800' : '' }}">{{ $trx->customer_name }}</p>
+                                <p class="text-xs {{ $trx->status == 'Success' ? 'text-slate-500' : '' }}">{{ $trx->customer_email }}</p>
                             </td>
                             <td class="px-8 py-6">
-                                <p class="font-medium {{ $trx['status'] == 'Success' ? 'text-slate-700' : '' }}">{{ $trx['event'] }}</p>
+                                <p class="font-medium {{ $trx->status == 'Success' ? 'text-slate-700' : '' }}">{{ $trx->event->title ?? '-' }}</p>
                             </td>
-                            <td class="px-8 py-6 text-sm {{ $trx['status'] == 'Success' ? 'text-slate-500' : '' }}">
-                                {{ $trx['date'] }}
+                            <td class="px-8 py-6 text-sm {{ $trx->status == 'Success' ? 'text-slate-500' : '' }}">
+                                {{ $trx->created_at->format('d M Y, H:i') }}
                             </td>
                             <td class="px-8 py-6">
                                 @php
@@ -81,13 +81,13 @@
                                         'Free' => 'bg-slate-100 text-slate-600 ring-slate-200',
                                         'Expired' => 'bg-rose-100 text-rose-700 ring-rose-200',
                                     ];
-                                    $class = $statusClasses[$trx['status']] ?? $statusClasses['Free'];
+                                    $class = $statusClasses[$trx->status] ?? $statusClasses['Free'];
                                 @endphp
                                 <span
-                                    class="px-3 py-1 {{ $class }} rounded-lg text-xs font-bold uppercase ring-1">{{ $trx['status'] }}</span>
+                                    class="px-3 py-1 {{ $class }} rounded-lg text-xs font-bold uppercase ring-1">{{ $trx->status }}</span>
                             </td>
-                            <td class="px-8 py-6 text-right font-black {{ $trx['status'] == 'Success' ? 'text-slate-900' : '' }}">
-                                Rp {{ $trx['total'] }}
+                            <td class="px-8 py-6 text-right font-black {{ $trx->status == 'Success' ? 'text-slate-900' : '' }}">
+                                Rp {{ number_format($trx->total_price, 0, ',', '.') }}
                             </td>
                         </tr>
                         @endforeach

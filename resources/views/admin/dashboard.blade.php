@@ -87,15 +87,15 @@
                         @foreach($transactions as $trx)
                         <tr class="hover:bg-slate-50 transition">
                             <td class="px-8 py-6">
-                                <p class="font-bold uppercase tracking-wide text-sm">{{ $trx['name'] }}</p>
-                                <p class="text-xs text-slate-400">{{ $trx['email'] }}</p>
+                                <p class="font-bold uppercase tracking-wide text-sm">{{ $trx->customer_name }}</p>
+                                <p class="text-xs text-slate-400">{{ $trx->customer_email }}</p>
                             </td>
-                            <td class="px-8 py-6 font-medium text-slate-600">{{ $trx['event'] }}</td>
+                            <td class="px-8 py-6 font-medium text-slate-600">{{ $trx->event->title ?? '-' }}</td>
                             <td class="px-8 py-6">
                                 <span
-                                    class="px-3 py-1 bg-{{ $trx['status'] == 'Success' ? 'green' : ($trx['status'] == 'Pending' ? 'orange' : 'slate') }}-100 text-{{ $trx['status'] == 'Success' ? 'green' : ($trx['status'] == 'Pending' ? 'orange' : 'slate') }}-700 rounded-lg text-xs font-bold uppercase">{{ $trx['status'] }}</span>
+                                    class="px-3 py-1 bg-{{ $trx->status == 'Success' ? 'green' : ($trx->status == 'Pending' ? 'orange' : 'slate') }}-100 text-{{ $trx->status == 'Success' ? 'green' : ($trx->status == 'Pending' ? 'orange' : 'slate') }}-700 rounded-lg text-xs font-bold uppercase">{{ $trx->status }}</span>
                             </td>
-                            <td class="px-8 py-6 font-black text-indigo-600">Rp {{ $trx['total'] }}</td>
+                            <td class="px-8 py-6 font-black text-indigo-600">Rp {{ number_format($trx->total_price, 0, ',', '.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
