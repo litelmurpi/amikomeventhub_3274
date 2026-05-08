@@ -46,6 +46,11 @@ class Event extends Model
         return $this->attributes['price'];
     }
 
+    public function getCategoryNameAttribute()
+    {
+        return $this->category->name ?? 'Uncategorized';
+    }
+
 
     // Standard date format if needed by view
     // The previous array had "16 November 2024"
