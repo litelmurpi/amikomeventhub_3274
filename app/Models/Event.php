@@ -46,10 +46,6 @@ class Event extends Model
         return $this->attributes['price'];
     }
 
-    public function getCategoryAttribute()
-    {
-        return $this->category()->first()?->name;
-    }
 
     // Standard date format if needed by view
     // The previous array had "16 November 2024"
