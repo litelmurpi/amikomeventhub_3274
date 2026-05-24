@@ -16,14 +16,15 @@
         </header>
 
         <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-            <div class="px-8 py-6 bg-slate-50/50 border-b flex gap-4">
-                <input type="text" placeholder="Cari nama event..."
-                    class="flex-1 px-5 py-3 rounded-xl border-slate-200 border bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
-                <select class="px-5 py-3 rounded-xl border-slate-200 border bg-white outline-none">
-                    <option>Semua Kategori</option>
-                    <option>Musik</option>
-                    <option>Workshop</option>
-                </select>
+            <div class="px-8 py-6 bg-slate-50/50 border-b">
+                <form method="GET" action="{{ route('admin.events') }}" id="search-form" class="flex gap-2">
+                    <input type="text" name="search" id="search-input" value="{{ request('search') }}" placeholder="Cari nama event..."
+                        class="flex-1 px-5 py-3 rounded-xl border-slate-200 border bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
+                    <button type="submit" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition">Cari</button>
+                    @if(request('search'))
+                        <a href="{{ route('admin.events') }}" class="px-4 py-3 bg-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-300 transition flex items-center">Reset</a>
+                    @endif
+                </form>
             </div>
 
             <div class="overflow-x-auto">
@@ -82,5 +83,28 @@
                 </table>
             </div>
         </div>
+
+        <script>
+            let searchTimeout = null;
+            const searchInput = document.getElementById('search-input');
+            const searchForm = document.getElementById('search-form');
+
+            if (searchInput && searchForm) {
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        searchForm.submit();
+                    }, 500); // Debounce 500ms
+                });
+
+                // Keep cursor at the end of input
+                if (searchInput.value) {
+                    const val = searchInput.value;
+                    searchInput.value = '';
+                    searchInput.focus();
+                    searchInput.value = val;
+                }
+            }
+        </script>
     </main>
 @endsection

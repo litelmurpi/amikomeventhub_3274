@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Transaction;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,9 +27,18 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('stats', 'transactions'));
     }
 
-    public function events()
+    public function events(Request $request)
     {
-        $events = Event::with('category')->latest()->get();
+        $query = $request->input('search');
+        $operator = DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
+
+        $events = Event::with('category')
+            ->when($query, function($q) use ($query, $operator) {
+                return $q->where('title', $operator, '%' . $query . '%');
+            })
+            ->latest()
+            ->get();
+
         return view('admin.events', compact('events'));
     }
 
