@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Partner;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -100,6 +101,27 @@ class DatabaseSeeder extends Seeder
             'poster_path' => 'assets/hackathon.png',
             'organizer_name' => 'Jogja Jazz Community',
             'organizer_initials' => 'JJC',
+        ]);
+
+        // Partners Seed Data
+        Partner::create([
+            'name' => 'Universitas Amikom Yogyakarta',
+            'logo_url' => 'https://ui-avatars.com/api/?name=Amikom+University&background=6366f1&color=fff&size=128'
+        ]);
+
+        Partner::create([
+            'name' => 'Gojek Indonesia',
+            'logo_url' => 'https://ui-avatars.com/api/?name=Gojek&background=10b981&color=fff&size=128'
+        ]);
+
+        Partner::create([
+            'name' => 'Google Cloud',
+            'logo_url' => 'https://ui-avatars.com/api/?name=Google+Cloud&background=ef4444&color=fff&size=128'
+        ]);
+
+        Partner::create([
+            'name' => 'Dinas Kebudayaan DIY',
+            'logo_url' => 'https://ui-avatars.com/api/?name=Disbud+DIY&background=f59e0b&color=fff&size=128'
         ]);
     }
 }

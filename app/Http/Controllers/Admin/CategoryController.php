@@ -5,13 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::withCount('events')->latest()->get();
+        $query = $request->input('search');
+        $operator = DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
+        $categories = Category::withCount('events')
+            ->when($query, function($q) use ($query, $operator) {
+                return $q->where('name', $operator, '%' . $query . '%');
+            })
+            ->latest()
+            ->get();
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -24,9 +32,14 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:categories,slug',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
+        } else {
+            $validated['slug'] = Str::slug($validated['slug']);
+        }
 
         Category::create($validated);
 
@@ -42,10 +55,13 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
         ]);
 
-        if ($request->name !== $category->name) {
+        if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
+        } else {
+            $validated['slug'] = Str::slug($validated['slug']);
         }
 
         $category->update($validated);

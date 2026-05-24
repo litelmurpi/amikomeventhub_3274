@@ -90,11 +90,12 @@
           </p>
         </div>
         <div class="flex gap-2">
-          <button
+          <a
+            href="{{ route('katalog') }}"
             class="p-3 border rounded-xl hover:bg-white hover:shadow-md transition"
           >
             Semua Kategori
-          </button>
+          </a>
         </div>
       </div>
 
@@ -146,6 +147,31 @@
               >
             </div>
           </div>
+        </div>
+        @endforeach
+      </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-extrabold mb-2">Partner & Sponsor Kami</h2>
+        <p class="text-slate-500 font-medium">
+          Bekerja sama dengan institusi dan perusahaan terkemuka untuk menghadirkan event terbaik.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        @foreach($partners as $partner)
+        <div class="group flex flex-col items-center justify-center p-6 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
+          <div class="h-20 w-full flex items-center justify-center mb-4">
+            <img
+              src="{{ Str::startsWith($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url) }}"
+              alt="{{ $partner->name }}"
+              class="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
+            />
+          </div>
+          <span class="text-sm font-bold text-slate-500 group-hover:text-indigo-600 transition duration-300 text-center">{{ $partner->name }}</span>
         </div>
         @endforeach
       </div>

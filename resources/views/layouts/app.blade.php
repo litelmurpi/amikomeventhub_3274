@@ -6,8 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AmikomEventHub - Temukan Event Seru!</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        electric: '#4f46e5',
+                        vibrant: '#f59e0b',
+                        dark: {
+                            card: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css" />
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -26,14 +44,18 @@
     <nav
         class="glass sticky top-8 z-40 mx-4 mt-4 px-6 py-4 rounded-2xl border border-white/20 shadow-lg flex justify-between items-center">
         <a href="{{ route('home') }}" class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
+            <div
+                class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
                 AH</div>
             <span class="text-xl font-bold tracking-tight">AmikomEventHub</span>
         </a>
         <div class="hidden md:flex gap-8 font-medium">
-            <a href="#" class="text-indigo-600">Jelajahi</a>
+            <a href="{{ route('katalog') }}" class="hover:text-indigo-600 transition">Jelajahi</a>
             <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
-            <a href="#" class="hover:text-indigo-600 transition">Tentang Kami</a>
+            <a href="{{ route('tentang') }}" class="hover:text-indigo-600 transition">Tentang Kami</a>
+            {{-- <a href="{{ route('uts-guide') }}"
+                class="px-3 py-1 bg-rose-500/10 text-rose-600 border border-rose-500/25 rounded-lg text-xs font-black uppercase tracking-wider hover:bg-rose-500 hover:text-white transition flex items-center">Panduan
+                UTS</a> --}}
         </div>
         <!-- <div class="flex gap-3">
             <button class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</button>
@@ -62,8 +84,8 @@
             <div>
                 <h4 class="text-white font-bold mb-6">Navigasi</h4>
                 <ul class="space-y-4">
-                    <li><a href="#" class="hover:text-white transition">Home</a></li>
-                    <li><a href="#" class="hover:text-white transition">Semua Event</a></li>
+                    <li><a href="{{ route('home') }}" class="hover:text-white transition">Home</a></li>
+                    <li><a href="{{ route('katalog') }}" class="hover:text-white transition">Semua Event</a></li>
                     <li><a href="#" class="hover:text-white transition">Cara Bayar</a></li>
                 </ul>
             </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -25,20 +26,29 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    Route::get('/partners', [PartnerController::class, 'index'])->name('partners');
+    Route::get('/partners/create', [PartnerController::class, 'create'])->name('partners.create');
+    Route::post('/partners', [PartnerController::class, 'store'])->name('partners.store');
+    Route::get('/partners/{partner}/edit', [PartnerController::class, 'edit'])->name('partners.edit');
+    Route::put('/partners/{partner}', [PartnerController::class, 'update'])->name('partners.update');
+    Route::delete('/partners/{partner}', [PartnerController::class, 'destroy'])->name('partners.destroy');
 });
 
+Route::get('/uts-guide', function () {
+    return view('uts_guide');
+})->name('uts-guide');
+
 Route::get('/tentang', function () {
-    return "<h1>Ini adalah halaman Tentang Aplikasi Event Hub</h1>";
-});
+    return view('tentang');
+})->name('tentang');
 Route::get('/kontak', function () {
     return view('contact');
 });
 Route::get('/profil', function () {
     return view('profil');
 });
-Route::get('/katalog', function () {
-    return view('katalog');
-});
+Route::get('/katalog', [EventController::class, 'katalog'])->name('katalog');
 Route::get('/bantuan', function () {
     return view('bantuan');
 });
