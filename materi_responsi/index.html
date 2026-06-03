@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aplikasi belajar interaktif untuk Responsi Laravel 12 — Amikom EventHub. Materi lengkap MVC, Eloquent, Blade, Partner CRUD, dan fitur baru Laravel 12.">
+  <title>Aplikasi Belajar Responsi Laravel 12 — Amikom EventHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <button class="btn-menu" id="btn-menu" aria-label="Menu Toggle">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <a href="#" class="header-logo">
+      <div class="logo-icon">AE</div>
+      <span>Amikom EventHub — Study App</span>
+    </a>
+
+    <div class="header-search">
+      <input type="text" id="search-input" placeholder="Cari materi... (Ctrl+K)">
+      <div class="search-results" id="search-results"></div>
+    </div>
+
+    <div class="header-right">
+      <span class="header-badge">Laravel 12</span>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <!-- Sidebar Brand (Desktop Only) -->
+    <div class="sidebar-brand">
+      <div class="logo-icon">AE</div>
+      <div class="brand-info">
+        <span class="brand-title">EventHub SDK</span>
+        <span class="brand-subtitle">14 Chapters</span>
+      </div>
+    </div>
+
+    <div class="sidebar-progress">
+      <div class="progress-label">Progres Belajar</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-text" id="progress-text">0 / 14 bab dibaca</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Materi Utama</div>
+      <button class="sidebar-link active" data-chapter="0">
+        <span class="link-num">01</span>
+        <span>MVC & Arsitektur Laravel</span>
+      </button>
+      <button class="sidebar-link" data-chapter="1">
+        <span class="link-num">02</span>
+        <span>Konfigurasi & Environment</span>
+      </button>
+      <button class="sidebar-link" data-chapter="2">
+        <span class="link-num">03</span>
+        <span>Skema Database & Migrasi</span>
+      </button>
+      <button class="sidebar-link" data-chapter="3">
+        <span class="link-num">04</span>
+        <span>Eloquent ORM & Relasi</span>
+      </button>
+      <button class="sidebar-link" data-chapter="4">
+        <span class="link-num">05</span>
+        <span>Sistem Routing Aplikasi</span>
+      </button>
+      <button class="sidebar-link" data-chapter="5">
+        <span class="link-num">06</span>
+        <span>Logika Controller & Request</span>
+      </button>
+      <button class="sidebar-link" data-chapter="6">
+        <span class="link-num">07</span>
+        <span>Blade Engine & Layouting</span>
+      </button>
+      <button class="sidebar-link" data-chapter="7">
+        <span class="link-num">08</span>
+        <span>Siklus CRUD Kategori</span>
+      </button>
+      <button class="sidebar-link" data-chapter="8">
+        <span class="link-num">09</span>
+        <span>Implementasi Fitur Search</span>
+      </button>
+      <button class="sidebar-link" data-chapter="9">
+        <span class="link-num">10</span>
+        <span>Integrasi Tampilan Publik</span>
+      </button>
+      <button class="sidebar-link" data-chapter="10">
+        <span class="link-num">11</span>
+        <span>Database Seeder & Factory</span>
+      </button>
+      <button class="sidebar-link" data-chapter="11">
+        <span class="link-num">12</span>
+        <span>Fitur Baru Laravel 12</span>
+      </button>
+      <button class="sidebar-link" data-chapter="12">
+        <span class="link-num">13</span>
+        <span>Step-by-Step Fitur Partner</span>
+      </button>
+      <button class="sidebar-link" data-chapter="13">
+        <span class="link-num">14</span>
+        <span>Render Partner di Publik</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 14px;">
+      <div class="sidebar-title">Interactive Sandboxes</div>
+      <button class="sidebar-link" data-tool="mvc-simulator">
+        <span class="link-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        </span>
+        <span>MVC Flow Simulator</span>
+      </button>
+      <button class="sidebar-link" data-tool="route-matcher">
+        <span class="link-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
+        </span>
+        <span>Live Route Matcher</span>
+      </button>
+      <button class="sidebar-link" data-tool="artisan-terminal">
+        <span class="link-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
+        </span>
+        <span>Artisan CLI Runner</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main" id="main-content">
+
+    <!-- ===================== BAB 1: MVC ===================== -->
+    <section class="chapter active" id="chapter-1">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 01</div>
+        <h1 class="chapter-title">MVC & Arsitektur Laravel</h1>
+        <p class="chapter-desc">Menjelaskan alur kerja Model-View-Controller (MVC) pada Laravel 12 dan pemetaan struktur foldernya.</p>
+      </div>
+
+      <h2>1.1 Pola MVC (Model-View-Controller)</h2>
+      <p>Laravel merupakan framework PHP yang menganut arsitektur MVC secara penuh. Pola ini memisahkan logika program menjadi 3 bagian utama:</p>
+      <ul>
+        <li><strong>Model:</strong> Berinteraksi langsung dengan database. Diwakili oleh Eloquent ORM. Class model diletakkan di direktori <code>app/Models/</code>.</li>
+        <li><strong>View:</strong> Mengelola representasi grafis / HTML yang dikirim ke browser pengguna. Dibuat menggunakan Blade Template Engine di dalam direktori <code>resources/views/</code>.</li>
+        <li><strong>Controller:</strong> Bertindak sebagai pengatur logika utama aplikasi. Menerima data masukan dari user, meminta data dari Model, memproses logika bisnis, dan mengirimkannya ke View. Terletak di <code>app/Http/Controllers/</code>.</li>
+      </ul>
+
+      <div class="card mt-md">
+        <h3 class="mt-0">Interactive Simulator: Simulasi Alur Request MVC</h3>
+        <p class="text-sm">Klik tombol request di bawah untuk melihat bagaimana Laravel memproses rute di balik layar:</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+          <button class="sim-btn" data-route="homepage">Panggil Homepage (GET /)</button>
+          <button class="sim-btn" data-route="event-detail">Panggil Detail (GET /event-detail/jazz-night)</button>
+          <button class="sim-btn" data-route="store-category">Simpan Kategori (POST /admin/categories)</button>
+        </div>
+        <div class="flow" id="mvc-flow-view" style="min-height: 140px;">
+          <div class="text-muted" style="text-align: center; padding-top: 40px;">Pilih salah satu request di atas untuk memulai simulasi visual...</div>
+        </div>
+      </div>
+
+      <h2>1.2 Struktur Folder Terpenting</h2>
+      <p>Struktur folder penting Laravel 12 yang wajib dipahami di dalam ujian responsi:</p>
+      <div class="tree">
+        <span class="tree-dir">app/</span><br>
+        &nbsp;&nbsp;├── <span class="tree-dir">Http/Controllers/</span> <span class="tree-comment">// Pengatur alur request, validasi data, upload, dll.</span><br>
+        &nbsp;&nbsp;└── <span class="tree-dir">Models/</span> <span class="tree-comment">// Kelas-kelas representasi tabel database.</span><br>
+        <span class="tree-dir">database/</span><br>
+        &nbsp;&nbsp;├── <span class="tree-dir">migrations/</span> <span class="tree-comment">// File skema tabel database.</span><br>
+        &nbsp;&nbsp;└── <span class="tree-dir">seeders/</span> <span class="tree-comment">// Skrip untuk mengisi data default.</span><br>
+        <span class="tree-dir">resources/</span><br>
+        &nbsp;&nbsp;└── <span class="tree-dir">views/</span> <span class="tree-comment">// File antarmuka (.blade.php).</span><br>
+        <span class="tree-dir">routes/</span><br>
+        &nbsp;&nbsp;└── <span class="tree-file">web.php</span> <span class="tree-comment">// Berkas pemetaan url dan route name.</span>
+      </div>
+
+      <h2>1.3 Kuis Bab 1</h2>
+      <div class="quiz-interactive" data-quiz-id="q1">
+        <div class="quiz-q">1. Di dalam folder manakah kita menulis logika penyimpanan data file upload dari formulir?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q1" value="a"> app/Models/</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q1" value="b"> resources/views/</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q1" value="c"> app/Http/Controllers/</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q1" value="d"> routes/web.php</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn next" data-target="1">
+          <span class="nav-label">Selanjutnya</span>
+          <span class="nav-title">Bab 02 — Konfigurasi & Env</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 2: CONFIG ===================== -->
+    <section class="chapter" id="chapter-2">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 02</div>
+        <h1 class="chapter-title">Konfigurasi & Environment</h1>
+        <p class="chapter-desc">Mempelajari file .env, file composer.json, dan command penting inisialisasi project Laravel.</p>
+      </div>
+
+      <h2>2.1 Pengaturan File <code>.env</code></h2>
+      <p>File <code>.env</code> menampung variabel konfigurasi yang bervariasi antar server (lokal, staging, production). Konfigurasi terpenting pada project eventhub_3274:</p>
+      <pre><span class="code-label">.env</span>
+APP_NAME="Amikom Event Hub"
+APP_ENV=local               <span class="cm"># Menandakan mode pengembangan (local)</span>
+APP_KEY=base64:xxyyzz...    <span class="cm"># Digunakan untuk enkripsi cookie/session</span>
+APP_DEBUG=true              <span class="cm"># Memunculkan pesan error detail (false pada production!)</span>
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=eventhub_3274
+DB_USERNAME=root
+DB_PASSWORD=4472</pre>
+
+      <div class="alert alert-important">
+        <div class="alert-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <div class="alert-content">
+          <strong>Penting saat Ujian:</strong> Ingat untuk selalu menyalin file <code>.env.example</code> ke <code>.env</code> saat pertama kali melakukan clone project, lalu jalankan perintah <code>php artisan key:generate</code> untuk membuat APP_KEY.
+        </div>
+      </div>
+
+      <h2>2.2 Manajemen Dependensi via <code>composer.json</code></h2>
+      <p>File <code>composer.json</code> mendefinisikan librari PHP eksternal yang dibutuhkan oleh project. Untuk menginstal dependensi:</p>
+      <pre><span class="code-label">Terminal</span>
+composer install</pre>
+
+      <h2>2.3 Kuis Bab 2</h2>
+      <div class="quiz-interactive" data-quiz-id="q2">
+        <div class="quiz-q">1. Apa konsekuensi keamanan jika pengaturan <code>APP_DEBUG=true</code> dibiarkan aktif di server production?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q2" value="a"> Aplikasi menjadi sangat lambat memuat data</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q2" value="b"> Server database akan otomatis terkunci</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q2" value="c"> Detail sensitif kode, query SQL, & password .env dibocorkan ke publik saat error</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q2" value="d"> Halaman web tidak akan bisa dibuka</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="0"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 01 — MVC</span></button>
+        <button class="nav-btn next" data-target="2"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 03 — Skema DB & Migrasi</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 3: DATABASE ===================== -->
+    <section class="chapter" id="chapter-3">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 03</div>
+        <h1 class="chapter-title">Skema Database & Migrasi</h1>
+        <p class="chapter-desc">Menjelaskan secara terperinci file migration, tipe data kolom, relasi antar tabel (foreign key), dan cascade delete.</p>
+      </div>
+
+      <h2>3.1 Desain Tabel di EventHub</h2>
+      <p>Aplikasi ini memiliki 4 tabel utama yang saling berelasi. Klik kolom di bawah ini untuk melihat detail skema & tipe kolom:</p>
+      <div class="card-grid">
+        <div class="card-mini" data-schema-explorer="categories">
+          <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></div>
+          <div class="card-label">Tabel categories</div>
+        </div>
+        <div class="card-mini" data-schema-explorer="events">
+          <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></div>
+          <div class="card-label">Tabel events</div>
+        </div>
+        <div class="card-mini" data-schema-explorer="partners">
+          <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="card-label">Tabel partners</div>
+        </div>
+      </div>
+
+      <div class="card mb-md" id="schema-details-box" style="display: none;">
+        <h4 class="mt-0 text-accent" id="schema-title">Nama Tabel</h4>
+        <div id="schema-content" style="font-size: 13px;">Detail...</div>
+      </div>
+
+      <h2>3.2 Implementasi Kode Migrasi</h2>
+      <p>Berikut adalah penulisan file migrasi untuk tabel <code>categories</code> dan <code>events</code>:</p>
+      <pre><span class="code-label">database/migrations/xxxx_create_categories_table.php</span>
+<span class="kw">use</span> <span class="cls">Illuminate\Database\Migrations\Migration</span>;
+<span class="kw">use</span> <span class="cls">Illuminate\Database\Schema\Blueprint</span>;
+<span class="kw">use</span> <span class="cls">Illuminate\Support\Facades\Schema</span>;
+
+<span class="kw">return</span> <span class="kw">new</span> <span class="kw">class</span> <span class="kw">extends</span> <span class="cls">Migration</span> {
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fn">up</span>()<span class="op">:</span> <span class="kw">void</span> {
+        <span class="cls">Schema</span><span class="op">::</span><span class="fn">create</span>(<span class="str">'categories'</span>, <span class="kw">function</span> (<span class="cls">Blueprint</span> <span class="var">$table</span>) {
+            <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">id</span>();                               <span class="cm"># Primary Key (BigInt Auto Increment)</span>
+            <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">string</span>(<span class="str">'name'</span>);                     <span class="cm"># Varchar(255)</span>
+            <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">string</span>(<span class="str">'slug'</span>)<span class="op">-&gt;</span><span class="fn">unique</span>();           <span class="cm"># Varchar(255) & harus Unik</span>
+            <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">timestamps</span>();                       <span class="cm"># created_at & updated_at</span>
+        });
+    }
+};</pre>
+
+      <pre><span class="code-label">database/migrations/xxxx_create_events_table.php</span>
+<span class="cls">Schema</span><span class="op">::</span><span class="fn">create</span>(<span class="str">'events'</span>, <span class="kw">function</span> (<span class="cls">Blueprint</span> <span class="var">$table</span>) {
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">id</span>();
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">foreignId</span>(<span class="str">'category_id'</span>)
+          <span class="op">-&gt;</span><span class="fn">constrained</span>()
+          <span class="op">-&gt;</span><span class="fn">cascadeOnDelete</span>();                <span class="cm"># Jika kategori dihapus, event ikut terhapus</span>
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">string</span>(<span class="str">'title'</span>);
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">string</span>(<span class="str">'slug'</span>)<span class="op">-&gt;</span><span class="fn">unique</span>();
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">text</span>(<span class="str">'description'</span>)<span class="op">-&gt;</span><span class="fn">nullable</span>();    <span class="cm"># Text panjang (boleh kosong)</span>
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">dateTime</span>(<span class="str">'date'</span>);
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">string</span>(<span class="str">'location'</span>);
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">integer</span>(<span class="str">'price'</span>);
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">integer</span>(<span class="str">'stock'</span>);
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">string</span>(<span class="str">'poster_path'</span>)<span class="op">-&gt;</span><span class="fn">nullable</span>();
+    <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">timestamps</span>();
+});</pre>
+
+      <h2>3.3 Kuis Bab 3</h2>
+      <div class="quiz-interactive" data-quiz-id="q3">
+        <div class="quiz-q">1. Manakah perintah artisan yang benar untuk menghapus semua tabel dan menjalankan ulang seluruh migration beserta seeder?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q3" value="a"> php artisan migrate:rollback</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q3" value="b"> php artisan db:seed</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q3" value="c"> php artisan migrate:fresh --seed</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q3" value="d"> php artisan make:migration</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="1"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 02 — Konfigurasi</span></button>
+        <button class="nav-btn next" data-target="3"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 04 — Eloquent ORM</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 4: ELOQUENT ===================== -->
+    <section class="chapter" id="chapter-4">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 04</div>
+        <h1 class="chapter-title">Eloquent ORM & Relasi</h1>
+        <p class="chapter-desc">Menjelaskan konfigurasi model, properti fillable, penulisan relasi belongsTo & hasMany, serta Accessor.</p>
+      </div>
+
+      <h2>4.1 Mass Assignment & Properti <code>$fillable</code></h2>
+      <p>Mass Assignment adalah proses memasukkan sekumpulan data array sekaligus ke database. Untuk keamanan, kita harus mendefinisikan kolom yang boleh diisi:</p>
+      <pre><span class="code-label">app/Models/Category.php</span>
+<span class="kw">class</span> <span class="cls">Category</span> <span class="kw">extends</span> <span class="cls">Model</span> {
+    <span class="kw">protected</span> <span class="var">$fillable</span> <span class="op">=</span> [<span class="str">'name'</span>, <span class="str">'slug'</span>];
+}</pre>
+
+      <h2>4.2 Membuat Relasi One-to-Many</h2>
+      <p>Satu kategori memiliki banyak event (<code>hasMany</code>), dan satu event hanya bernaung di bawah satu kategori (<code>belongsTo</code>):</p>
+
+      <pre><span class="code-label">app/Models/Category.php</span>
+<span class="comment">// Mendefinisikan relasi ke model Event</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">events</span>() {
+    <span class="kw">return</span> <span class="var">$this</span><span class="op">-&gt;</span><span class="fn">hasMany</span>(<span class="cls">Event</span><span class="op">::</span><span class="kw">class</span>);
+}</pre>
+
+      <pre><span class="code-label">app/Models/Event.php</span>
+<span class="comment">// Mendefinisikan relasi ke model Category</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">category</span>() {
+    <span class="kw">return</span> <span class="var">$this</span><span class="op">-&gt;</span><span class="fn">belongsTo</span>(<span class="cls">Category</span><span class="op">::</span><span class="kw">class</span>);
+}</pre>
+
+      <h2>4.3 Accessor (Mengubah Format Data Saat Dibaca)</h2>
+      <p>Di model <code>Event</code>, terdapat accessor yang memformat harga dan tanggal secara otomatis:</p>
+      <pre><span class="code-label">app/Models/Event.php</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">getPriceAttribute</span>(<span class="var">$value</span>) {
+    <span class="kw">if</span> (<span class="var">$value</span> <span class="op">==</span> <span class="num">0</span>) {
+        <span class="kw">return</span> <span class="str">'Gratis'</span>;
+    }
+    <span class="kw">return</span> <span class="str">'Rp '</span> <span class="op">.</span> <span class="fn">number_format</span>(<span class="var">$value</span>, <span class="num">0</span>, <span class="str">','</span>, <span class="str">'.'</span>);
+}
+
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">getDateAttribute</span>(<span class="var">$value</span>) {
+    <span class="kw">return</span> <span class="cls">\Carbon\Carbon</span><span class="op">::</span><span class="fn">parse</span>(<span class="var">$value</span>)<span class="op">-&gt;</span><span class="fn">translatedFormat</span>(<span class="str">'d F Y'</span>);
+}</pre>
+
+      <h2>4.4 Kuis Bab 4</h2>
+      <div class="quiz-interactive" data-quiz-id="q4">
+        <div class="quiz-q">1. Bagaimana penulisan method Accessor yang benar untuk memformat kolom <code>location</code> menjadi huruf besar?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q4" value="a"> public function getLocationAttribute($val) { return strtoupper($val); }</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q4" value="b"> public function readLocation($val) { return strtoupper($val); }</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q4" value="c"> public function accessorLocationAttribute($val) { return strtoupper($val); }</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q4" value="d"> public function setLocationAttribute($val) { return strtoupper($val); }</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="2"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 03 — Skema DB</span></button>
+        <button class="nav-btn next" data-target="4"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 05 — Routing</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 5: ROUTING ===================== -->
+    <section class="chapter" id="chapter-5">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 05</div>
+        <h1 class="chapter-title">Sistem Routing Aplikasi</h1>
+        <p class="chapter-desc">Menjelaskan pemetaan URL, parameter dinamis, penggunaan group, prefix, dan name route.</p>
+      </div>
+
+      <h2>5.1 Pemetaan URL & Route Dinamis</h2>
+      <pre><span class="code-label">routes/web.php</span>
+<span class="kw">use</span> <span class="cls">App\Http\Controllers\HomeController</span>;
+<span class="kw">use</span> <span class="cls">App\Http\Controllers\EventController</span>;
+
+<span class="cls">Route</span><span class="op">::</span><span class="fn">get</span>(<span class="str">'/'</span>, [<span class="cls">HomeController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'index'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'home'</span>);
+<span class="cls">Route</span><span class="op">::</span><span class="fn">get</span>(<span class="str">'/event-detail/{slug}'</span>, [<span class="cls">EventController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'show'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'event-detail'</span>);</pre>
+
+      <h2>5.2 Live Route Matcher</h2>
+      <p class="text-sm">Ketikkan URL di bawah untuk mensimulasikan pencocokan rute di file <code>web.php</code>:</p>
+      <div class="card mb-md">
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="live-route-input" placeholder="Contoh: /admin/partners atau /event-detail/jazz-night" style="flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--bg-main); color: var(--text-heading); font-family: var(--font-mono); outline: none;">
+          <button id="live-route-btn" class="sim-btn">Match!</button>
+        </div>
+        <div id="live-route-result" style="margin-top: 12px; font-size: 13px; padding: 14px; background-color: var(--bg-sidebar); border-radius: 8px; border-left: 3px solid var(--border); display: none;"></div>
+      </div>
+
+      <h2>5.3 Mengelompokkan Route</h2>
+      <pre><span class="code-label">routes/web.php</span>
+<span class="cls">Route</span><span class="op">::</span><span class="fn">prefix</span>(<span class="str">'admin'</span>)<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'admin.'</span>)<span class="op">-&gt;</span><span class="fn">group</span>(<span class="kw">function</span> () {
+    <span class="comment">// URL: /admin/categories | Nama Route: admin.categories</span>
+    <span class="cls">Route</span><span class="op">::</span><span class="fn">get</span>(<span class="str">'/categories'</span>, [<span class="cls">CategoryController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'index'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'categories'</span>);
+    <span class="cls">Route</span><span class="op">::</span><span class="fn">post</span>(<span class="str">'/categories'</span>, [<span class="cls">CategoryController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'store'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'categories.store'</span>);
+});</pre>
+
+      <h2>5.4 Kuis Bab 5</h2>
+      <div class="quiz-interactive" data-quiz-id="q5">
+        <div class="quiz-q">1. Bagaimana penulisan generator URL yang benar untuk route dengan prefix 'admin' dan name 'categories'?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q5" value="a"> {{ route('categories') }}</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q5" value="b"> {{ route('admin/categories') }}</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q5" value="c"> {{ route('admin.categories') }}</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q5" value="d"> {{ url('admin.categories') }}</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="3"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 04 — Eloquent</span></button>
+        <button class="nav-btn next" data-target="5"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 06 — Controller</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 6: CONTROLLER ===================== -->
+    <section class="chapter" id="chapter-6">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 06</div>
+        <h1 class="chapter-title">Logika Controller & Request</h1>
+        <p class="chapter-desc">Menjelaskan penulisan logika di controller, penanganan objek request, validasi data, dan file upload.</p>
+      </div>
+
+      <h2>6.1 Mengambil Data dengan Eager Loading</h2>
+      <p>Agar efisien dan menghindari N+1 query problem, gunakan method <code>with()</code>:</p>
+      <pre><span class="code-label">app/Http/Controllers/HomeController.php</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">index</span>() {
+    <span class="var">$events</span> <span class="op">=</span> <span class="cls">Event</span><span class="op">::</span><span class="fn">with</span>(<span class="str">'category'</span>)<span class="op">-&gt;</span><span class="fn">latest</span>()<span class="op">-&gt;</span><span class="fn">get</span>();
+    <span class="var">$partners</span> <span class="op">=</span> <span class="cls">Partner</span><span class="op">::</span><span class="fn">latest</span>()<span class="op">-&gt;</span><span class="fn">get</span>();
+
+    <span class="kw">return</span> <span class="fn">view</span>(<span class="str">'welcome'</span>, <span class="fn">compact</span>(<span class="str">'events'</span>, <span class="str">'partners'</span>));
+}</pre>
+
+      <h2>6.2 Validasi Formulir & Proses Upload Gambar</h2>
+      <pre><span class="code-label">app/Http/Controllers/Admin/AdminController.php</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">storeEvent</span>(<span class="cls">Request</span> <span class="var">$request</span>) {
+    <span class="var">$validated</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">validate</span>([
+        <span class="str">'category_id'</span> <span class="op">=&gt;</span> <span class="str">'required|exists:categories,id'</span>,
+        <span class="str">'title'</span>       <span class="op">=&gt;</span> <span class="str">'required|string|max:255'</span>,
+        <span class="str">'price'</span>       <span class="op">=&gt;</span> <span class="str">'required|numeric|min:0'</span>,
+        <span class="str">'poster'</span>      <span class="op">=&gt;</span> <span class="str">'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'</span>,
+    ]);
+
+    <span class="var">$validated</span>[<span class="str">'slug'</span>] <span class="op">=</span> <span class="cls">Str</span><span class="op">::</span><span class="fn">slug</span>(<span class="var">$validated</span>[<span class="str">'title'</span>]) <span class="op">.</span> <span class="str">'-'</span> <span class="op">.</span> <span class="cls">Str</span><span class="op">::</span><span class="fn">random</span>(<span class="num">5</span>);
+
+    <span class="kw">if</span> (<span class="var">$request</span><span class="op">-&gt;</span><span class="fn">hasFile</span>(<span class="str">'poster'</span>)) {
+        <span class="var">$path</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">file</span>(<span class="str">'poster'</span>)<span class="op">-&gt;</span><span class="fn">store</span>(<span class="str">'posters'</span>, <span class="str">'public'</span>);
+        <span class="var">$validated</span>[<span class="str">'poster_path'</span>] <span class="op">=</span> <span class="str">'storage/'</span> <span class="op">.</span> <span class="var">$path</span>;
+    }
+
+    <span class="cls">Event</span><span class="op">::</span><span class="fn">create</span>(<span class="var">$validated</span>);
+    <span class="kw">return</span> <span class="fn">redirect</span>()<span class="op">-&gt;</span><span class="fn">route</span>(<span class="str">'admin.events'</span>)<span class="op">-&gt;</span><span class="fn">with</span>(<span class="str">'success'</span>, <span class="str">'Event berhasil!'</span>);
+}</pre>
+
+      <h2>6.3 Kuis Bab 6</h2>
+      <div class="quiz-interactive" data-quiz-id="q6">
+        <div class="quiz-q">1. Apa kegunaan dari validasi <code>'exists:categories,id'</code> pada controller?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q6" value="a"> Memastikan ID berupa angka</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q6" value="b"> Memastikan nilai ID memang terdaftar di tabel categories</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q6" value="c"> Untuk menduplikat data kategori</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q6" value="d"> Membuat tabel kategori baru secara otomatis</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="4"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 05 — Routing</span></button>
+        <button class="nav-btn next" data-target="6"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 07 — Blade & Layout</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 7: BLADE ===================== -->
+    <section class="chapter" id="chapter-7">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 07</div>
+        <h1 class="chapter-title">Blade Engine & Layouting</h1>
+        <p class="chapter-desc">Layout inheritance, yield, section, CSRF token, method spoofing, dan error display.</p>
+      </div>
+
+      <h2>7.1 Sistem Pewarisan Template</h2>
+      <pre><span class="code-label">resources/views/layouts/app.blade.php</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="atn">lang</span>=<span class="atv">"id"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;header&gt;</span>Menu Navigasi Utama<span class="tag">&lt;/header&gt;</span>
+    <span class="tag">&lt;main&gt;</span>
+        <span class="blade">@yield</span>('content')
+    <span class="tag">&lt;/main&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+
+      <h2>7.2 Method Spoofing & Token CSRF</h2>
+      <pre><span class="code-label">resources/views/admin/categories/edit.blade.php</span>
+<span class="tag">&lt;form</span> <span class="atn">action</span>=<span class="atv">"{{ route('admin.categories.update', $category-&gt;id) }}"</span> <span class="atn">method</span>=<span class="atv">"POST"</span><span class="tag">&gt;</span>
+    <span class="blade">@csrf</span>                       <span class="cm"># Token keamanan wajib (anti error 419)</span>
+    <span class="blade">@method</span>('PUT')              <span class="cm"># Mengubah POST menjadi PUT</span>
+
+    <span class="tag">&lt;input</span> <span class="atn">type</span>=<span class="atv">"text"</span> <span class="atn">name</span>=<span class="atv">"name"</span> <span class="atn">value</span>=<span class="atv">"{{ old('name', $category-&gt;name) }}"</span><span class="tag">&gt;</span>
+    <span class="blade">@error</span>('name')
+        <span class="tag">&lt;p</span> <span class="atn">class</span>=<span class="atv">"text-red-500"</span><span class="tag">&gt;</span><span class="blade">{{</span> <span class="var">$message</span> <span class="blade">}}</span><span class="tag">&lt;/p&gt;</span>
+    <span class="blade">@enderror</span>
+
+    <span class="tag">&lt;button</span> <span class="atn">type</span>=<span class="atv">"submit"</span><span class="tag">&gt;</span>Perbarui<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span></pre>
+
+      <h2>7.3 Kuis Bab 7</h2>
+      <div class="quiz-interactive" data-quiz-id="q7">
+        <div class="quiz-q">1. Apa fungsi utama dari directive <code>@method('DELETE')</code> pada form hapus data?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q7" value="a"> Menghapus file di server langsung</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q7" value="b"> Memodifikasi HTTP request agar terdeteksi sebagai rute DELETE oleh routing</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q7" value="c"> Mengubah method GET menjadi DELETE</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q7" value="d"> Untuk enkripsi data yang dikirim</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="5"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 06 — Controller</span></button>
+        <button class="nav-btn next" data-target="7"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 08 — CRUD Kategori</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 8: CRUD KATEGORI ===================== -->
+    <section class="chapter" id="chapter-8">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 08</div>
+        <h1 class="chapter-title">Siklus CRUD Kategori</h1>
+        <p class="chapter-desc">Menjelaskan proses Create, Read, Update, Delete pada modul Kategori, termasuk penghapusan file fisik.</p>
+      </div>
+
+      <h2>8.1 Method <code>destroy()</code> — Hapus Data</h2>
+      <p>Saat menghapus kategori, semua event yang terhubung akan ikut terhapus berkat aturan <code>cascadeOnDelete</code> pada migration. File poster juga wajib dihapus dari storage:</p>
+      <pre><span class="code-label">app/Http/Controllers/Admin/CategoryController.php</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">destroy</span>(<span class="cls">Category</span> <span class="var">$category</span>) {
+    <span class="cm">// Hapus semua file poster event terkait</span>
+    <span class="kw">foreach</span> (<span class="var">$category</span><span class="op">-&gt;</span><span class="fn">events</span> <span class="kw">as</span> <span class="var">$event</span>) {
+        <span class="kw">if</span> (<span class="var">$event</span><span class="op">-&gt;</span>poster_path &amp;&amp; <span class="cls">File</span><span class="op">::</span><span class="fn">exists</span>(<span class="fn">public_path</span>(<span class="var">$event</span><span class="op">-&gt;</span>poster_path))) {
+            <span class="cls">File</span><span class="op">::</span><span class="fn">delete</span>(<span class="fn">public_path</span>(<span class="var">$event</span><span class="op">-&gt;</span>poster_path));
+        }
+    }
+    <span class="var">$category</span><span class="op">-&gt;</span><span class="fn">delete</span>();
+    <span class="kw">return</span> <span class="fn">redirect</span>()<span class="op">-&gt;</span><span class="fn">route</span>(<span class="str">'admin.categories'</span>)<span class="op">-&gt;</span><span class="fn">with</span>(<span class="str">'success'</span>, <span class="str">'Kategori dihapus!'</span>);
+}</pre>
+
+      <h2>8.2 Kuis Bab 8</h2>
+      <div class="quiz-interactive" data-quiz-id="q8">
+        <div class="quiz-q">1. Mengapa kita perlu menghapus file fisik poster di server saat menghapus data dari database?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q8" value="a"> Karena file akan otomatis corrupt</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q8" value="b"> Untuk efisiensi resource penyimpanan disk server</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q8" value="c"> Agar migration berjalan dengan lancar</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q8" value="d"> Karena database akan error jika file masih ada</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="6"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 07 — Blade</span></button>
+        <button class="nav-btn next" data-target="8"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 09 — Fitur Search</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 9: SEARCH ===================== -->
+    <section class="chapter" id="chapter-9">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 09</div>
+        <h1 class="chapter-title">Implementasi Fitur Search</h1>
+        <p class="chapter-desc">Menjelaskan fitur pencarian data menggunakan query LIKE/ILIKE dan kompatibilitas driver database.</p>
+      </div>
+
+      <h2>9.1 Search dengan LIKE & Kompatibilitas Database</h2>
+      <p>Aplikasi EventHub mendukung dua driver database sekaligus: MySQL dan PostgreSQL. Karena PostgreSQL bersifat case-sensitive untuk operator <code>LIKE</code>, maka kita perlu menggunakan <code>ILIKE</code> khusus untuk PostgreSQL:</p>
+      <pre><span class="code-label">app/Http/Controllers/Admin/CategoryController.php</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">index</span>(<span class="cls">Request</span> <span class="var">$request</span>) {
+    <span class="var">$query</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">input</span>(<span class="str">'search'</span>);
+    <span class="var">$operator</span> <span class="op">=</span> <span class="cls">DB</span><span class="op">::</span><span class="fn">connection</span>()<span class="op">-&gt;</span><span class="fn">getDriverName</span>() <span class="op">===</span> <span class="str">'pgsql'</span> ? <span class="str">'ilike'</span> : <span class="str">'like'</span>;
+
+    <span class="var">$categories</span> <span class="op">=</span> <span class="cls">Category</span><span class="op">::</span><span class="fn">when</span>(<span class="var">$query</span>, <span class="kw">function</span>(<span class="var">$q</span>) <span class="kw">use</span> (<span class="var">$query</span>, <span class="var">$operator</span>) {
+        <span class="kw">return</span> <span class="var">$q</span><span class="op">-&gt;</span><span class="fn">where</span>(<span class="str">'name'</span>, <span class="var">$operator</span>, <span class="str">'%'</span> <span class="op">.</span> <span class="var">$query</span> <span class="op">.</span> <span class="str">'%'</span>);
+    })<span class="op">-&gt;</span><span class="fn">latest</span>()<span class="op">-&gt;</span><span class="fn">get</span>();
+}</pre>
+
+      <h2>9.2 Kuis Bab 9</h2>
+      <div class="quiz-interactive" data-quiz-id="q9">
+        <div class="quiz-q">1. Mengapa kode EventHub menggunakan operator <code>ilike</code> secara khusus untuk driver PostgreSQL?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q9" value="a"> PostgreSQL tidak mendukung LIKE sama sekali</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q9" value="b"> PostgreSQL bersifat case-sensitive untuk LIKE, sehingga perlu ILIKE</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q9" value="c"> Untuk mempercepat query</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q9" value="d"> ILIKE hanya untuk tabel yang berisi data teks panjang</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="7"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 08 — CRUD Kategori</span></button>
+        <button class="nav-btn next" data-target="9"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 10 — Tampilan Publik</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 10: RENDER DATA ===================== -->
+    <section class="chapter" id="chapter-10">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 10</div>
+        <h1 class="chapter-title">Integrasi Tampilan Publik</h1>
+        <p class="chapter-desc">Menjelaskan bagaimana data dari controller dirender menjadi tampilan dinamis di halaman publik.</p>
+      </div>
+
+      <h2>10.1 Rendering Daftar Event</h2>
+      <pre><span class="code-label">resources/views/welcome.blade.php</span>
+<span class="blade">@foreach</span>(<span class="var">$events</span> as <span class="var">$event</span>)
+<span class="tag">&lt;div</span> <span class="atn">class</span>=<span class="atv">"event-card"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h3&gt;</span><span class="blade">{{</span> <span class="var">$event</span>-&gt;title <span class="blade">}}</span><span class="tag">&lt;/h3&gt;</span>
+    <span class="tag">&lt;span&gt;</span><span class="blade">{{</span> <span class="var">$event</span>-&gt;category-&gt;name <span class="blade">}}</span><span class="tag">&lt;/span&gt;</span>
+    <span class="tag">&lt;p&gt;</span><span class="blade">{{</span> <span class="var">$event</span>-&gt;price <span class="blade">}}</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+<span class="blade">@endforeach</span></pre>
+
+      <h2>10.2 Rendering Daftar Partner Dinamis</h2>
+      <p>Data partner & sponsor industri yang diambil melalui <code>HomeController::index()</code> dikirim ke halaman public view, kemudian dirender menggunakan perulangan <code>@foreach</code>. Tautan logo dicek secara dinamis:</p>
+      <pre><span class="code-label">resources/views/welcome.blade.php</span>
+<span class="blade">@foreach</span>(<span class="var">$partners</span> as <span class="var">$partner</span>)
+<span class="tag">&lt;div</span> <span class="atn">class</span>=<span class="atv">"partner-card"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;img</span> <span class="atn">src</span>=<span class="atv">"{{ Str::startsWith($partner-&gt;logo_url, 'http') ? $partner-&gt;logo_url : asset($partner-&gt;logo_url) }}"</span> <span class="atn">alt</span>=<span class="atv">"{{ $partner-&gt;name }}"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;span&gt;</span><span class="blade">{{</span> <span class="var">$partner</span>-&gt;name <span class="blade">}}</span><span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+<span class="blade">@endforeach</span></pre>
+
+      <h2>10.3 Kuis Bab 10</h2>
+      <div class="quiz-interactive" data-quiz-id="q10">
+        <div class="quiz-q">1. Bagaimana cara mendeteksi apakah url gambar bertipe eksternal internet atau unggahan lokal di Laravel?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q10" value="a"> Menggunakan function Str::startsWith($url, 'http')</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q10" value="b"> Menggunakan class checkImage()</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q10" value="c"> Menggunakan database trigger</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q10" value="d"> Otomatis terdeteksi oleh tag img HTML</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="8"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 09 — Search</span></button>
+        <button class="nav-btn next" data-target="10"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 11 — Seeder & Factory</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 11: SEEDER ===================== -->
+    <section class="chapter" id="chapter-11">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 11</div>
+        <h1 class="chapter-title">Database Seeder & Factory</h1>
+        <p class="chapter-desc">Menjelaskan fungsi Seeder, Factory, inisialisasi akun admin uji coba, dan proses hashing password.</p>
+      </div>
+
+      <h2>11.1 Seeder & Pembuatan Akun Default</h2>
+      <pre><span class="code-label">database/seeders/DatabaseSeeder.php</span>
+<span class="kw">class</span> <span class="cls">DatabaseSeeder</span> <span class="kw">extends</span> <span class="cls">Seeder</span> {
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fn">run</span>()<span class="op">:</span> <span class="kw">void</span> {
+        <span class="cls">User</span><span class="op">::</span><span class="fn">create</span>([
+            <span class="str">'name'</span>     <span class="op">=&gt;</span> <span class="str">'Administrator'</span>,
+            <span class="str">'email'</span>    <span class="op">=&gt;</span> <span class="str">'admin@amikom.ac.id'</span>,
+            <span class="str">'password'</span> <span class="op">=&gt;</span> <span class="fn">bcrypt</span>(<span class="str">'password'</span>),
+            <span class="str">'role'</span>     <span class="op">=&gt;</span> <span class="str">'admin'</span>,
+        ]);
+    }
+}</pre>
+
+      <h2>11.2 Kuis Bab 11</h2>
+      <div class="quiz-interactive" data-quiz-id="q11">
+        <div class="quiz-q">1. Mengapa password pada seeder sebaiknya dibungkus dengan <code>bcrypt()</code>?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q11" value="a"> Agar data password tidak terdeteksi oleh database driver</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q11" value="b"> Agar tersimpan dalam bentuk hash satu arah yang aman di database</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q11" value="c"> Untuk memperkecil ukuran kolom password</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q11" value="d"> Supaya password tidak bisa dibaca oleh admin</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="9"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 10 — Render Data</span></button>
+        <button class="nav-btn next" data-target="11"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 12 — Fitur Baru Laravel 12</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 12: LARAVEL 12 (DIPERLUAS) ===================== -->
+    <section class="chapter" id="chapter-12">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 12</div>
+        <h1 class="chapter-title">Fitur Baru & Optimasi Laravel 12</h1>
+        <p class="chapter-desc">Mempelajari fitur-fitur baru Laravel 12: Concurrency, Starter Kits, PHP 8.2+, Artisan improvements, Health Check, dan optimasi performa.</p>
+      </div>
+
+      <h2>12.1 Concurrency Facade (<code>Concurrency::run</code>)</h2>
+      <p>Laravel 12 memperkenalkan Facade <code>Concurrency</code> untuk menjalankan beberapa tugas asinkron secara paralel:</p>
+      <pre><span class="code-label">Contoh Kode Concurrency</span>
+<span class="kw">use</span> <span class="cls">Illuminate\Support\Facades\Concurrency</span>;
+
+[<span class="var">$weather</span>, <span class="var">$stocks</span>] <span class="op">=</span> <span class="cls">Concurrency</span><span class="op">::</span><span class="fn">run</span>([
+    <span class="kw">fn</span> () <span class="op">=&gt;</span> <span class="var">$this</span><span class="op">-&gt;</span><span class="fn">fetchWeatherData</span>(),
+    <span class="kw">fn</span> () <span class="op">=&gt;</span> <span class="var">$this</span><span class="op">-&gt;</span><span class="fn">fetchStockData</span>(),
+]);</pre>
+
+      <h2>12.2 Optimalisasi Output Eloquent (<code>withoutAppends</code>)</h2>
+      <p>Method baru untuk menghapus semua data append pada collection model:</p>
+      <pre><span class="code-label">Contoh Kode withoutAppends</span>
+<span class="var">$events</span> <span class="op">=</span> <span class="cls">Event</span><span class="op">::</span><span class="fn">limit</span>(<span class="num">50</span>)<span class="op">-&gt;</span><span class="fn">get</span>()<span class="op">-&gt;</span><span class="fn">withoutAppends</span>();</pre>
+
+      <h2>12.3 HTTP Pool Concurrency Control</h2>
+      <p>Kontrol konkurensi untuk membatasi jumlah request HTTP keluar secara simultan:</p>
+      <pre><span class="code-label">Contoh HTTP Pool</span>
+<span class="var">$responses</span> <span class="op">=</span> <span class="cls">Http</span><span class="op">::</span><span class="fn">pool</span>(<span class="kw">fn</span> (<span class="cls">Pool</span> <span class="var">$pool</span>) <span class="op">=&gt;</span> [
+    <span class="var">$pool</span><span class="op">-&gt;</span><span class="fn">get</span>(<span class="str">'https://api.site1.com/data'</span>),
+    <span class="var">$pool</span><span class="op">-&gt;</span><span class="fn">get</span>(<span class="str">'https://api.site2.com/data'</span>),
+])<span class="op">-&gt;</span><span class="fn">concurrency</span>(<span class="num">2</span>)<span class="op">-&gt;</span><span class="fn">send</span>();</pre>
+
+      <h2>12.4 Starter Kits Baru</h2>
+      <p>Laravel 12 memperkenalkan starter kit baru yang lebih modern, menggantikan Breeze/Jetstream:</p>
+      <ul>
+        <li><strong>React Starter Kit</strong> — Menggunakan Inertia.js + React 19 + TypeScript + Tailwind CSS 4</li>
+        <li><strong>Vue Starter Kit</strong> — Menggunakan Inertia.js + Vue 3 + TypeScript + Tailwind CSS 4</li>
+        <li><strong>Livewire Starter Kit</strong> — Menggunakan Livewire 3 + Volt + Flux UI + Tailwind CSS 4</li>
+      </ul>
+      <pre><span class="code-label">Terminal — Install Starter Kit</span>
+<span class="cm"># Membuat project Laravel 12 dengan React starter kit</span>
+laravel new my-app --using=react
+
+<span class="cm"># Membuat project dengan Vue starter kit</span>
+laravel new my-app --using=vue
+
+<span class="cm"># Membuat project dengan Livewire starter kit</span>
+laravel new my-app --using=livewire</pre>
+
+      <h2>12.5 Simplified Directory Structure</h2>
+      <p>Laravel 12 menyederhanakan struktur folder bawaan. Beberapa folder yang sebelumnya ada kini dihilangkan karena jarang digunakan di project standar:</p>
+      <ul>
+        <li><code>app/Providers/</code> — Dihilangkan, semua service provider terdaftar otomatis melalui auto-discovery</li>
+        <li><code>app/Console/</code> — Commands didaftarkan langsung di <code>routes/console.php</code></li>
+        <li><code>app/Exceptions/</code> — Exception handler terintegrasi di <code>bootstrap/app.php</code></li>
+      </ul>
+
+      <h2>12.6 PHP 8.2+ Requirement & Fitur Baru</h2>
+      <p>Laravel 12 mewajibkan PHP versi 8.2 atau lebih tinggi, membuka akses ke fitur PHP modern:</p>
+      <ul>
+        <li><strong>Readonly Classes</strong> — Seluruh properti kelas otomatis readonly</li>
+        <li><strong>Fibers</strong> — Pengelolaan concurrency di level bahasa PHP</li>
+        <li><strong>Enums</strong> — Tipe data enum native untuk menggantikan konstanta</li>
+        <li><strong>Named Arguments</strong> — Parameter fungsi bisa dipanggil berdasarkan nama</li>
+      </ul>
+      <pre><span class="code-label">Contoh Enum di Laravel 12</span>
+<span class="kw">enum</span> <span class="cls">EventStatus</span><span class="op">:</span> <span class="kw">string</span> {
+    <span class="kw">case</span> <span class="var">Draft</span> <span class="op">=</span> <span class="str">'draft'</span>;
+    <span class="kw">case</span> <span class="var">Published</span> <span class="op">=</span> <span class="str">'published'</span>;
+    <span class="kw">case</span> <span class="var">Archived</span> <span class="op">=</span> <span class="str">'archived'</span>;
+}</pre>
+
+      <h2>12.7 Improved Artisan Commands</h2>
+      <p>Artisan di Laravel 12 mendukung pembuatan resource lengkap dalam satu perintah:</p>
+      <pre><span class="code-label">Terminal</span>
+<span class="cm"># Buat Model + Migration + Factory + Seeder + Controller sekaligus</span>
+php artisan make:model Partner -mfsc
+
+<span class="cm"># -m = migration, -f = factory, -s = seeder, -c = controller</span></pre>
+
+      <h2>12.8 Health Check Endpoint</h2>
+      <p>Laravel 12 menyediakan endpoint kesehatan bawaan yang berguna untuk monitoring server:</p>
+      <pre><span class="code-label">bootstrap/app.php</span>
+<span class="kw">return</span> <span class="cls">Application</span><span class="op">::</span><span class="fn">configure</span>(basePath: <span class="fn">dirname</span>(<span class="kw">__DIR__</span>))
+    <span class="op">-&gt;</span><span class="fn">withRouting</span>(
+        web: <span class="kw">__DIR__</span><span class="op">.</span><span class="str">'/../routes/web.php'</span>,
+        health: <span class="str">'/up'</span>,    <span class="cm"># Endpoint: GET /up → Status 200 OK</span>
+    )<span class="op">-&gt;</span><span class="fn">create</span>();</pre>
+
+      <h2>12.9 Kuis Bab 12</h2>
+      <div class="quiz-interactive" data-quiz-id="q12">
+        <div class="quiz-q">1. Apa kegunaan utama dari metode <code>Concurrency::run()</code> yang diperkenalkan di Laravel 12?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q12" value="a"> Menjalankan beberapa tugas secara paralel untuk mempercepat eksekusi</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q12" value="b"> Untuk membatasi memori RAM Laravel</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q12" value="c"> Untuk menggabungkan dua tabel database</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q12" value="d"> Menghapus cache rute aplikasi</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="10"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 11 — Seeder</span></button>
+        <button class="nav-btn next" data-target="12"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 13 — Fitur Partner</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 13: STEP-BY-STEP FITUR PARTNER ===================== -->
+    <section class="chapter" id="chapter-13">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 13</div>
+        <h1 class="chapter-title">Step-by-Step Membuat Fitur Partner (CRUD)</h1>
+        <p class="chapter-desc">Panduan lengkap membangun fitur manajemen Partner & Sponsor dari nol: migration, model, route, controller, dan view admin.</p>
+      </div>
+
+      <div class="alert alert-important">
+        <div class="alert-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div>
+        <div class="alert-content">
+          <strong>Overview Fitur Partner:</strong> Fitur ini memungkinkan admin untuk menambah, mengedit, dan menghapus data partner/sponsor. Logo partner bisa diunggah sebagai file lokal <em>atau</em> disimpan sebagai URL eksternal. Data partner kemudian ditampilkan di halaman publik (welcome page).
+        </div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">1</span> Membuat Migration — Tabel Partners</div>
+        <p>Jalankan perintah Artisan untuk membuat file migration:</p>
+        <pre><span class="code-label">Terminal</span>
+php artisan make:migration create_partners_table</pre>
+        <p>Kemudian isi file migration dengan skema berikut:</p>
+        <pre><span class="code-label">database/migrations/2026_05_21_create_partners_table.php</span>
+<span class="kw">use</span> <span class="cls">Illuminate\Database\Migrations\Migration</span>;
+<span class="kw">use</span> <span class="cls">Illuminate\Database\Schema\Blueprint</span>;
+<span class="kw">use</span> <span class="cls">Illuminate\Support\Facades\Schema</span>;
+
+<span class="kw">return</span> <span class="kw">new</span> <span class="kw">class</span> <span class="kw">extends</span> <span class="cls">Migration</span> {
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fn">up</span>()<span class="op">:</span> <span class="kw">void</span> {
+        <span class="cls">Schema</span><span class="op">::</span><span class="fn">create</span>(<span class="str">'partners'</span>, <span class="kw">function</span> (<span class="cls">Blueprint</span> <span class="var">$table</span>) {
+            <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">id</span>();                     <span class="cm"># Primary Key auto-increment</span>
+            <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">string</span>(<span class="str">'name'</span>)<span class="op">-&gt;</span><span class="fn">index</span>();  <span class="cm"># Nama partner, di-index untuk search cepat</span>
+            <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">string</span>(<span class="str">'logo_url'</span>);        <span class="cm"># Path lokal ATAU URL internet logo</span>
+            <span class="var">$table</span><span class="op">-&gt;</span><span class="fn">timestamps</span>();              <span class="cm"># created_at & updated_at</span>
+        });
+    }
+
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fn">down</span>()<span class="op">:</span> <span class="kw">void</span> {
+        <span class="cls">Schema</span><span class="op">::</span><span class="fn">dropIfExists</span>(<span class="str">'partners'</span>);
+    }
+};</pre>
+        <div class="alert alert-tip" style="margin-top: 16px;">
+          <div class="alert-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .6 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
+          <div class="alert-content">
+            <strong>Kenapa tidak ada Foreign Key?</strong> Tabel <code>partners</code> berdiri sendiri tanpa relasi ke tabel lain. Partner hanyalah daftar logo & nama sponsor — tidak terhubung langsung ke tabel events atau categories.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">2</span> Membuat Model Partner</div>
+        <p>Buat model dengan properti <code>$fillable</code> untuk mass assignment:</p>
+        <pre><span class="code-label">app/Models/Partner.php</span>
+<span class="kw">&lt;?php</span>
+
+<span class="kw">namespace</span> <span class="cls">App\Models</span>;
+
+<span class="kw">use</span> <span class="cls">Illuminate\Database\Eloquent\Model</span>;
+
+<span class="kw">class</span> <span class="cls">Partner</span> <span class="kw">extends</span> <span class="cls">Model</span>
+{
+    <span class="kw">protected</span> <span class="var">$fillable</span> <span class="op">=</span> [<span class="str">'name'</span>, <span class="str">'logo_url'</span>];
+}</pre>
+        <p>Model ini sangat sederhana — hanya 2 kolom yang boleh diisi via mass assignment: <code>name</code> dan <code>logo_url</code>.</p>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">3</span> Mendaftarkan Route CRUD Partner</div>
+        <p>Tambahkan 6 route berikut di dalam group <code>admin</code>:</p>
+        <pre><span class="code-label">routes/web.php</span>
+<span class="kw">use</span> <span class="cls">App\Http\Controllers\Admin\PartnerController</span>;
+
+<span class="cls">Route</span><span class="op">::</span><span class="fn">prefix</span>(<span class="str">'admin'</span>)<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'admin.'</span>)<span class="op">-&gt;</span><span class="fn">group</span>(<span class="kw">function</span> () {
+    <span class="cm">// ... route kategori & event yang sudah ada ...</span>
+
+    <span class="cm">// Route Partner CRUD</span>
+    <span class="cls">Route</span><span class="op">::</span><span class="fn">get</span>(<span class="str">'/partners'</span>, [<span class="cls">PartnerController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'index'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'partners'</span>);
+    <span class="cls">Route</span><span class="op">::</span><span class="fn">get</span>(<span class="str">'/partners/create'</span>, [<span class="cls">PartnerController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'create'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'partners.create'</span>);
+    <span class="cls">Route</span><span class="op">::</span><span class="fn">post</span>(<span class="str">'/partners'</span>, [<span class="cls">PartnerController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'store'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'partners.store'</span>);
+    <span class="cls">Route</span><span class="op">::</span><span class="fn">get</span>(<span class="str">'/partners/{partner}/edit'</span>, [<span class="cls">PartnerController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'edit'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'partners.edit'</span>);
+    <span class="cls">Route</span><span class="op">::</span><span class="fn">put</span>(<span class="str">'/partners/{partner}'</span>, [<span class="cls">PartnerController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'update'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'partners.update'</span>);
+    <span class="cls">Route</span><span class="op">::</span><span class="fn">delete</span>(<span class="str">'/partners/{partner}'</span>, [<span class="cls">PartnerController</span><span class="op">::</span><span class="kw">class</span>, <span class="str">'destroy'</span>])<span class="op">-&gt;</span><span class="fn">name</span>(<span class="str">'partners.destroy'</span>);
+});</pre>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">4</span> Membuat PartnerController (Lengkap)</div>
+        <p>Controller ini menangani seluruh operasi CRUD partner, termasuk <strong>dual-mode upload</strong> (file lokal + URL eksternal) dan cleanup file saat update/delete:</p>
+        <pre><span class="code-label">app/Http/Controllers/Admin/PartnerController.php</span>
+<span class="kw">namespace</span> <span class="cls">App\Http\Controllers\Admin</span>;
+
+<span class="kw">use</span> <span class="cls">App\Http\Controllers\Controller</span>;
+<span class="kw">use</span> <span class="cls">App\Models\Partner</span>;
+<span class="kw">use</span> <span class="cls">Illuminate\Http\Request</span>;
+<span class="kw">use</span> <span class="cls">Illuminate\Support\Facades\DB</span>;
+<span class="kw">use</span> <span class="cls">Illuminate\Support\Facades\File</span>;
+
+<span class="kw">class</span> <span class="cls">PartnerController</span> <span class="kw">extends</span> <span class="cls">Controller</span> {
+
+    <span class="cm">// Tampilkan daftar partner + fitur search</span>
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fn">index</span>(<span class="cls">Request</span> <span class="var">$request</span>) {
+        <span class="var">$query</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">input</span>(<span class="str">'search'</span>);
+        <span class="var">$operator</span> <span class="op">=</span> <span class="cls">DB</span><span class="op">::</span><span class="fn">connection</span>()<span class="op">-&gt;</span><span class="fn">getDriverName</span>() <span class="op">===</span> <span class="str">'pgsql'</span> ? <span class="str">'ilike'</span> : <span class="str">'like'</span>;
+        <span class="var">$partners</span> <span class="op">=</span> <span class="cls">Partner</span><span class="op">::</span><span class="fn">when</span>(<span class="var">$query</span>, <span class="kw">function</span>(<span class="var">$q</span>) <span class="kw">use</span> (<span class="var">$query</span>, <span class="var">$operator</span>) {
+            <span class="kw">return</span> <span class="var">$q</span><span class="op">-&gt;</span><span class="fn">where</span>(<span class="str">'name'</span>, <span class="var">$operator</span>, <span class="str">'%'</span> <span class="op">.</span> <span class="var">$query</span> <span class="op">.</span> <span class="str">'%'</span>);
+        })<span class="op">-&gt;</span><span class="fn">latest</span>()<span class="op">-&gt;</span><span class="fn">get</span>();
+        <span class="kw">return</span> <span class="fn">view</span>(<span class="str">'admin.partners.index'</span>, <span class="fn">compact</span>(<span class="str">'partners'</span>));
+    }
+
+    <span class="cm">// Form tambah partner baru</span>
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fn">create</span>() {
+        <span class="kw">return</span> <span class="fn">view</span>(<span class="str">'admin.partners.create'</span>);
+    }
+
+    <span class="cm">// Proses simpan partner baru (dual-mode: file ATAU url)</span>
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fn">store</span>(<span class="cls">Request</span> <span class="var">$request</span>) {
+        <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">validate</span>([
+            <span class="str">'name'</span>     <span class="op">=&gt;</span> <span class="str">'required|string|max:255'</span>,
+            <span class="str">'logo'</span>     <span class="op">=&gt;</span> <span class="str">'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048'</span>,
+            <span class="str">'logo_url'</span> <span class="op">=&gt;</span> <span class="str">'nullable|url|max:2048'</span>,
+        ]);
+
+        <span class="cm">// Minimal salah satu harus diisi</span>
+        <span class="kw">if</span> (!<span class="var">$request</span><span class="op">-&gt;</span><span class="fn">hasFile</span>(<span class="str">'logo'</span>) &amp;&amp; !<span class="var">$request</span><span class="op">-&gt;</span><span class="fn">filled</span>(<span class="str">'logo_url'</span>)) {
+            <span class="kw">return</span> <span class="fn">back</span>()<span class="op">-&gt;</span><span class="fn">withErrors</span>([<span class="str">'logo'</span> <span class="op">=&gt;</span> <span class="str">'Harap unggah logo atau masukkan URL.'</span>]);
+        }
+
+        <span class="var">$logoUrl</span> <span class="op">=</span> <span class="str">''</span>;
+        <span class="kw">if</span> (<span class="var">$request</span><span class="op">-&gt;</span><span class="fn">hasFile</span>(<span class="str">'logo'</span>)) {
+            <span class="var">$file</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">file</span>(<span class="str">'logo'</span>);
+            <span class="var">$fileName</span> <span class="op">=</span> <span class="fn">time</span>() <span class="op">.</span> <span class="str">'_'</span> <span class="op">.</span> <span class="fn">uniqid</span>() <span class="op">.</span> <span class="str">'.'</span> <span class="op">.</span> <span class="var">$file</span><span class="op">-&gt;</span><span class="fn">getClientOriginalExtension</span>();
+            <span class="var">$file</span><span class="op">-&gt;</span><span class="fn">move</span>(<span class="fn">public_path</span>(<span class="str">'uploads/partners'</span>), <span class="var">$fileName</span>);
+            <span class="var">$logoUrl</span> <span class="op">=</span> <span class="str">'uploads/partners/'</span> <span class="op">.</span> <span class="var">$fileName</span>;
+        } <span class="kw">else</span> {
+            <span class="var">$logoUrl</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span>logo_url;
+        }
+
+        <span class="cls">Partner</span><span class="op">::</span><span class="fn">create</span>([<span class="str">'name'</span> <span class="op">=&gt;</span> <span class="var">$request</span><span class="op">-&gt;</span>name, <span class="str">'logo_url'</span> <span class="op">=&gt;</span> <span class="var">$logoUrl</span>]);
+        <span class="kw">return</span> <span class="fn">redirect</span>()<span class="op">-&gt;</span><span class="fn">route</span>(<span class="str">'admin.partners'</span>)<span class="op">-&gt;</span><span class="fn">with</span>(<span class="str">'success'</span>, <span class="str">'Partner berhasil ditambahkan.'</span>);
+    }
+
+    <span class="cm">// Hapus partner + cleanup file lokal</span>
+    <span class="kw">public</span> <span class="kw">function</span> <span class="fn">destroy</span>(<span class="cls">Partner</span> <span class="var">$partner</span>) {
+        <span class="kw">if</span> (<span class="var">$partner</span><span class="op">-&gt;</span>logo_url &amp;&amp; !<span class="fn">str_starts_with</span>(<span class="var">$partner</span><span class="op">-&gt;</span>logo_url, <span class="str">'http'</span>)
+            &amp;&amp; <span class="cls">File</span><span class="op">::</span><span class="fn">exists</span>(<span class="fn">public_path</span>(<span class="var">$partner</span><span class="op">-&gt;</span>logo_url))) {
+            <span class="cls">File</span><span class="op">::</span><span class="fn">delete</span>(<span class="fn">public_path</span>(<span class="var">$partner</span><span class="op">-&gt;</span>logo_url));
+        }
+        <span class="var">$partner</span><span class="op">-&gt;</span><span class="fn">delete</span>();
+        <span class="kw">return</span> <span class="fn">redirect</span>()<span class="op">-&gt;</span><span class="fn">route</span>(<span class="str">'admin.partners'</span>)<span class="op">-&gt;</span><span class="fn">with</span>(<span class="str">'success'</span>, <span class="str">'Partner dihapus.'</span>);
+    }
+}</pre>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">5</span> Membuat View Admin — Form Tambah Partner</div>
+        <p>Form ini mendukung dua opsi input logo: upload file dan input URL. Perhatikan atribut <code>enctype="multipart/form-data"</code> yang <strong>wajib</strong> ada untuk form yang mengunggah file:</p>
+        <pre><span class="code-label">resources/views/admin/partners/create.blade.php</span>
+<span class="blade">@extends</span>('layouts.admin.admin')
+<span class="blade">@section</span>('content')
+
+<span class="tag">&lt;form</span> <span class="atn">action</span>=<span class="atv">"{{ route('admin.partners.store') }}"</span>
+      <span class="atn">method</span>=<span class="atv">"POST"</span>
+      <span class="atn">enctype</span>=<span class="atv">"multipart/form-data"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- WAJIB untuk upload file! --&gt;</span>
+    <span class="blade">@csrf</span>
+
+    <span class="cm">&lt;!-- Input Nama Partner --&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atn">type</span>=<span class="atv">"text"</span> <span class="atn">name</span>=<span class="atv">"name"</span> <span class="atn">placeholder</span>=<span class="atv">"Nama Partner"</span> <span class="atn">required</span><span class="tag">&gt;</span>
+
+    <span class="cm">&lt;!-- Opsi A: Upload File Logo --&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atn">type</span>=<span class="atv">"file"</span> <span class="atn">name</span>=<span class="atv">"logo"</span> <span class="atn">accept</span>=<span class="atv">"image/*"</span><span class="tag">&gt;</span>
+
+    <span class="cm">&lt;!-- Opsi B: Input URL Logo --&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atn">type</span>=<span class="atv">"url"</span> <span class="atn">name</span>=<span class="atv">"logo_url"</span> <span class="atn">placeholder</span>=<span class="atv">"https://contoh.com/logo.png"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;button</span> <span class="atn">type</span>=<span class="atv">"submit"</span><span class="tag">&gt;</span>Simpan Partner<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span>
+
+<span class="blade">@endsection</span></pre>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">6</span> View Admin — Form Edit Partner</div>
+        <p>Form edit menggunakan <code>@method('PUT')</code> untuk method spoofing, dan menampilkan logo saat ini:</p>
+        <pre><span class="code-label">resources/views/admin/partners/edit.blade.php</span>
+<span class="tag">&lt;form</span> <span class="atn">action</span>=<span class="atv">"{{ route('admin.partners.update', $partner-&gt;id) }}"</span>
+      <span class="atn">method</span>=<span class="atv">"POST"</span> <span class="atn">enctype</span>=<span class="atv">"multipart/form-data"</span><span class="tag">&gt;</span>
+    <span class="blade">@csrf</span>
+    <span class="blade">@method</span>('PUT')       <span class="cm">&lt;!-- Mengubah POST → PUT --&gt;</span>
+
+    <span class="tag">&lt;input</span> <span class="atn">type</span>=<span class="atv">"text"</span> <span class="atn">name</span>=<span class="atv">"name"</span> <span class="atn">value</span>=<span class="atv">"{{ old('name', $partner-&gt;name) }}"</span><span class="tag">&gt;</span>
+
+    <span class="cm">&lt;!-- Preview logo saat ini --&gt;</span>
+    <span class="tag">&lt;img</span> <span class="atn">src</span>=<span class="atv">"{{ Str::startsWith($partner-&gt;logo_url, 'http')
+             ? $partner-&gt;logo_url : asset($partner-&gt;logo_url) }}"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;input</span> <span class="atn">type</span>=<span class="atv">"file"</span> <span class="atn">name</span>=<span class="atv">"logo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;input</span> <span class="atn">type</span>=<span class="atv">"url"</span> <span class="atn">name</span>=<span class="atv">"logo_url"</span> <span class="atn">value</span>=<span class="atv">"{{ old('logo_url') }}"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;button</span> <span class="atn">type</span>=<span class="atv">"submit"</span><span class="tag">&gt;</span>Perbarui Partner<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span></pre>
+      </div>
+
+      <h2>13.7 Kuis Bab 13</h2>
+      <div class="quiz-interactive" data-quiz-id="q13">
+        <div class="quiz-q">1. Mengapa atribut <code>enctype="multipart/form-data"</code> wajib ditambahkan pada tag form yang mengunggah file?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q13a" value="a"> Untuk mempercepat proses upload</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q13a" value="b"> Agar browser mengirimkan data file dalam format binary yang bisa dibaca oleh server PHP</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q13a" value="c"> Untuk mengaktifkan validasi CSRF</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q13a" value="d"> Untuk mengkompresi ukuran file sebelum dikirim</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="quiz-interactive" data-quiz-id="q13b">
+        <div class="quiz-q">2. Pada method <code>destroy()</code>, mengapa kita mengecek <code>!str_starts_with($partner->logo_url, 'http')</code> sebelum menghapus file?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q13b" value="a"> Karena URL http tidak bisa dihapus dari server kita (file ada di internet, bukan server lokal)</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q13b" value="b"> Untuk mengecek apakah file berformat gambar</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q13b" value="c"> Karena PHP tidak mendukung penghapusan file</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q13b" value="d"> Untuk memeriksa ukuran file</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="11"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 12 — Laravel 12</span></button>
+        <button class="nav-btn next" data-target="13"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 14 — Render Partner</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 14: RENDER PARTNER PUBLIK ===================== -->
+    <section class="chapter" id="chapter-14">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 14</div>
+        <h1 class="chapter-title">Rendering Partner di Halaman Publik</h1>
+        <p class="chapter-desc">Menjelaskan bagaimana data partner ditampilkan di halaman depan (welcome page) dengan efek visual dinamis.</p>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">1</span> Mengambil Data Partner di HomeController</div>
+        <p>Data partner diambil di <code>HomeController</code> lalu dikirim ke view <code>welcome</code>:</p>
+        <pre><span class="code-label">app/Http/Controllers/HomeController.php</span>
+<span class="kw">use</span> <span class="cls">App\Models\Partner</span>;
+
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">index</span>() {
+    <span class="var">$events</span> <span class="op">=</span> <span class="cls">Event</span><span class="op">::</span><span class="fn">with</span>(<span class="str">'category'</span>)<span class="op">-&gt;</span><span class="fn">get</span>();
+    <span class="var">$partners</span> <span class="op">=</span> <span class="cls">Partner</span><span class="op">::</span><span class="fn">latest</span>()<span class="op">-&gt;</span><span class="fn">get</span>();   <span class="cm"># Ambil semua partner, urutkan terbaru</span>
+
+    <span class="kw">return</span> <span class="fn">view</span>(<span class="str">'welcome'</span>, <span class="fn">compact</span>(<span class="str">'events'</span>, <span class="str">'partners'</span>));
+}</pre>
+        <p>Fungsi <code>compact('events', 'partners')</code> akan membuat array asosiatif: <code>['events' => $events, 'partners' => $partners]</code> yang tersedia sebagai variabel di Blade.</p>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">2</span> Rendering Logo Partner dengan Conditional Source</div>
+        <p>Karena logo bisa berasal dari URL internet <em>atau</em> file lokal, kita perlu mengecek tipe sumbernya:</p>
+        <pre><span class="code-label">resources/views/welcome.blade.php</span>
+<span class="cm">&lt;!-- Partners Section --&gt;</span>
+<span class="tag">&lt;section</span> <span class="atn">class</span>=<span class="atv">"max-w-7xl mx-auto px-6 py-20"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>Partner & Sponsor Kami<span class="tag">&lt;/h2&gt;</span>
+
+  <span class="tag">&lt;div</span> <span class="atn">class</span>=<span class="atv">"grid grid-cols-2 md:grid-cols-4 gap-8"</span><span class="tag">&gt;</span>
+    <span class="blade">@foreach</span>(<span class="var">$partners</span> as <span class="var">$partner</span>)
+    <span class="tag">&lt;div</span> <span class="atn">class</span>=<span class="atv">"group flex flex-col items-center p-6"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;img</span>
+        <span class="atn">src</span>=<span class="atv">"{{ Str::startsWith($partner-&gt;logo_url, 'http')
+               ? $partner-&gt;logo_url           </span><span class="cm">&lt;!-- URL internet → gunakan langsung --&gt;</span><span class="atv">
+               : asset($partner-&gt;logo_url) }}"</span> <span class="cm">&lt;!-- File lokal → bungkus dengan asset() --&gt;</span>
+        <span class="atn">alt</span>=<span class="atv">"{{ $partner-&gt;name }}"</span>
+        <span class="atn">class</span>=<span class="atv">"grayscale group-hover:grayscale-0 transition"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;span&gt;</span><span class="blade">{{</span> <span class="var">$partner</span>-&gt;name <span class="blade">}}</span><span class="tag">&lt;/span&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="blade">@endforeach</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/section&gt;</span></pre>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">3</span> Teknik Grayscale-to-Color Hover</div>
+        <p>Class Tailwind CSS <code>grayscale</code> membuat logo tampil abu-abu secara default. Saat user menghover card parent (<code>group</code>), class <code>group-hover:grayscale-0</code> mengembalikan warna asli logo secara dinamis:</p>
+        <pre><span class="code-label">Penjelasan CSS Utility</span>
+<span class="cm">/* grayscale       → CSS filter: grayscale(100%) */</span>
+<span class="cm">/* grayscale-0     → CSS filter: grayscale(0%)   */</span>
+<span class="cm">/* group           → Parent container untuk group-hover */</span>
+<span class="cm">/* group-hover:*   → Aktif saat parent ".group" di-hover */</span>
+<span class="cm">/* transition      → Animasi halus antar state */</span></pre>
+        <p>Teknik ini menciptakan efek visual elegan: logo partner tampil hitam-putih saat idle, dan berwarna saat disorot — membuat halaman terlihat lebih bersih dan profesional.</p>
+      </div>
+
+      <h2>14.4 Kuis Bab 14</h2>
+      <div class="quiz-interactive" data-quiz-id="q14">
+        <div class="quiz-q">1. Apa fungsi dari helper <code>asset()</code> saat digunakan pada path logo lokal partner?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q14" value="a"> Mengenkripsi path gambar untuk keamanan</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q14" value="b"> Menghasilkan URL lengkap yang mengarah ke folder public/ project Laravel</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q14" value="c"> Mengunduh gambar dari server CDN</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q14" value="d"> Mengompres gambar menjadi format WebP</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="quiz-interactive" data-quiz-id="q14b">
+        <div class="quiz-q">2. Mengapa class CSS <code>group</code> harus ditaruh di elemen parent, bukan di elemen <code>&lt;img&gt;</code> langsung?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q14b" value="a"> Karena group-hover bekerja dengan mendeteksi hover pada parent, lalu menerapkan style pada child elements</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q14b" value="b"> Karena img tidak bisa memiliki class CSS</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q14b" value="c"> Karena group menambahkan animasi otomatis</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q14b" value="d"> Karena Tailwind tidak mendukung hover pada gambar</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="12"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 13 — Fitur Partner</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== SANDBOX: MVC SIMULATOR ===================== -->
+    <section class="chapter" id="tool-mvc-simulator">
+      <div class="chapter-header">
+        <div class="chapter-num">Sandbox</div>
+        <h1 class="chapter-title">Interactive MVC Flow Simulator</h1>
+        <p class="chapter-desc">Jalankan request dan amati alur kerja data secara visual dalam Laravel 12.</p>
+      </div>
+      <div class="card">
+        <h3 class="mt-0">Pilih Simulasi Request:</h3>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+          <button class="sim-sandbox-btn" data-sim="get-home">GET / (Homepage)</button>
+          <button class="sim-sandbox-btn" data-sim="get-detail">GET /event-detail/jazz-night</button>
+          <button class="sim-sandbox-btn" data-sim="post-partner">POST /admin/partners (Tambah Partner)</button>
+        </div>
+        <div class="flow-visualizer" style="border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;">
+          <div style="padding: 10px 16px; background-color: var(--bg-sidebar); border-bottom: 1px solid var(--border); font-weight: 700; font-size: 11px; display: flex; justify-content: space-between; text-transform: uppercase; letter-spacing: 0.5px;">
+            <span>Visualisasi Pipeline Alur Data</span>
+            <span id="visualizer-status" class="text-accent">Standby</span>
+          </div>
+          <div id="visualizer-steps" style="padding: 20px; min-height: 240px; display: flex; flex-direction: column; gap: 12px;">
+            <div class="text-muted" style="text-align: center; padding-top: 80px;">Klik salah satu tombol request di atas untuk melihat visualisasi langkah demi langkah.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SANDBOX: ROUTE MATCHER ===================== -->
+    <section class="chapter" id="tool-route-matcher">
+      <div class="chapter-header">
+        <div class="chapter-num">Sandbox</div>
+        <h1 class="chapter-title">Live Route Matcher</h1>
+        <p class="chapter-desc">Uji pencocokan URL dan rute dengan controller serta model parameters secara instan.</p>
+      </div>
+      <div class="card">
+        <h3 class="mt-0">Masukkan URI Uji Coba:</h3>
+        <p class="text-sm text-muted">Ketikkan path URL untuk dicocokkan dengan skema rute Amikom Event Hub:</p>
+        <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+          <input type="text" id="sandbox-route-input" placeholder="Contoh: /admin/partners atau /event-detail/cyber-security" style="flex: 1; padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--bg-main); color: var(--text-heading); font-family: var(--font-mono); outline: none;">
+          <button id="sandbox-route-btn" class="sim-btn">Cocokkan!</button>
+        </div>
+        <div id="sandbox-route-result-box" style="display: none; padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); background-color: var(--bg-sidebar);">
+          <div style="font-weight: 700; font-size: 14px; margin-bottom: 10px;" id="matcher-result-status">Rute Cocok!</div>
+          <table style="margin-bottom: 0;">
+            <tr><td style="width: 140px; font-weight: 600; border: none; padding: 4px 0;">Method Rute</td><td style="border: none; padding: 4px 0;" id="route-res-method">-</td></tr>
+            <tr><td style="font-weight: 600; border: none; padding: 4px 0;">Controller Target</td><td style="border: none; padding: 4px 0;" id="route-res-controller">-</td></tr>
+            <tr><td style="font-weight: 600; border: none; padding: 4px 0;">Nama Rute (Name)</td><td style="border: none; padding: 4px 0; font-family: var(--font-mono); color: var(--accent);" id="route-res-name">-</td></tr>
+            <tr><td style="font-weight: 600; border: none; padding: 4px 0;">Parameter Model</td><td style="border: none; padding: 4px 0;" id="route-res-param">-</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SANDBOX: ARTISAN TERMINAL ===================== -->
+    <section class="chapter" id="tool-artisan-terminal">
+      <div class="chapter-header">
+        <div class="chapter-num">Sandbox</div>
+        <h1 class="chapter-title">Artisan CLI Runner (Terminal Simulator)</h1>
+        <p class="chapter-desc">Klik perintah Artisan Laravel 12 untuk melihat simulasi output konsol secara offline.</p>
+      </div>
+      <div class="card" style="padding: 0; background-color: #0d1117; border-color: #21262d; overflow: hidden;">
+        <div style="background-color: #161b22; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #21262d;">
+          <div style="display: flex; gap: 6px;">
+            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #ff5f56; display: inline-block;"></span>
+            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #ffbd2e; display: inline-block;"></span>
+            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #27c93f; display: inline-block;"></span>
+          </div>
+          <span style="color: #6e7681; font-size: 11px; font-family: var(--font-mono);">bash — azfa@amikom-eventhub</span>
+        </div>
+        <div id="terminal-body" style="padding: 20px; min-height: 240px; font-family: var(--font-mono); font-size: 13px; color: #c9d1d9; overflow-y: auto; line-height: 1.6;">
+          <div>azfa@amikom-eventhub:~$ <span style="color: #6e7681;">Klik salah satu perintah di bawah...</span></div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 14px;">
+        <button class="terminal-cmd-btn" data-cmd="migrate">php artisan migrate</button>
+        <button class="terminal-cmd-btn" data-cmd="fresh">php artisan migrate:fresh --seed</button>
+        <button class="terminal-cmd-btn" data-cmd="routes">php artisan route:list</button>
+        <button class="terminal-cmd-btn" data-cmd="key">php artisan key:generate</button>
+        <button class="terminal-cmd-btn" data-cmd="make-partner">php artisan make:model Partner -mfsc</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
