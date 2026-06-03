@@ -637,7 +637,38 @@ composer install</pre>
     })<span class="op">-&gt;</span><span class="fn">latest</span>()<span class="op">-&gt;</span><span class="fn">get</span>();
 }</pre>
 
-      <h2>9.2 Kuis Bab 9</h2>
+      <h2>9.2 Optimasi Input Pencarian dengan Debounce (JavaScript di Blade)</h2>
+      <p>Ketika membuat fitur pencarian secara <em>real-time</em> (pencarian berjalan otomatis ketika user mengetik), kita harus menghindari pengiriman request ke server pada setiap ketukan tombol (<em>keystroke</em>). Hal ini karena jika user mengetik 10 karakter dengan cepat, browser akan mengirimkan 10 request berturut-turut, yang dapat membebani database.</p>
+      <p>Untuk mengatasi masalah ini, kita menerapkan teknik <strong>Debounce</strong>. Debounce menunda eksekusi submit form pencarian hingga user selesai mengetik selama kurun waktu tertentu (misalnya 500 milidetik). Berikut adalah implementasi riil yang digunakan pada halaman admin events:</p>
+      <pre><span class="code-label">resources/views/admin/events.blade.php</span>
+<span class="kw">let</span> <span class="var">searchTimeout</span> <span class="op">=</span> <span class="kw">null</span>;
+<span class="kw">const</span> <span class="var">searchInput</span> <span class="op">=</span> <span class="cls">document</span><span class="op">.</span><span class="fn">getElementById</span>(<span class="str">'search-input'</span>);
+<span class="kw">const</span> <span class="var">searchForm</span> <span class="op">=</span> <span class="cls">document</span><span class="op">.</span><span class="fn">getElementById</span>(<span class="str">'search-form'</span>);
+
+<span class="kw">if</span> (<span class="var">searchInput</span> <span class="op">&&</span> <span class="var">searchForm</span>) {
+    <span class="var">searchInput</span><span class="op">.</span><span class="fn">addEventListener</span>(<span class="str">'input'</span>, <span class="kw">function</span>() {
+        <span class="fn">clearTimeout</span>(<span class="var">searchTimeout</span>);
+        <span class="var">searchTimeout</span> <span class="op">=</span> <span class="fn">setTimeout</span>(() <span class="op">=&gt;</span> {
+            <span class="var">searchForm</span><span class="op">.</span><span class="fn">submit</span>();
+        }, <span class="num">500</span>); <span class="cm">// Debounce 500ms</span>
+    });
+
+    <span class="cm">// Menjaga kursor tetap berada di akhir input saat reload</span>
+    <span class="kw">if</span> (<span class="var">searchInput</span><span class="op">.</span><span class="var">value</span>) {
+        <span class="kw">const</span> <span class="var">val</span> <span class="op">=</span> <span class="var">searchInput</span><span class="op">.</span><span class="var">value</span>;
+        <span class="var">searchInput</span><span class="op">.</span><span class="var">value</span> <span class="op">=</span> <span class="str">''</span>;
+        <span class="var">searchInput</span><span class="op">.</span><span class="fn">focus</span>();
+        <span class="var">searchInput</span><span class="op">.</span><span class="var">value</span> <span class="op">=</span> <span class="var">val</span>;
+    }
+}</pre>
+      <p><strong>Penjelasan Alur Logika:</strong></p>
+      <ul>
+        <li>Setiap kali ada input baru (ketukan keyboard), <code>clearTimeout(searchTimeout)</code> dipanggil untuk membatalkan rencana pengiriman form sebelumnya.</li>
+        <li>Sebuah timer baru diset menggunakan <code>setTimeout()</code> selama 500 milidetik. Jika user berhenti mengetik selama 500ms, fungsi callback berjalan dan memicu <code>searchForm.submit()</code> untuk memicu submit form pencarian ke database.</li>
+        <li>Trik <code>searchInput.value = ''</code> lalu memfokuskannya dan mengembalikan nilainya kembali digunakan agar kursor teks browser tetap dipaksa berada di karakter paling akhir setelah halaman direfresh/dirender ulang pasca pencarian.</li>
+      </ul>
+
+      <h2>9.3 Kuis Bab 9</h2>
       <div class="quiz-interactive" data-quiz-id="q9">
         <div class="quiz-q">1. Mengapa kode EventHub menggunakan operator <code>ilike</code> secara khusus untuk driver PostgreSQL?</div>
         <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
