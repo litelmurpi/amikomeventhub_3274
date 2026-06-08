@@ -3,310 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template Galeri Dokumentasi - Amikom EventHub</title>
+    <title>Template Galeri Foto - Amikom Event Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* CSS Reset & Variables */
-        :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --border: #e2e8f0;
-            --radius-lg: 20px;
-            --radius-md: 12px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.5;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Header Section */
-        header {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 8px;
-            letter-spacing: -0.025em;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        /* Gallery Grid Layout */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        /* Gallery Card Item */
-        .gallery-item {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            border-color: #cbd5e1;
-        }
-
-        /* Image Wrapper */
-        .image-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 66.67%; /* Aspect Ratio 3:2 */
-            overflow: hidden;
-            background-color: #f1f5f9;
-        }
-
-        .image-wrapper img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-cover: cover;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.08);
-        }
-
-        /* Card Content */
-        .gallery-content {
-            padding: 16px 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .gallery-content p {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            line-height: 1.4;
-        }
-
-        .gallery-date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        /* Lightbox Modal */
-        .lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(15, 23, 42, 0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 9999;
-            transition: opacity 0.3s ease;
-            padding: 20px;
-        }
-
-        .lightbox.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .lightbox-content {
-            max-width: 900px;
-            max-height: 75vh;
-            width: auto;
-            height: auto;
-            border-radius: var(--radius-md);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transform: scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .lightbox.active .lightbox-content {
-            transform: scale(1);
-        }
-
-        .lightbox-caption {
-            color: #ffffff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 20px;
-            text-align: center;
-            max-width: 800px;
-            line-height: 1.5;
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #ffffff;
-            font-size: 24px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .lightbox-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(90deg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
 
-    <div class="container">
-        <!-- Header -->
-        <header>
-            <h1>Galeri Amikom EventHub</h1>
-            <p>Dokumentasi keseruan dan kenangan dari berbagai event yang telah diselenggarakan</p>
-        </header>
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-6 pt-16 pb-8 text-center">
+        <span class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+            Dokumentasi Event
+        </span>
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+            Galeri <span class="text-indigo-600">Amikom Event Hub</span>
+        </h1>
+        <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            Kumpulan momen-momen terbaik dan dokumentasi keseruan event yang telah diselenggarakan oleh Universitas Amikom Yogyakarta.
+        </p>
+    </section>
 
-        <!-- Gallery Grid -->
-        <div class="gallery-grid">
+    <!-- Gallery Grid Section -->
+    <section class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Grid Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             
-            <!-- Item 1 -->
-            <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80', 'Keseruan kompetisi Web Design & Cyber Security di Kampus Amikom Yogyakarta')">
-                <div class="image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Web Design Competition">
+            <!-- Static Card 1 -->
+            <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80', 'Keseruan kompetisi Web Design & Cyber Security di Kampus Amikom Yogyakarta')">
+                <div class="relative overflow-hidden aspect-[4/3] bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Web Design Competition" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                        <span class="px-3 py-1.5 bg-white/20 backdrop-blur text-white text-xs font-bold rounded-lg uppercase tracking-wide">
+                            Lihat Detail
+                        </span>
+                    </div>
                 </div>
-                <div class="gallery-content">
-                    <p>Keseruan kompetisi Web Design & Cyber Security di Kampus Amikom Yogyakarta</p>
-                    <span class="gallery-date">08 Jun 2026</span>
-                </div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80', 'Seminar Nasional Industri Digital Kreatif bersama pembicara Gojek & Google')">
-                <div class="image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80" alt="Seminar Nasional">
-                </div>
-                <div class="gallery-content">
-                    <p>Seminar Nasional Industri Digital Kreatif bersama pembicara Gojek & Google</p>
-                    <span class="gallery-date">07 Jun 2026</span>
+                <div class="p-6">
+                    <p class="font-bold text-slate-800 line-clamp-2 leading-relaxed hover:text-indigo-600 transition-colors duration-300">Keseruan kompetisi Web Design & Cyber Security di Kampus Amikom Yogyakarta</p>
+                    <span class="text-slate-400 text-xs font-semibold block mt-3 uppercase tracking-wider">
+                        08 Jun 2026
+                    </span>
                 </div>
             </div>
 
-            <!-- Item 3 -->
-            <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80', 'Workshop intensif UI/UX Design dan perancangan prototype interaktif dengan Flux UI')">
-                <div class="image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80" alt="UI/UX Workshop">
+            <!-- Static Card 2 -->
+            <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80', 'Seminar Nasional Industri Digital Kreatif bersama pembicara Gojek & Google')">
+                <div class="relative overflow-hidden aspect-[4/3] bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80" alt="Seminar Nasional" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                        <span class="px-3 py-1.5 bg-white/20 backdrop-blur text-white text-xs font-bold rounded-lg uppercase tracking-wide">
+                            Lihat Detail
+                        </span>
+                    </div>
                 </div>
-                <div class="gallery-content">
-                    <p>Workshop intensif UI/UX Design dan perancangan prototype interaktif dengan Flux UI</p>
-                    <span class="gallery-date">05 Jun 2026</span>
+                <div class="p-6">
+                    <p class="font-bold text-slate-800 line-clamp-2 leading-relaxed hover:text-indigo-600 transition-colors duration-300">Seminar Nasional Industri Digital Kreatif bersama pembicara Gojek & Google</p>
+                    <span class="text-slate-400 text-xs font-semibold block mt-3 uppercase tracking-wider">
+                        07 Jun 2026
+                    </span>
                 </div>
             </div>
 
-            <!-- Item 4 -->
-            <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=80', 'Konser Musik Jazz Night Amikom Festival di halaman auditorium utama')">
-                <div class="image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=80" alt="Jazz Night Concert">
+            <!-- Static Card 3 -->
+            <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80', 'Workshop intensif UI/UX Design dan perancangan prototype interaktif dengan Flux UI')">
+                <div class="relative overflow-hidden aspect-[4/3] bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80" alt="UI/UX Workshop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                        <span class="px-3 py-1.5 bg-white/20 backdrop-blur text-white text-xs font-bold rounded-lg uppercase tracking-wide">
+                            Lihat Detail
+                        </span>
+                    </div>
                 </div>
-                <div class="gallery-content">
-                    <p>Konser Musik Jazz Night Amikom Festival di halaman auditorium utama</p>
-                    <span class="gallery-date">01 Jun 2026</span>
+                <div class="p-6">
+                    <p class="font-bold text-slate-800 line-clamp-2 leading-relaxed hover:text-indigo-600 transition-colors duration-300">Workshop intensif UI/UX Design dan perancangan prototype interaktif dengan Flux UI</p>
+                    <span class="text-slate-400 text-xs font-semibold block mt-3 uppercase tracking-wider">
+                        05 Jun 2026
+                    </span>
+                </div>
+            </div>
+
+            <!-- Static Card 4 -->
+            <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=80', 'Konser Musik Jazz Night Amikom Festival di halaman auditorium utama')">
+                <div class="relative overflow-hidden aspect-[4/3] bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=80" alt="Jazz Night Concert" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                        <span class="px-3 py-1.5 bg-white/20 backdrop-blur text-white text-xs font-bold rounded-lg uppercase tracking-wide">
+                            Lihat Detail
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="font-bold text-slate-800 line-clamp-2 leading-relaxed hover:text-indigo-600 transition-colors duration-300">Konser Musik Jazz Night Amikom Festival di halaman auditorium utama</p>
+                    <span class="text-slate-400 text-xs font-semibold block mt-3 uppercase tracking-wider">
+                        01 Jun 2026
+                    </span>
                 </div>
             </div>
 
         </div>
-    </div>
 
-    <!-- Lightbox Modal Container -->
-    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
-        <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
-        <img id="lightbox-img" class="lightbox-content" src="" alt="">
-        <div id="lightbox-caption" class="lightbox-caption"></div>
+        <!-- Static Pagination Mockup -->
+        <div class="mt-16 flex justify-center gap-1.5">
+            <span class="px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold cursor-default select-none">1</span>
+            <a href="#" class="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl font-bold transition">2</a>
+            <a href="#" class="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl font-bold transition">
+                &raquo;
+            </a>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/70 hover:text-white transition-colors duration-300 p-2 rounded-full hover:bg-white/10">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <div class="max-w-5xl w-full flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+            <div class="relative bg-black rounded-2xl overflow-hidden max-h-[80vh] flex items-center justify-center">
+                <img id="lightbox-img" src="" alt="" class="max-h-[75vh] max-w-full object-contain">
+            </div>
+            <p id="lightbox-caption" class="text-white text-lg font-bold text-center mt-6 max-w-2xl leading-relaxed"></p>
+        </div>
     </div>
 
     <!-- Script Lightbox -->
     <script>
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxCaption = document.getElementById('lightbox-caption');
+        function openLightbox(imgUrl, caption) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
 
-        function openLightbox(imgUrl, captionText) {
             lightboxImg.src = imgUrl;
-            lightboxCaption.textContent = captionText;
-            lightbox.classList.add('active');
-            // Menghindari scroll pada halaman utama saat modal aktif
+            lightboxCaption.textContent = caption;
+
+            lightbox.classList.remove('hidden');
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+            }, 10);
             document.body.style.overflow = 'hidden';
         }
 
-        function closeLightbox(event) {
-            // Hanya tutup jika klik di area background hitam atau tombol close
-            if (event.target === lightbox || event.target.classList.contains('lightbox-close') || event.target.tagName === 'BUTTON') {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = '';
-                // Hapus sumber gambar setelah transisi selesai untuk performa memori
-                setTimeout(() => {
-                    if(!lightbox.classList.contains('active')) {
-                        lightboxImg.src = '';
-                    }
-                }, 300);
-            }
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
         }
 
-        // Tutup modal menggunakan tombol ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = '';
-                lightboxImg.src = '';
+        // Close on ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
             }
         });
     </script>
