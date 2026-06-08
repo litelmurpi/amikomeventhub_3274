@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const progressFill = document.getElementById('progress-fill');
   const progressText = document.getElementById('progress-text');
 
-  const TOTAL_CHAPTERS = 14;
+  const TOTAL_CHAPTERS = 15;
   let currentView = 'chapter-1';
   const completedSteps = new Set([0]);
 
@@ -233,7 +233,8 @@ document.addEventListener('DOMContentLoaded', function () {
     q13:  { correct: 'b', exp: 'Tepat! enctype="multipart/form-data" mengubah encoding agar browser mengirim data biner (file) ke server. Tanpa ini, file tidak akan terkirim.' },
     q13b: { correct: 'a', exp: 'Benar! URL yang berawalan http berarti file ada di internet/CDN luar, bukan di server kita. Kita hanya bisa menghapus file lokal yang ada di public/ folder.' },
     q14:  { correct: 'b', exp: 'Tepat! Helper asset() menghasilkan URL lengkap yang mengarah ke folder public/ project, misalnya http://localhost:8000/uploads/partners/logo.png.' },
-    q14b: { correct: 'a', exp: 'Benar! Class "group" di Tailwind CSS menandai elemen sebagai parent. Child elements bisa merespons hover parent via class group-hover:*, memungkinkan efek hover yang meluas ke seluruh card.' }
+    q14b: { correct: 'a', exp: 'Benar! Class "group" di Tailwind CSS menandai elemen sebagai parent. Child elements bisa merespons hover parent via class group-hover:*, memungkinkan efek hover yang meluas ke seluruh card.' },
+    q15:  { correct: 'b', exp: 'Tepat! Aturan max di Laravel untuk file dihitung dalam Kilobyte (KB). Jadi 2MB setara dengan 2048 KB.' }
   };
 
   document.querySelectorAll('.check-quiz-btn').forEach(btn => {

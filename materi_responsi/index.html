@@ -46,7 +46,7 @@
       <div class="logo-icon">AE</div>
       <div class="brand-info">
         <span class="brand-title">EventHub SDK</span>
-        <span class="brand-subtitle">14 Chapters</span>
+        <span class="brand-subtitle">15 Chapters</span>
       </div>
     </div>
 
@@ -55,7 +55,7 @@
       <div class="progress-bar">
         <div class="progress-fill" id="progress-fill"></div>
       </div>
-      <div class="progress-text" id="progress-text">0 / 14 bab dibaca</div>
+      <div class="progress-text" id="progress-text">0 / 15 bab dibaca</div>
     </div>
 
     <div class="sidebar-section">
@@ -115,6 +115,10 @@
       <button class="sidebar-link" data-chapter="13">
         <span class="link-num">14</span>
         <span>Render Partner di Publik</span>
+      </button>
+      <button class="sidebar-link" data-chapter="14">
+        <span class="link-num">15</span>
+        <span>Soal Latihan: Fitur Galeri</span>
       </button>
     </div>
 
@@ -581,24 +585,95 @@ composer install</pre>
       <div class="chapter-header">
         <div class="chapter-num">Bab 08</div>
         <h1 class="chapter-title">Siklus CRUD Kategori</h1>
-        <p class="chapter-desc">Menjelaskan proses Create, Read, Update, Delete pada modul Kategori, termasuk penghapusan file fisik.</p>
+        <p class="chapter-desc">Menjelaskan proses Create, Read, Update, Delete pada modul Kategori, termasuk validasi input, Route Model Binding, dan penghapusan file fisik terkait.</p>
       </div>
 
-      <h2>8.1 Method <code>destroy()</code> — Hapus Data</h2>
-      <p>Saat menghapus kategori, semua event yang terhubung akan ikut terhapus berkat aturan <code>cascadeOnDelete</code> pada migration. File poster juga wajib dihapus dari storage:</p>
+      <h2>8.1 Alur CRUD & Route Model Binding</h2>
+      <p>Siklus CRUD (Create, Read, Update, Delete) merupakan pilar utama aplikasi web. Pada modul Kategori di project <code>eventhub_3274</code>, siklus ini memadukan beberapa konsep Laravel modern:</p>
+      <ul>
+        <li><strong>Route Model Binding:</strong> Laravel secara otomatis menyuntikkan (inject) instance model ke dalam parameter Controller jika nama parameter di rute sama dengan parameter di fungsi (contoh: <code>{category}</code> akan di-bind menjadi objek <code>Category $category</code>).</li>
+        <li><strong>Request Validation:</strong> Memastikan integritas data yang dikirim oleh user sebelum diproses ke database.</li>
+        <li><strong>Method Spoofing:</strong> Memodifikasi HTTP Request agar rute <code>PUT</code>/<code>DELETE</code> dapat ditangkap dengan benar melalui tag Form HTML.</li>
+      </ul>
+
+      <h2>8.2 Read: Menampilkan Daftar Kategori (Index)</h2>
+      <p>Operasi Read dilakukan di method <code>index()</code> pada <code>CategoryController</code>. Di sini kita mengambil seluruh kategori dari database dengan penambahan <code>withCount('events')</code> untuk menghitung jumlah event di setiap kategori secara efisien (menghindari N+1 query problem):</p>
+      <pre><span class="code-label">app/Http/Controllers/Admin/CategoryController.php</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">index</span>(<span class="cls">Request</span> <span class="var">$request</span>) {
+    <span class="var">$query</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">input</span>(<span class="str">'search'</span>);
+    <span class="var">$operator</span> <span class="op">=</span> <span class="cls">DB</span><span class="op">::</span><span class="fn">connection</span>()<span class="op">-&gt;</span><span class="fn">getDriverName</span>() <span class="op">===</span> <span class="str">'pgsql'</span> ? <span class="str">'ilike'</span> : <span class="str">'like'</span>;
+    <span class="var">$categories</span> <span class="op">=</span> <span class="cls">Category</span><span class="op">::</span><span class="fn">withCount</span>(<span class="str">'events'</span>)
+        <span class="op">-&gt;</span><span class="fn">when</span>(<span class="var">$query</span>, <span class="kw">function</span>(<span class="var">$q</span>) <span class="kw">use</span> (<span class="var">$query</span>, <span class="var">$operator</span>) {
+            <span class="kw">return</span> <span class="var">$q</span><span class="op">-&gt;</span><span class="fn">where</span>(<span class="str">'name'</span>, <span class="var">$operator</span>, <span class="str">'%'</span> <span class="op">.</span> <span class="var">$query</span> <span class="op">.</span> <span class="str">'%'</span>);
+        })
+        <span class="op">-&gt;</span><span class="fn">latest</span>()
+        <span class="op">-&gt;</span><span class="fn">get</span>();
+    <span class="kw">return</span> <span class="fn">view</span>(<span class="str">'admin.categories.index'</span>, <span class="fn">compact</span>(<span class="str">'categories'</span>));
+}</pre>
+      <p>Data <code>$categories</code> dirender di view menggunakan Blade <code>@forelse</code> loop. Total event dari setiap kategori dapat diakses langsung menggunakan atribut dinamis <code>$category->events_count</code>.</p>
+
+      <h2>8.3 Create & Store: Formulir & Penyimpanan Data</h2>
+      <p>Proses penambahan kategori terdiri dari dua fungsi: <code>create()</code> yang menampilkan form, dan <code>store()</code> yang memproses penyimpanan data setelah divalidasi. Jika kolom <code>slug</code> dikosongkan, Laravel akan menghasilkan slug secara otomatis menggunakan helper <code>Str::slug()</code>:</p>
+      <pre><span class="code-label">app/Http/Controllers/Admin/CategoryController.php</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">store</span>(<span class="cls">Request</span> <span class="var">$request</span>) {
+    <span class="var">$validated</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">validate</span>([
+        <span class="str">'name'</span> <span class="op">=&gt;</span> <span class="str">'required|string|max:255'</span>,
+        <span class="str">'slug'</span> <span class="op">=&gt;</span> <span class="str">'nullable|string|max:255|unique:categories,slug'</span>,
+    ]);
+
+    <span class="kw">if</span> (<span class="fn">empty</span>(<span class="var">$validated</span>[<span class="str">'slug'</span>])) {
+        <span class="var">$validated</span>[<span class="str">'slug'</span>] <span class="op">=</span> <span class="cls">Str</span><span class="op">::</span><span class="fn">slug</span>(<span class="var">$validated</span>[<span class="str">'name'</span>]);
+    } <span class="kw">else</span> {
+        <span class="var">$validated</span>[<span class="str">'slug'</span>] <span class="op">=</span> <span class="cls">Str</span><span class="op">::</span><span class="fn">slug</span>(<span class="var">$validated</span>[<span class="str">'slug'</span>]);
+    }
+
+    <span class="cls">Category</span><span class="op">::</span><span class="fn">create</span>(<span class="var">$validated</span>);
+    <span class="kw">return</span> <span class="fn">redirect</span>()<span class="op">-&gt;</span><span class="fn">route</span>(<span class="str">'admin.categories'</span>)<span class="op">-&gt;</span><span class="fn">with</span>(<span class="str">'success'</span>, <span class="str">'Kategori berhasil ditambahkan'</span>);
+}</pre>
+      <div class="alert alert-tip">
+        <div class="alert-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .6 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
+        <div class="alert-content">
+          <strong>Keamanan CSRF:</strong> Selalu sertakan directive <code>@csrf</code> di dalam form Blade untuk mencegah serangan Cross-Site Request Forgery. Tanpa directive ini, Laravel 12 akan menolak request dengan memunculkan error HTTP 419 Page Expired.
+        </div>
+      </div>
+
+      <h2>8.4 Edit & Update: Route Model Binding & Validasi Unik</h2>
+      <p>Proses pembaruan memanfaatkan Route Model Binding di mana data kategori di-load secara otomatis berdasarkan ID di rute. Saat validasi slug, kita harus mengecualikan (ignore) kategori yang sedang diedit agar database tidak mendeteksi slug tersebut sebagai duplikat:</p>
+      <pre><span class="code-label">app/Http/Controllers/Admin/CategoryController.php</span>
+<span class="kw">public</span> <span class="kw">function</span> <span class="fn">update</span>(<span class="cls">Request</span> <span class="var">$request</span>, <span class="cls">Category</span> <span class="var">$category</span>) {
+    <span class="var">$validated</span> <span class="op">=</span> <span class="var">$request</span><span class="op">-&gt;</span><span class="fn">validate</span>([
+        <span class="str">'name'</span> <span class="op">=&gt;</span> <span class="str">'required|string|max:255'</span>,
+        <span class="comment">// Pengecualian ID kategori saat ini agar tidak memicu error "slug already taken"</span>
+        <span class="str">'slug'</span> <span class="op">=&gt;</span> <span class="str">'nullable|string|max:255|unique:categories,slug,'</span> <span class="op">.</span> <span class="var">$category</span><span class="op">-&gt;</span>id,
+    ]);
+
+    <span class="kw">if</span> (<span class="fn">empty</span>(<span class="var">$validated</span>[<span class="str">'slug'</span>])) {
+        <span class="var">$validated</span>[<span class="str">'slug'</span>] <span class="op">=</span> <span class="cls">Str</span><span class="op">::</span><span class="fn">slug</span>(<span class="var">$validated</span>[<span class="str">'name'</span>]);
+    } <span class="kw">else</span> {
+        <span class="var">$validated</span>[<span class="str">'slug'</span>] <span class="op">=</span> <span class="cls">Str</span><span class="op">::</span><span class="fn">slug</span>(<span class="var">$validated</span>[<span class="str">'slug'</span>]);
+    }
+
+    <span class="var">$category</span><span class="op">-&gt;</span><span class="fn">update</span>(<span class="var">$validated</span>);
+    <span class="kw">return</span> <span class="fn">redirect</span>()<span class="op">-&gt;</span><span class="fn">route</span>(<span class="str">'admin.categories'</span>)<span class="op">-&gt;</span><span class="fn">with</span>(<span class="str">'success'</span>, <span class="str">'Kategori berhasil diperbarui'</span>);
+}</pre>
+      <p>Di halaman Blade edit, form HTML menggunakan atribut <code>method="POST"</code>, namun kita menyisipkan directive <code>@method('PUT')</code> untuk spoofing request agar Laravel memprosesnya sebagai rute update.</p>
+
+      <h2>8.5 Delete: Penghapusan Data & File Fisik (Destroy)</h2>
+      <p>Saat menghapus kategori, tabel database yang berelasi dengan <code>cascadeOnDelete</code> (seperti tabel <code>events</code> yang merujuk pada kategori tersebut) akan otomatis terhapus baris datanya. Namun, file fisik seperti gambar poster event tidak akan terhapus secara otomatis dari folder storage server. Oleh karena itu, kita wajib melakukan cleanup file fisik di controller:</p>
       <pre><span class="code-label">app/Http/Controllers/Admin/CategoryController.php</span>
 <span class="kw">public</span> <span class="kw">function</span> <span class="fn">destroy</span>(<span class="cls">Category</span> <span class="var">$category</span>) {
-    <span class="cm">// Hapus semua file poster event terkait</span>
-    <span class="kw">foreach</span> (<span class="var">$category</span><span class="op">-&gt;</span><span class="fn">events</span> <span class="kw">as</span> <span class="var">$event</span>) {
+    <span class="cm">// Hapus semua file poster event terkait yang tersimpan secara lokal</span>
+    <span class="kw">foreach</span> (<span class="var">$category</span><span class="op">-&gt;</span>events <span class="kw">as</span> <span class="var">$event</span>) {
         <span class="kw">if</span> (<span class="var">$event</span><span class="op">-&gt;</span>poster_path &amp;&amp; <span class="cls">File</span><span class="op">::</span><span class="fn">exists</span>(<span class="fn">public_path</span>(<span class="var">$event</span><span class="op">-&gt;</span>poster_path))) {
             <span class="cls">File</span><span class="op">::</span><span class="fn">delete</span>(<span class="fn">public_path</span>(<span class="var">$event</span><span class="op">-&gt;</span>poster_path));
         }
     }
+
     <span class="var">$category</span><span class="op">-&gt;</span><span class="fn">delete</span>();
-    <span class="kw">return</span> <span class="fn">redirect</span>()<span class="op">-&gt;</span><span class="fn">route</span>(<span class="str">'admin.categories'</span>)<span class="op">-&gt;</span><span class="fn">with</span>(<span class="str">'success'</span>, <span class="str">'Kategori dihapus!'</span>);
+    <span class="kw">return</span> <span class="fn">redirect</span>()<span class="op">-&gt;</span><span class="fn">route</span>(<span class="str">'admin.categories'</span>)<span class="op">-&gt;</span><span class="fn">with</span>(<span class="str">'success'</span>, <span class="str">'Kategori berhasil dihapus'</span>);
 }</pre>
 
-      <h2>8.2 Kuis Bab 8</h2>
+      <h2>8.6 Kuis Bab 8</h2>
       <div class="quiz-interactive" data-quiz-id="q8">
         <div class="quiz-q">1. Mengapa kita perlu menghapus file fisik poster di server saat menghapus data dari database?</div>
         <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
@@ -1087,6 +1162,42 @@ php artisan make:migration create_partners_table</pre>
 <span class="tag">&lt;/form&gt;</span></pre>
       </div>
 
+      <!-- STEP 7 -->
+      <div class="step-card">
+        <div class="step-title"><span class="step-number">7</span> Membuat View Admin — List Partner (Index)</div>
+        <p>Halaman utama manajemen partner (tabel daftar partner) yang mendukung pencarian data dinamis via input teks dengan debounce JavaScript, menampilkan pratinjau logo (lokal vs URL eksternal), serta tombol edit & form delete dengan method spoofing <code>@method('DELETE')</code>:</p>
+        <pre><span class="code-label">resources/views/admin/partners/index.blade.php</span>
+<span class="blade">@extends</span>('layouts.admin.admin')
+<span class="blade">@section</span>('content')
+<span class="tag">&lt;main</span> <span class="atn">class</span>=<span class="atv">"flex-1 p-10 overflow-y-auto"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;form</span> <span class="atn">method</span>=<span class="atv">"GET"</span> <span class="atn">action</span>=<span class="atv">"{{ route('admin.partners') }}"</span> <span class="atn">id</span>=<span class="atv">"search-form"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;input</span> <span class="atn">type</span>=<span class="atv">"text"</span> <span class="atn">name</span>=<span class="atv">"search"</span> <span class="atn">id</span>=<span class="atv">"search-input"</span> <span class="atn">value</span>=<span class="atv">"{{ request('search') }}"</span> <span class="atn">placeholder</span>=<span class="atv">"Cari nama partner..."</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/form&gt;</span>
+
+    <span class="tag">&lt;table</span><span class="tag">&gt;</span>
+        <span class="blade">@forelse</span>(<span class="var">$partners</span> as <span class="var">$partner</span>)
+        <span class="tag">&lt;tr</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;td</span><span class="tag">&gt;</span>
+                <span class="tag">&lt;img</span> <span class="atn">src</span>=<span class="atv">"{{ Str::startsWith($partner-&gt;logo_url, 'http') ? $partner-&gt;logo_url : asset($partner-&gt;logo_url) }}"</span> <span class="atn">alt</span>=<span class="atv">"{{ $partner-&gt;name }}"</span> <span class="atn">class</span>=<span class="atv">"w-12 h-12 object-contain"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;/td&gt;</span>
+            <span class="tag">&lt;td</span><span class="tag">&gt;</span><span class="blade">{{</span> <span class="var">$partner</span>-&gt;name <span class="blade">}}</span><span class="tag">&lt;/td&gt;</span>
+            <span class="tag">&lt;td</span><span class="tag">&gt;</span>
+                <span class="tag">&lt;a</span> <span class="atn">href</span>=<span class="atv">"{{ route('admin.partners.edit', $partner-&gt;id) }}"</span><span class="tag">&gt;</span>Edit<span class="tag">&lt;/a&gt;</span>
+                <span class="tag">&lt;form</span> <span class="atn">action</span>=<span class="atv">"{{ route('admin.partners.destroy', $partner-&gt;id) }}"</span> <span class="atn">method</span>=<span class="atv">"POST"</span> <span class="atn">onsubmit</span>=<span class="atv">"return confirm('Yakin hapus?')"</span><span class="tag">&gt;</span>
+                    <span class="blade">@csrf</span>
+                    <span class="blade">@method</span>('DELETE')
+                    <span class="tag">&lt;button</span> <span class="atn">type</span>=<span class="atv">"submit"</span><span class="tag">&gt;</span>Hapus<span class="tag">&lt;/button&gt;</span>
+                <span class="tag">&lt;/form&gt;</span>
+            <span class="tag">&lt;/td&gt;</span>
+        <span class="tag">&lt;/tr&gt;</span>
+        <span class="blade">@empty</span>
+        <span class="tag">&lt;tr</span><span class="tag">&gt;</span><span class="tag">&lt;td</span> <span class="atn">colspan</span>=<span class="atv">"3"</span><span class="tag">&gt;</span>Tidak ada partner ditemukan.<span class="tag">&lt;/td&gt;</span><span class="tag">&lt;/tr&gt;</span>
+        <span class="blade">@endforelse</span>
+    <span class="tag">&lt;/table&gt;</span>
+<span class="tag">&lt;/main&gt;</span>
+<span class="blade">@endsection</span></pre>
+      </div>
+
       <h2>13.7 Kuis Bab 13</h2>
       <div class="quiz-interactive" data-quiz-id="q13">
         <div class="quiz-q">1. Mengapa atribut <code>enctype="multipart/form-data"</code> wajib ditambahkan pada tag form yang mengunggah file?</div>
@@ -1207,6 +1318,104 @@ php artisan make:migration create_partners_table</pre>
 
       <div class="chapter-nav">
         <button class="nav-btn" data-target="12"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 13 — Fitur Partner</span></button>
+        <button class="nav-btn next" data-target="14"><span class="nav-label">Selanjutnya</span><span class="nav-title">Bab 15 — Latihan Galeri</span></button>
+      </div>
+    </section>
+
+    <!-- ===================== BAB 15: SOAL LATIHAN GALERI ===================== -->
+    <section class="chapter" id="chapter-15">
+      <div class="chapter-header">
+        <div class="chapter-num">Bab 15</div>
+        <h1 class="chapter-title">Soal Latihan: Fitur Galeri CRUD</h1>
+        <p class="chapter-desc">Uji pemahaman Anda dengan membuat fitur Galeri CRUD lengkap dari awal menggunakan Laravel 12.</p>
+      </div>
+
+      <h2>15.1 Deskripsi Kasus</h2>
+      <p>Sebagai developer <strong>Amikom EventHub</strong>, Anda ditantang untuk membangun fitur <strong>Galeri Dokumentasi Event</strong> dari nol. Fitur ini ditujukan untuk mempublikasikan foto-foto keseruan acara yang telah berlangsung.</p>
+      <p>Admin harus bisa mengelola data galeri melalui dasbor admin, dan pengunjung umum dapat melihat galeri tersebut di halaman depan. Anda harus merancang dan menulis seluruh kode secara mandiri tanpa bantuan panduan langkah-demi-langkah.</p>
+
+      <h2>15.2 Persyaratan Fitur (Spesifikasi Teknis)</h2>
+      
+      <h3>1. Desain Database & Model (Migrasi)</h3>
+      <ul>
+        <li>Rancang tabel database bernama <code>galleries</code> untuk menyimpan data galeri.</li>
+        <li>Tentukan tipe data kolom yang tepat untuk menampung:
+          <ul>
+            <li><strong>Takarir / Caption</strong> gambar (tidak boleh kosong).</li>
+            <li><strong>File Gambar</strong> (simpan sebagai path/lokasi penyimpanan file lokal di server).</li>
+          </ul>
+        </li>
+        <li>Buat model Eloquent yang sesuai dan pastikan fitur <strong>Mass Assignment</strong> aktif pada kolom-kolom yang diperlukan.</li>
+      </ul>
+
+      <h3>2. Konfigurasi Routing</h3>
+      <ul>
+        <li>Buat pemetaan rute (routing) menggunakan standar Laravel:
+          <ul>
+            <li>Rute publik untuk melihat halaman galeri.</li>
+            <li>Rute admin untuk mengelola Galeri (CRUD lengkap). Bungkus rute admin ini di dalam grup rute admin yang sudah ada agar memiliki prefix <code>/admin/</code> dan nama rute yang konsisten.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>3. Logika Controller & Penanganan File (CRUD)</h3>
+      <p>Buat controller yang menangani seluruh operasi CRUD galeri dengan ketentuan ketat berikut:</p>
+      <ul>
+        <li><strong>Validasi Input Form:</strong>
+          <ul>
+            <li>Wajib membatasi input takarir agar tidak kosong dan tidak melebihi batas panjang karakter database.</li>
+            <li>Wajib membatasi upload berkas hanya berupa gambar (format standar gambar) dengan ukuran file maksimal <strong>2MB</strong>.</li>
+            <li>Pada form tambah, berkas gambar bersifat wajib. Pada form edit, berkas gambar bersifat opsional (jika kosong, gunakan gambar lama).</li>
+          </ul>
+        </li>
+        <li><strong>Upload Berkas:</strong>
+          <ul>
+            <li>Gambar harus disimpan secara lokal di dalam folder publik proyek Anda dengan nama berkas yang unik untuk menghindari bentrok nama file.</li>
+          </ul>
+        </li>
+        <li><strong>Manajemen Penyimpanan Disk (Cleanup):</strong>
+          <ul>
+            <li><strong>Penting:</strong> Pastikan sistem menghapus file fisik gambar lama dari server ketika admin memperbarui galeri dengan gambar baru, atau ketika data galeri dihapus (destroy). Jangan biarkan ada file sampah tak terpakai di server!</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>4. Integrasi Tampilan (Blade Views)</h3>
+      <ul>
+        <li><strong>Tampilan Admin:</strong>
+          <ul>
+            <li>Halaman List: Tampilkan data dalam bentuk tabel lengkap dengan nomor urut, pratinjau gambar berukuran kecil, takarir gambar, tanggal diunggah, dan tombol aksi (Edit & Hapus). Tombol Hapus harus menggunakan metode HTTP yang aman (spoofing) dan memicu dialog konfirmasi.</li>
+            <li>Form Tambah & Edit: Rancang form dengan layout yang rapi. Pastikan form dapat mengirimkan data biner (file upload) dengan benar ke server. Tampilkan pesan error di bawah input masing-masing jika validasi gagal.</li>
+          </ul>
+        </li>
+        <li><strong>Tampilan Publik:</strong>
+          <ul>
+            <li>Tampilkan seluruh galeri di halaman depan menggunakan susunan Grid CSS yang responsif. Ketika gambar di-klik, tampilkan gambar tersebut dalam ukuran penuh menggunakan modal popup (lightbox) sederhana.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>15.3 Tantangan Ekstra (Opsional)</h2>
+      <ol>
+        <li><strong>Fitur Pencarian:</strong> Implementasikan fitur pencarian galeri berdasarkan takarir (caption). Pastikan kueri pencarian Anda kompatibel secara universal baik menggunakan database MySQL maupun PostgreSQL (ingat perbedaan sensitivitas huruf/case-sensitivity pada operator perbandingan).</li>
+        <li><strong>Debounce Search:</strong> Tambahkan script JavaScript di halaman index admin agar pencarian berjalan otomatis saat admin mengetik kata kunci, namun beri jeda waktu (debounce) agar tidak membebani server database Anda.</li>
+      </ol>
+
+      <h2>15.4 Kuis Bab 15</h2>
+      <div class="quiz-interactive" data-quiz-id="q15">
+        <div class="quiz-q">1. Manakah dari validasi berikut yang paling tepat untuk membatasi tipe file hanya berupa gambar dan ukuran maksimal 2MB di Laravel?</div>
+        <div style="margin: 10px 0; display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q15" value="a"> 'image|max:2'</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q15" value="b"> 'file|mimes:jpeg,png,jpg,webp|max:2048'</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q15" value="c"> 'text|max:2048'</label>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;"><input type="radio" name="q15" value="d"> 'url|max:2048'</label>
+        </div>
+        <button class="check-quiz-btn">Periksa Jawaban</button>
+        <div class="quiz-feedback mt-sm" style="display: none; font-size: 13px; padding: 12px; border-radius: 8px;"></div>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="nav-btn" data-target="13"><span class="nav-label">Sebelumnya</span><span class="nav-title">Bab 14 — Render Partner</span></button>
       </div>
     </section>
 
