@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin Galeri - Amikom EventHub</title>
+    <style>
+        /* CSS Reset & Variable Tokens */
+        :root {
+            --bg-body: #f8fafc;
+            --bg-sidebar: #0f172a;
+            --text-sidebar: #94a3b8;
+            --text-sidebar-active: #ffffff;
+            --bg-card: #ffffff;
+            --text-title: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --primary: #4f46e5;
+            --primary-light: #eeebff;
+            --primary-hover: #4338ca;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --border: #e2e8f0;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-body);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Mockup */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            color: var(--text-sidebar);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
+
+        .brand-logo {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 800;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+        .brand-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .menu-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #475569;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-sidebar);
+            text-decoration: none;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .menu-item a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .menu-item.active a {
+            background-color: var(--primary);
+            color: var(--text-sidebar-active);
+        }
+
+        /* Main Workspace */
+        .workspace {
+            flex-grow: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        /* Workspace Header */
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .workspace-title h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-title);
+            letter-spacing: -0.02em;
+        }
+
+        .workspace-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Action Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* Dashboard Container */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: var(--text-title);
+            font-size: 1.1rem;
+        }
+
+        /* Table Design */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8fafc;
+            padding: 14px 24px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-body);
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .thumbnail {
+            width: 60px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background-color: #f1f5f9;
+        }
+
+        .caption-text {
+            font-weight: 600;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Action Buttons Inside Table */
+        .actions-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-icon-edit {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .btn-icon-edit:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-icon-delete {
+            background-color: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .btn-icon-delete:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* Search Filter Form */
+        .search-container {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            outline: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Forms Layout */
+        .form-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            outline: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* File Upload Area */
+        .file-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #f8fafc;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary);
+            background-color: #f0fdf4;
+        }
+
+        .file-upload-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .file-upload-placeholder span.highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Input error messages */
+        .error-message {
+            color: var(--danger);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Preview Image on Form */
+        .form-preview-wrapper {
+            margin-top: 12px;
+            position: relative;
+            width: 100%;
+            height: 150px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: none; /* Hidden by default until file uploaded */
+        }
+
+        .form-preview-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Alert Notification */
+        .alert-success {
+            padding: 16px 20px;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Layout -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-logo">AE</span>
+            <span class="brand-name">EventHub Admin</span>
+        </div>
+
+        <div class="menu-title">Main Menu</div>
+        <ul class="menu-list">
+            <li class="menu-item"><a href="#">Dashboard</a></li>
+            <li class="menu-item"><a href="#">Kelola Event</a></li>
+            <li class="menu-item"><a href="#">Kelola Kategori</a></li>
+            <li class="menu-item active"><a href="#">Kelola Galeri</a></li>
+            <li class="menu-item"><a href="#">Daftar Partner</a></li>
+        </ul>
+    </aside>
+
+    <!-- Workspace -->
+    <main class="workspace">
+        
+        <!-- Header -->
+        <div class="workspace-header">
+            <div class="workspace-title">
+                <h1>Kelola Galeri Dokumentasi</h1>
+                <p>Kelola koleksi dokumentasi foto keseruan event Amikom EventHub</p>
+            </div>
+            <button class="btn btn-primary" onclick="switchToCreateMode()">+ Tambah Foto</button>
+        </div>
+
+        <!-- Success Message Mockup -->
+        <div class="alert-success" id="success-alert">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Mockup Alert: Data galeri berhasil diperbarui!</span>
+        </div>
+
+        <!-- Main Layout (Grid) -->
+        <div class="dashboard-layout">
+            
+            <!-- LEFT: List Data Table Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Daftar Galeri</span>
+                </div>
+
+                <!-- Search Input Form -->
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Cari takarir/caption galeri...">
+                </div>
+
+                <!-- Table Content -->
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">No</th>
+                                <th style="width: 80px;">Pratinjau</th>
+                                <th>Caption / Takarir</th>
+                                <th style="width: 140px;">Tanggal Unggah</th>
+                                <th style="width: 110px; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=150&q=80" alt="" class="thumbnail"></td>
+                                <td>
+                                    <div class="caption-text" title="Keseruan kompetisi Web Design & Cyber Security di Kampus Amikom Yogyakarta">Keseruan kompetisi Web Design & Cyber Security di Kampus Amikom Yogyakarta</div>
+                                </td>
+                                <td>08 Jun 2026</td>
+                                <td>
+                                    <div class="actions-group">
+                                        <button class="btn-icon btn-icon-edit" onclick="switchToEditMode('Keseruan kompetisi Web Design & Cyber Security di Kampus Amikom Yogyakarta', 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=150&q=80')">Edit</button>
+                                        <button class="btn-icon btn-icon-delete" onclick="simulateDelete()">Del</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=150&q=80" alt="" class="thumbnail"></td>
+                                <td>
+                                    <div class="caption-text" title="Seminar Nasional Industri Digital Kreatif bersama pembicara Gojek & Google">Seminar Nasional Industri Digital Kreatif bersama pembicara Gojek & Google</div>
+                                </td>
+                                <td>07 Jun 2026</td>
+                                <td>
+                                    <div class="actions-group">
+                                        <button class="btn-icon btn-icon-edit" onclick="switchToEditMode('Seminar Nasional Industri Digital Kreatif bersama pembicara Gojek & Google', 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=150&q=80')">Edit</button>
+                                        <button class="btn-icon btn-icon-delete" onclick="simulateDelete()">Del</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=150&q=80" alt="" class="thumbnail"></td>
+                                <td>
+                                    <div class="caption-text" title="Workshop intensif UI/UX Design dan perancangan prototype interaktif dengan Flux UI">Workshop intensif UI/UX Design dan perancangan prototype interaktif dengan Flux UI</div>
+                                </td>
+                                <td>05 Jun 2026</td>
+                                <td>
+                                    <div class="actions-group">
+                                        <button class="btn-icon btn-icon-edit" onclick="switchToEditMode('Workshop intensif UI/UX Design dan perancangan prototype interaktif dengan Flux UI', 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=150&q=80')">Edit</button>
+                                        <button class="btn-icon btn-icon-delete" onclick="simulateDelete()">Del</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RIGHT: Form Card (Simulate Tambah / Edit) -->
+            <div class="card" id="form-card">
+                <div class="card-header">
+                    <span class="card-title" id="form-card-title">Form Tambah Foto</span>
+                </div>
+
+                <!-- Form Layout -->
+                <form onsubmit="simulateSubmit(event)">
+                    <div class="form-body">
+                        
+                        <!-- Caption Input -->
+                        <div class="form-group">
+                            <label for="caption" class="form-label">Takarir / Caption Gambar *</label>
+                            <input type="text" id="caption" name="caption" class="form-input" placeholder="Masukkan takarir dokumentasi" required>
+                            <!-- Error display mockup -->
+                            <div class="error-message" style="display: none;">Takarir wajib diisi!</div>
+                        </div>
+
+                        <!-- Image File Upload Input -->
+                        <div class="form-group">
+                            <label class="form-label">Unggah Gambar *</label>
+                            <input type="file" id="image-file" name="image" accept="image/*" style="display: none;" onchange="previewSelectedImage(event)">
+                            
+                            <div class="file-upload-area" onclick="triggerFileInput()">
+                                <div class="file-upload-placeholder" id="upload-placeholder">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--text-muted);">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <p><span class="highlight">Klik untuk unggah</span> atau seret file gambar</p>
+                                    <p style="font-size:0.75rem; margin-top:2px;">Format: PNG, JPG, JPEG, WEBP (Maksimal 2MB)</p>
+                                </div>
+                                
+                                <!-- Preview Image container -->
+                                <div class="form-preview-wrapper" id="preview-wrapper">
+                                    <img id="image-preview" src="" alt="Pratinjau gambar">
+                                </div>
+                            </div>
+                            <!-- Error display mockup -->
+                            <div class="error-message" style="display: none;">Ukuran file gambar melebihi 2MB!</div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button type="submit" class="btn btn-primary" style="flex:1;" id="btn-submit">Simpan Foto</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">Batal</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JS Interaction Script -->
+    <script>
+        const formCardTitle = document.getElementById('form-card-title');
+        const captionInput = document.getElementById('caption');
+        const imageFileInput = document.getElementById('image-file');
+        const previewWrapper = document.getElementById('preview-wrapper');
+        const uploadPlaceholder = document.getElementById('upload-placeholder');
+        const imagePreview = document.getElementById('image-preview');
+        const successAlert = document.getElementById('success-alert');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        let isEditMode = false;
+
+        // Hide success alert initially
+        setTimeout(() => {
+            successAlert.style.display = 'none';
+        }, 5000);
+
+        function triggerFileInput() {
+            imageFileInput.click();
+        }
+
+        function previewSelectedImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Validate size mockup (2MB = 2097152 bytes)
+                if (file.size > 2097152) {
+                    alert('Mockup error: Ukuran file melebihi 2MB!');
+                    imageFileInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    uploadPlaceholder.style.display = 'none';
+                    previewWrapper.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function switchToCreateMode() {
+            isEditMode = false;
+            resetForm();
+            formCardTitle.textContent = 'Form Tambah Foto';
+            btnSubmit.textContent = 'Simpan Foto';
+            captionInput.focus();
+        }
+
+        function switchToEditMode(caption, imageUrl) {
+            isEditMode = true;
+            formCardTitle.textContent = 'Form Edit Foto';
+            btnSubmit.textContent = 'Perbarui Foto';
+            captionInput.value = caption;
+            
+            // Set image preview
+            imagePreview.src = imageUrl;
+            uploadPlaceholder.style.display = 'none';
+            previewWrapper.style.display = 'block';
+            
+            captionInput.focus();
+            window.scrollTo({ top: document.getElementById('form-card').offsetTop, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            captionInput.value = '';
+            imageFileInput.value = '';
+            imagePreview.src = '';
+            previewWrapper.style.display = 'none';
+            uploadPlaceholder.style.display = 'flex';
+        }
+
+        function simulateSubmit(event) {
+            event.preventDefault();
+            successAlert.querySelector('span').textContent = isEditMode 
+                ? 'Mockup Success: Data galeri berhasil diperbarui!' 
+                : 'Mockup Success: Dokumentasi foto baru berhasil ditambahkan!';
+            successAlert.style.display = 'flex';
+            resetForm();
+            switchToCreateMode();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Hide alert after 4 seconds
+            setTimeout(() => {
+                successAlert.style.display = 'none';
+            }, 4000);
+        }
+
+        function simulateDelete() {
+            if (confirm('Apakah Anda yakin ingin menghapus data galeri ini? (Simulasi hapus file fisik & record)')) {
+                successAlert.querySelector('span').textContent = 'Mockup Success: Data galeri dan file fisik gambar berhasil dihapus!';
+                successAlert.style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => {
+                    successAlert.style.display = 'none';
+                }, 4000);
+            }
+        }
+    </script>
+</body>
+</html>
