@@ -152,6 +152,107 @@
       </div>
     </section>
 
+    <!-- Gallery Preview Section -->
+    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100">
+      <div class="flex justify-between items-end mb-12">
+        <div>
+          <h2 class="text-3xl font-extrabold mb-2">Galeri Foto Event</h2>
+          <p class="text-slate-500 font-medium">
+            Keseruan dan dokumentasi momen terbaik dari event-event kami.
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <a
+            href="{{ route('gallery') }}"
+            class="px-6 py-3 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition"
+          >
+            Lihat Semua Foto &rarr;
+          </a>
+        </div>
+      </div>
+
+      @if($galleries->isEmpty())
+        <div class="text-center py-12 bg-white rounded-3xl border border-slate-100 shadow-sm">
+          <p class="text-slate-400 font-semibold">Belum ada foto galeri.</p>
+        </div>
+      @else
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          @foreach($galleries as $gallery)
+            <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer animate-fade-in" onclick="openWelcomeLightbox('{{ asset($gallery->image) }}', '{{ addslashes($gallery->caption) }}')">
+              <div class="relative overflow-hidden aspect-[4/3] bg-slate-100">
+                <img
+                  src="{{ asset($gallery->image) }}"
+                  alt="{{ $gallery->caption }}"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                  <span class="px-3 py-1.5 bg-white/20 backdrop-blur text-white text-xs font-bold rounded-lg uppercase tracking-wide">
+                    Zoom Gambar
+                  </span>
+                </div>
+              </div>
+              <div class="p-6">
+                <p class="font-bold text-slate-800 line-clamp-2 leading-relaxed">
+                  {{ $gallery->caption }}
+                </p>
+                <span class="text-slate-400 text-xs font-semibold block mt-3 uppercase tracking-wider">
+                  {{ $gallery->created_at->format('d M Y') }}
+                </span>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      @endif
+    </section>
+
+    <!-- Welcome Lightbox Modal -->
+    <div id="welcome-lightbox" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <button onclick="closeWelcomeLightbox()" class="absolute top-6 right-6 text-white/70 hover:text-white transition-colors duration-300 p-2 rounded-full hover:bg-white/10">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <div class="max-w-5xl w-full flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+            <div class="relative bg-black rounded-2xl overflow-hidden max-h-[80vh] flex items-center justify-center">
+                <img id="welcome-lightbox-img" src="" alt="" class="max-h-[75vh] max-w-full object-contain">
+            </div>
+            <p id="welcome-lightbox-caption" class="text-white text-lg font-bold text-center mt-6 max-w-2xl leading-relaxed"></p>
+        </div>
+    </div>
+
+    <script>
+        function openWelcomeLightbox(imgUrl, caption) {
+            const lightbox = document.getElementById('welcome-lightbox');
+            const lightboxImg = document.getElementById('welcome-lightbox-img');
+            const lightboxCaption = document.getElementById('welcome-lightbox-caption');
+
+            lightboxImg.src = imgUrl;
+            lightboxCaption.textContent = caption;
+
+            lightbox.classList.remove('hidden');
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWelcomeLightbox() {
+            const lightbox = document.getElementById('welcome-lightbox');
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        // Close on ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeWelcomeLightbox();
+            }
+        });
+    </script>
+
     <!-- Partners Section -->
     <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100">
       <div class="text-center mb-12">

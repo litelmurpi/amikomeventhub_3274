@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
 Route::get('/checkout/{slug}', [EventController::class, 'checkout'])->name('checkout');
+Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -33,6 +35,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/partners/{partner}/edit', [PartnerController::class, 'edit'])->name('partners.edit');
     Route::put('/partners/{partner}', [PartnerController::class, 'update'])->name('partners.update');
     Route::delete('/partners/{partner}', [PartnerController::class, 'destroy'])->name('partners.destroy');
+
+    Route::get('/galleries', [GalleryController::class, 'index'])->name('galleries');
+    Route::get('/galleries/create', [GalleryController::class, 'create'])->name('galleries.create');
+    Route::post('/galleries', [GalleryController::class, 'store'])->name('galleries.store');
+    Route::get('/galleries/{gallery}/edit', [GalleryController::class, 'edit'])->name('galleries.edit');
+    Route::put('/galleries/{gallery}', [GalleryController::class, 'update'])->name('galleries.update');
+    Route::delete('/galleries/{gallery}', [GalleryController::class, 'destroy'])->name('galleries.destroy');
 });
 
 Route::get('/uts-guide', function () {
