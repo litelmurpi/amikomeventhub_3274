@@ -44,8 +44,8 @@ class AdminController extends Controller
 
     public function transactions()
     {
-        $transactions = Transaction::with('event')->latest()->get();
-        return view('admin.transactions', compact('transactions'));
+        // This is now handled by App\Http\Controllers\Admin\TransactionController
+        return redirect()->route('admin.transactions');
     }
 
     public function createEvent()

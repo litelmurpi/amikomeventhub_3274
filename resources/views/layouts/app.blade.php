@@ -66,6 +66,9 @@
                         Admin Panel
                     </a>
                 @endif
+                <a href="{{ route('user.tickets') }}" class="px-4 py-2 border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-100 transition">
+                    Tiket Saya
+                </a>
                 <div class="flex items-center gap-3">
                     <div class="hidden md:block text-right">
                         <p class="text-sm font-bold text-slate-700">{{ Auth::user()->name }}</p>

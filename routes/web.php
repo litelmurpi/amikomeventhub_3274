@@ -5,13 +5,17 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User\TicketController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
-Route::get('/checkout/{slug}', [EventController::class, 'checkout'])->name('checkout');
+Route::get('/checkout/{slug}', [CheckoutController::class, 'create'])->name('checkout')->middleware('auth');
+Route::post('/checkout/{slug}', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('auth');
+Route::get('/my-tickets', [TicketController::class, 'index'])->name('user.tickets')->middleware('auth');
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
 // Auth Routes (hanya untuk guest / belum login)
@@ -34,7 +38,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::get('/events/{event}/edit', [AdminController::class, 'editEvent'])->name('events.edit');
     Route::put('/events/{event}', [AdminController::class, 'updateEvent'])->name('events.update');
     Route::delete('/events/{event}', [AdminController::class, 'destroyEvent'])->name('events.destroy');
-    Route::get('/transactions', [AdminController::class, 'transactions'])->name('transactions');
+    Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
