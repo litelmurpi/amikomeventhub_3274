@@ -26,3 +26,11 @@ Thumbs.db
 storage/pgdata
 storage/pg_log.txt
 storage/.s.PGSQL.5432.lock
+
+# Postgres local files
+/storage/pgdata
+/storage/pg_log.txt
+/storage/.s.PGSQL.*
+
+# Uploaded partner/event files
+/public/uploads
