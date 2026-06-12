@@ -53,6 +53,7 @@
             <a href="{{ route('katalog') }}" class="hover:text-indigo-600 transition">Jelajahi</a>
             <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
             <a href="{{ route('tentang') }}" class="hover:text-indigo-600 transition">Tentang Kami</a>
+            <a href="{{ route('gallery') }}" class="hover:text-indigo-600 transition">Galeri</a>
             {{-- <a href="{{ route('uts-guide') }}"
                 class="px-3 py-1 bg-rose-500/10 text-rose-600 border border-rose-500/25 rounded-lg text-xs font-black uppercase tracking-wider hover:bg-rose-500 hover:text-white transition flex items-center">Panduan
                 UTS</a> --}}
@@ -86,6 +87,7 @@
                 <ul class="space-y-4">
                     <li><a href="{{ route('home') }}" class="hover:text-white transition">Home</a></li>
                     <li><a href="{{ route('katalog') }}" class="hover:text-white transition">Semua Event</a></li>
+                    <li><a href="{{ route('gallery') }}" class="hover:text-white transition">Galeri</a></li>
                     <li><a href="#" class="hover:text-white transition">Cara Bayar</a></li>
                 </ul>
             </div>

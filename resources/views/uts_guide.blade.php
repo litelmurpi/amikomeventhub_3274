@@ -165,7 +165,7 @@
                     <div class="text-sm text-zinc-700 space-y-3 leading-relaxed italic">
                         <p>"Masuk ke fitur pencarian. Baik di halaman Kategori maupun Partner, terdapat form input pencarian di atas tabel."</p>
                         <p>"Kueri ini didukung oleh sintaks Eloquent <code class="bg-orange-100 px-1 rounded text-xs text-orange-800">where('name', 'LIKE/ILIKE', '%keyword%')</code> pada Controller."</p>
-                        <p>"Ketika saya mengetik kata kunci pencarian, tabel akan ter-filter secara otomatis. Terdapat juga debounce 500ms agar server tidak kebanjiran request saat mengetik."</p>
+                        <p>"Ketika saya mengetik kata kunci pencarian, tabel akan ter-filter secara otomatis. Terdapat juga Debounce 500ms agar server tidak kebanjiran request saat mengetik."</p>
                     </div>
                 </div>
             </div>
