@@ -35,11 +35,39 @@
             <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
             <a href="#" class="hover:text-indigo-600 transition">Tentang Kami</a>
         </div>
-        <!-- <div class="flex gap-3">
-            <button class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</button>
-            <button
-                class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</button>
-        </div> -->
+        <div class="flex gap-3 items-center">
+            @auth
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold text-sm hover:bg-indigo-100 transition">
+                        Admin Panel
+                    </a>
+                @endif
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:block text-right">
+                        <p class="text-sm font-bold text-slate-700">{{ Auth::user()->name }}</p>
+                        <p class="text-xs text-slate-400">{{ Auth::user()->email }}</p>
+                    </div>
+                    <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold text-sm">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                    </div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="px-4 py-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl font-semibold text-sm transition"
+                            title="Logout">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            @else
+                <a href="{{ route('login') }}" class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</a>
+                <a href="{{ route('register') }}"
+                    class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</a>
+            @endauth
+        </div>
     </nav>
 
     <main>

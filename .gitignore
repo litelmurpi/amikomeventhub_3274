@@ -23,3 +23,6 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+storage/pgdata
+storage/pg_log.txt
+storage/.s.PGSQL.5432.lock

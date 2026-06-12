@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +11,19 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
 Route::get('/checkout/{slug}', [EventController::class, 'checkout'])->name('checkout');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+// Auth Routes (hanya untuk guest / belum login)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+// Logout (harus sudah login)
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+// Admin Routes (dilindungi middleware isAdmin)
+Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/events', [AdminController::class, 'events'])->name('events');
     Route::get('/events/create', [AdminController::class, 'createEvent'])->name('events.create');
