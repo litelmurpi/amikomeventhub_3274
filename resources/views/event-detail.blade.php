@@ -78,10 +78,17 @@
                         </p>
                     </div>
                     <div>
-                        <a href="{{ route('checkout', $event->slug) }}"
-                            class="inline-block px-10 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl">
-                            Pesan Sekarang
-                        </a>
+                        @auth
+                            <a href="{{ route('checkout', $event->slug) }}"
+                                class="inline-block px-10 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl">
+                                Pesan Sekarang
+                            </a>
+                        @else
+                            <button onclick="openLoginRequiredModal()"
+                                class="inline-block px-10 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl">
+                                Pesan Sekarang
+                            </button>
+                        @endauth
                     </div>
                 </div>
                 <!-- Decoration -->
@@ -117,4 +124,71 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal Login Required -->
+    <div id="loginRequiredModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-all duration-300">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transform scale-95 opacity-0 transition-all duration-300" id="loginModalContent">
+            <!-- Header / Icon -->
+            <div class="p-8 text-center">
+                <div class="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 text-indigo-600">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                
+                <h3 class="text-2xl font-black text-slate-800 mb-2">Yuk, Login Dulu!</h3>
+                <p class="text-slate-500 leading-relaxed text-sm">Kamu perlu masuk ke akun AmikomEventHub terlebih dahulu sebelum bisa memesan tiket event ini.</p>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="px-8 pb-8 flex flex-col gap-3">
+                <a href="{{ route('login') }}" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-center transition shadow-lg shadow-indigo-200">
+                    Login Sekarang
+                </a>
+                <a href="{{ route('register') }}" class="w-full py-4 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-2xl font-bold text-center border border-slate-200 transition">
+                    Belum punya akun? Daftar
+                </a>
+                <button onclick="closeLoginRequiredModal()" class="w-full py-3 text-slate-400 hover:text-slate-600 font-semibold text-sm transition">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openLoginRequiredModal() {
+            const modal = document.getElementById('loginRequiredModal');
+            const content = document.getElementById('loginModalContent');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Trigger transition
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeLoginRequiredModal() {
+            const modal = document.getElementById('loginRequiredModal');
+            const content = document.getElementById('loginModalContent');
+            
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginRequiredModal');
+            if (event.target === modal) {
+                closeLoginRequiredModal();
+            }
+        }
+    </script>
 @endsection
