@@ -129,7 +129,16 @@ Untuk mengubah konfigurasi branch deployment atau memicu deployment manual:
 
 ---
 
-### 🌐 Website Production (InfinityFree)
-Aplikasi juga telah di-deploy secara manual di hosting InfinityFree:
+### 🌐 Website Production (InfinityFree) & CI/CD
+
+Aplikasi ini di-host di hosting gratis **InfinityFree**:
 - **URL Website**: [http://amikomeventhub3274.page.gd/](http://amikomeventhub3274.page.gd/)
-- **Panduan Setup Deployment**: Silakan merujuk ke file [DEPLOY_GUIDE.md](file:///var/www/html/eventhub_3274/DEPLOY_GUIDE.md) untuk detail langkah konfigurasi hosting dan database.
+- **Metode Deployment**: **Otomatis (CI/CD via GitHub Actions)**
+  Setiap kali ada perubahan yang dipush ke branch `main`, GitHub Actions akan otomatis menjalankan workflow:
+  1. Melakukan setup PHP & Node.js.
+  2. Menginstal composer & NPM dependencies (production mode).
+  3. Membangun aset frontend (Vite & Tailwind CSS).
+  4. Menyiapkan struktur folder yang kompatibel dengan shared hosting InfinityFree.
+  5. Mengunggah file secara otomatis ke server InfinityFree via FTP (hanya file yang berubah).
+- **Panduan Lengkap**: Silakan merujuk ke file [DEPLOY_GUIDE.md](file:///var/www/html/eventhub_3274/DEPLOY_GUIDE.md) untuk detail langkah konfigurasi hosting, database, dan setup repository secret.
+
