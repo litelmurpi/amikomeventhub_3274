@@ -34,3 +34,21 @@ storage/.s.PGSQL.5432.lock
 
 # Uploaded partner/event files
 /public/uploads
+
+# Exclude markdown/notes files by default
+*.md
+**/*.md
+
+# Except README.md at the root
+!/README.md
+
+# Exclude credentials, SQL dumps, and helper scripts
+if.txt
+*.sql
+set_permissions.php
+storage_link.php
+clear_cache.php
+index.php.production
+.env.production
+
+

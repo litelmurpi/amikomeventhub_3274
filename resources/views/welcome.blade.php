@@ -7,7 +7,7 @@
     <section
       class="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center gap-12"
     >
-      <div class="flex-1 space-y-8">
+      <div class="flex-1 space-y-8 reveal">
         <span
           class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-bold uppercase tracking-wider"
           >#1 Event Platform</span
@@ -16,40 +16,42 @@
           Temukan & Pesan
           <span class="text-indigo-600">Tiket Event</span> Impianmu.
         </h1>
-        <p class="text-lg text-slate-500 max-w-lg leading-relaxed">
+        <p class="text-lg text-slate-500 max-w-lg leading-relaxed reveal reveal-delay-1">
           Dari konser musik hingga workshop teknologi, semua ada di genggamanmu.
           Pesan aman & cepat dengan Midtrans.
         </p>
-        <div class="flex gap-4">
+        <div class="flex gap-4 reveal reveal-delay-2">
           <a
             href="#events"
-            class="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-200 hover:scale-105 transition-transform"
+            class="group flex items-center gap-2 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-200 hover:scale-105 hover:shadow-indigo-300 transition-all"
           >
             Mulai Jelajah
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
           </a>
           <a
             href="#"
-            class="px-8 py-4 border-2 border-slate-200 rounded-2xl font-bold text-lg hover:border-indigo-600 hover:text-indigo-600 transition"
+            class="px-8 py-4 border-2 border-slate-200 rounded-2xl font-bold text-lg hover:border-indigo-600 hover:text-indigo-600 transition-colors"
           >
             Cara Pesan
           </a>
         </div>
       </div>
-      <div class="flex-1 relative">
+      <div class="flex-1 relative reveal reveal-delay-3">
         <div
           class="absolute -top-10 -left-10 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"
         ></div>
         <div
           class="absolute -bottom-10 -right-10 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"
         ></div>
+        
         <img
           src="assets/concert.png"
           alt="Concert"
-          class="rounded-[2rem] shadow-2xl relative z-10 w-full object-cover aspect-[4/5] object-center"
+          class="rounded-[2rem] shadow-2xl relative z-10 w-full object-cover aspect-[4/5] object-center effect-morph transition-all duration-700"
         />
 
         <div
-          class="absolute -bottom-6 -left-6 glass p-6 rounded-2xl shadow-xl z-20 border border-white"
+          class="absolute -bottom-6 -left-6 glass p-6 rounded-2xl shadow-xl z-20 border border-white hover:-translate-y-2 transition-transform duration-500"
         >
           <div class="flex items-center gap-4">
             <div
@@ -81,7 +83,7 @@
     </section>
 
     <!-- Events Grid -->
-    <section id="events" class="max-w-7xl mx-auto px-6 py-20">
+    <section id="events" class="max-w-7xl mx-auto px-6 py-20 reveal">
       <div class="flex justify-between items-end mb-12">
         <div>
           <h2 class="text-3xl font-extrabold mb-2">Event Terdekat</h2>
@@ -92,7 +94,7 @@
         <div class="flex gap-2">
           <a
             href="{{ route('katalog') }}"
-            class="p-3 border rounded-xl hover:bg-white hover:shadow-md transition"
+            class="p-3 border rounded-xl hover:bg-white hover:shadow-md hover:border-indigo-200 transition"
           >
             Semua Kategori
           </a>
@@ -153,7 +155,7 @@
     </section>
 
     <!-- Gallery Preview Section -->
-    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100">
+    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100 reveal">
       <div class="flex justify-between items-end mb-12">
         <div>
           <h2 class="text-3xl font-extrabold mb-2">Galeri Foto Event</h2>
@@ -220,7 +222,77 @@
         </div>
     </div>
 
+    <style>
+        /* Reveal on Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 100ms; }
+        .reveal-delay-2 { transition-delay: 200ms; }
+        .reveal-delay-3 { transition-delay: 300ms; }
+
+        /* Infinite Marquee */
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            gap: 2rem;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        .marquee-content {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-around;
+            min-width: 100%;
+            gap: 2rem;
+            animation: scroll 20s linear infinite;
+        }
+        .marquee-container:hover .marquee-content {
+            animation-play-state: paused;
+        }
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(-100% - 2rem)); }
+        }
+        /* Morphing Shape */
+        @keyframes morphing {
+            0% { border-radius: 2rem; }
+            50% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            100% { border-radius: 2rem; }
+        }
+        .effect-morph {
+            animation: morphing 6s ease-in-out infinite alternate;
+        }
+    </style>
+
     <script>
+        // Intersection Observer for Reveal on Scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+
         function openWelcomeLightbox(imgUrl, caption) {
             const lightbox = document.getElementById('welcome-lightbox');
             const lightboxImg = document.getElementById('welcome-lightbox-img');
@@ -254,7 +326,7 @@
     </script>
 
     <!-- Partners Section -->
-    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100">
+    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100 reveal">
       <div class="text-center mb-12">
         <h2 class="text-3xl font-extrabold mb-2">Partner & Sponsor Kami</h2>
         <p class="text-slate-500 font-medium">
@@ -262,19 +334,34 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        @foreach($partners as $partner)
-        <div class="group flex flex-col items-center justify-center p-6 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
-          <div class="h-20 w-full flex items-center justify-center mb-4">
-            <img
-              src="{{ Str::startsWith($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url) }}"
-              alt="{{ $partner->name }}"
-              class="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
-            />
-          </div>
-          <span class="text-sm font-bold text-slate-500 group-hover:text-indigo-600 transition duration-300 text-center">{{ $partner->name }}</span>
+      <div class="marquee-container mt-12">
+        <div class="marquee-content">
+            @foreach($partners as $partner)
+            <div class="group flex flex-col items-center justify-center p-6 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 min-w-[200px]">
+              <div class="h-20 w-full flex items-center justify-center mb-4">
+                <img
+                  src="{{ Str::startsWith($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url) }}"
+                  alt="{{ $partner->name }}"
+                  class="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
+                />
+              </div>
+              <span class="text-sm font-bold text-slate-500 group-hover:text-indigo-600 transition duration-300 text-center">{{ $partner->name }}</span>
+            </div>
+            @endforeach
+            <!-- Duplicate for infinite effect -->
+            @foreach($partners as $partner)
+            <div class="group flex flex-col items-center justify-center p-6 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 min-w-[200px]">
+              <div class="h-20 w-full flex items-center justify-center mb-4">
+                <img
+                  src="{{ Str::startsWith($partner->logo_url, 'http') ? $partner->logo_url : asset($partner->logo_url) }}"
+                  alt="{{ $partner->name }}"
+                  class="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
+                />
+              </div>
+              <span class="text-sm font-bold text-slate-500 group-hover:text-indigo-600 transition duration-300 text-center">{{ $partner->name }}</span>
+            </div>
+            @endforeach
         </div>
-        @endforeach
       </div>
     </section>
 @endsection

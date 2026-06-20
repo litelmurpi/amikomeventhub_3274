@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JS">
   </p>
 
-  <a href="https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/">Lihat Demo Aplikasi</a>
+  <a href="http://amikomeventhub3274.page.gd/"><strong>Lihat Website Production (InfinityFree)</strong></a> | <a href="https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/">Lihat Demo (Laravel Cloud)</a>
 </div>
 
 ---
@@ -25,22 +25,24 @@
 
 ### 📂 Daftar Tugas & Halaman Demo
 
-| Nama Tugas  | Deskripsi / Bagian | Link Proyek                                                                                                   |
-| :---------- | :----------------- | :------------------------------------------------------------------------------------------------------------ |
-| **TUGAS 1** | Project Initial    | [Buka Proyek](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/)                                    |
-|             | Halaman Katalog    | [Lihat Katalog](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/katalog)                           |
-|             | Halaman Bantuan    | [Lihat Bantuan](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/bantuan)                           |
-|             | Halaman Profil     | [Lihat Profil](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/profil)                             |
-|             | Halaman Tentang    | [Lihat Tentang](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/tentang)                           |
-|             | Halaman Kontak     | [Lihat Kontak](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/kontak)                             |
-| **TUGAS 2** | Dashboard Admin    | [Lihat Dashboard](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin)                           |
-|             | Manajemen Event    | [Lihat Event](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/events)                        |
-|             | Laporan Transaksi  | [Lihat Transaksi](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/transactions)              |
-|             | Beranda / Welcome  | [Lihat Beranda](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/)                                  |
-|             | Kelola Kategori    | [Lihat Kategori](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/categories)                 |
-|             | Detail Event       | [Lihat Detail Event](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/event-detail/jazz-night-2024) |
-|             | Checkout Tiket     | [Lihat Checkout](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/checkout/jazz-night-2024)         |
-| **UTS**     | Script Video UTS   | [Kelola Partner](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/partners)                |
+| Nama Tugas  | Deskripsi / Bagian | Link Cloud (Demo) | Link Production (InfinityFree) |
+| :---------- | :----------------- | :---------------- | :----------------------------- |
+| **TUGAS 1** | Project Initial    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/) | [Buka](http://amikomeventhub3274.page.gd/) |
+|             | Halaman Katalog    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/katalog) | [Buka](http://amikomeventhub3274.page.gd/katalog) |
+|             | Halaman Bantuan    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/bantuan) | [Buka](http://amikomeventhub3274.page.gd/bantuan) |
+|             | Halaman Profil     | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/profil) | [Buka](http://amikomeventhub3274.page.gd/profil) |
+|             | Halaman Tentang    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/tentang) | [Buka](http://amikomeventhub3274.page.gd/tentang) |
+|             | Halaman Kontak     | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/kontak) | [Buka](http://amikomeventhub3274.page.gd/kontak) |
+|             | Halaman Galeri     | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/gallery) | [Buka](http://amikomeventhub3274.page.gd/gallery) |
+| **TUGAS 2** | Dashboard Admin    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin) | [Buka](http://amikomeventhub3274.page.gd/admin) |
+|             | Manajemen Event    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/events) | [Buka](http://amikomeventhub3274.page.gd/admin/events) |
+|             | Laporan Transaksi  | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/transactions) | [Buka](http://amikomeventhub3274.page.gd/admin/transactions) |
+|             | Tiket Saya (User)  | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/my-tickets) | [Buka](http://amikomeventhub3274.page.gd/my-tickets) |
+|             | Beranda / Welcome  | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/) | [Buka](http://amikomeventhub3274.page.gd/) |
+|             | Kelola Kategori    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/categories) | [Buka](http://amikomeventhub3274.page.gd/admin/categories) |
+|             | Detail Event       | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/event-detail/jazz-night-2024) | [Buka](http://amikomeventhub3274.page.gd/event-detail/jazz-night-2024) |
+|             | Checkout (Demo)    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/checkout/jazz-night-2024) | [Buka](http://amikomeventhub3274.page.gd/checkout/jazz-night-2024) |
+<!-- | **UTS**     | Script Video UTS   | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/partners) | [Buka](http://amikomeventhub3274.page.gd/admin/partners) | -->
 
 ---
 
@@ -124,3 +126,10 @@ Untuk mengubah konfigurasi branch deployment atau memicu deployment manual:
 1. Kunjungi **[cloud.laravel.com](https://cloud.laravel.com)**.
 2. Masuk ke halaman **Settings -> Git** untuk mengganti target **Git branch**.
 3. Buka tab **Deployments** dan klik **Deploy** untuk memperbarui secara manual.
+
+---
+
+### 🌐 Website Production (InfinityFree)
+Aplikasi juga telah di-deploy secara manual di hosting InfinityFree:
+- **URL Website**: [http://amikomeventhub3274.page.gd/](http://amikomeventhub3274.page.gd/)
+- **Panduan Setup Deployment**: Silakan merujuk ke file [DEPLOY_GUIDE.md](file:///var/www/html/eventhub_3274/DEPLOY_GUIDE.md) untuk detail langkah konfigurasi hosting dan database.

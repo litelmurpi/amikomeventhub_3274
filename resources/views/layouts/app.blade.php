@@ -8,24 +8,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
-                extend: {
-                    colors: {
-                        electric: '#4f46e5',
-                        vibrant: '#f59e0b',
-                        dark: {
-                            card: '#1e293b'
-                        }
-                    }
-                }
+                extend: {}
             }
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css" />
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
