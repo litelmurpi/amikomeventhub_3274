@@ -48,7 +48,7 @@ if.txt
 set_permissions.php
 storage_link.php
 clear_cache.php
-index.php.production
 .env.production
+
 
 
