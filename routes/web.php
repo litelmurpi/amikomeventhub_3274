@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\PartnerController;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\TicketController;
@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
-Route::get('/checkout/{slug}', [CheckoutController::class, 'create'])->name('checkout')->middleware('auth');
-Route::post('/checkout/{slug}', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('auth');
+Route::get('/checkout/{slug}', [PaymentController::class, 'create'])->name('checkout')->middleware('auth');
+Route::post('/checkout/{slug}', [PaymentController::class, 'process'])->name('checkout.process')->middleware('auth');
+Route::post('/promo/validate', [PaymentController::class, 'validatePromo'])->name('promo.validate')->middleware('auth');
+Route::get('/payment/success/{order_id}', [PaymentController::class, 'success'])->name('payment.success')->middleware('auth');
+Route::get('/eticket/{ticket_code}', [\App\Http\Controllers\EticketController::class, 'show'])->name('eticket.show');
 Route::get('/my-tickets', [TicketController::class, 'index'])->name('user.tickets')->middleware('auth');
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 
@@ -39,7 +42,11 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::put('/events/{event}', [AdminController::class, 'updateEvent'])->name('events.update');
     Route::delete('/events/{event}', [AdminController::class, 'destroyEvent'])->name('events.destroy');
     Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions');
+    Route::post('/transactions/expire-pending', [\App\Http\Controllers\Admin\TransactionController::class, 'expirePending'])->name('transactions.expire-pending');
+    Route::get('/checkin', [\App\Http\Controllers\Admin\CheckinController::class, 'index'])->name('checkin');
+    Route::post('/checkin', [\App\Http\Controllers\Admin\CheckinController::class, 'verify'])->name('checkin.verify');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+    Route::resource('/promo-codes', \App\Http\Controllers\Admin\PromoCodeController::class)->names('promo-codes');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
