@@ -85,3 +85,30 @@ Route::get('/katalog', [EventController::class, 'katalog'])->name('katalog');
 Route::get('/bantuan', function () {
     return view('bantuan');
 });
+
+// ============================================================
+// 🔧 TEMPORARY DEBUG ROUTES — HAPUS SETELAH DEBUGGING SELESAI!
+// ============================================================
+Route::get('/debug-log-3274', function () {
+    $logFile = storage_path('logs/laravel.log');
+    if (!file_exists($logFile)) {
+        return response('Log file tidak ditemukan.', 404);
+    }
+    // Ambil 200 baris terakhir dari log
+    $lines = file($logFile);
+    $lastLines = array_slice($lines, -200);
+    return response('<pre>' . htmlspecialchars(implode('', $lastLines)) . '</pre>')
+        ->header('Content-Type', 'text/html');
+});
+
+Route::get('/run-migrate-3274', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        return response('<pre>✅ Migration berhasil!\n\n' . htmlspecialchars($output) . '</pre>')
+            ->header('Content-Type', 'text/html');
+    } catch (\Exception $e) {
+        return response('<pre>❌ Migration gagal: ' . htmlspecialchars($e->getMessage()) . '</pre>')
+            ->header('Content-Type', 'text/html');
+    }
+});
