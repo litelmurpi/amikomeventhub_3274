@@ -93,6 +93,19 @@ jobs:
           touch deploy/eventhub_app/storage/framework/views/.gitkeep
           touch deploy/eventhub_app/storage/logs/.gitkeep
 
+          # ===== 🧹 Clean vendor folder (Optimize size & inodes for InfinityFree) =====
+          echo "🧹 Cleaning non-essential vendor files..."
+          find deploy/eventhub_app/vendor -type d -name "tests" -exec rm -rf {} +
+          find deploy/eventhub_app/vendor -type d -name "test" -exec rm -rf {} +
+          find deploy/eventhub_app/vendor -type d -name "docs" -exec rm -rf {} +
+          find deploy/eventhub_app/vendor -type d -name "spec" -exec rm -rf {} +
+          find deploy/eventhub_app/vendor -type d -name ".github" -exec rm -rf {} +
+          find deploy/eventhub_app/vendor -type f -name "*.md" -delete
+          find deploy/eventhub_app/vendor -type f -name "*.txt" -delete
+          find deploy/eventhub_app/vendor -type f -name "LICENSE" -delete
+          find deploy/eventhub_app/vendor -type f -name "LICENSE.txt" -delete
+          find deploy/eventhub_app/vendor -type f -name "CHANGELOG" -delete
+
           echo "✅ Deployment structure ready!"
           echo "📊 Total size:"
           du -sh deploy/
