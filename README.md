@@ -42,6 +42,10 @@
 |             | Kelola Kategori    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/categories) | [Buka](http://amikomeventhub3274.page.gd/admin/categories) |
 |             | Detail Event       | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/event-detail/jazz-night-2024) | [Buka](http://amikomeventhub3274.page.gd/event-detail/jazz-night-2024) |
 |             | Checkout (Demo)    | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/checkout/jazz-night-2024) | [Buka](http://amikomeventhub3274.page.gd/checkout/jazz-night-2024) |
+| **TUGAS 8** | Auth & Middleware  | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/login) | [Buka](http://amikomeventhub3274.page.gd/login) |
+| **TUGAS 10**| Detail Tiket & Checkout | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/checkout/jazz-night-2024) | [Buka](http://amikomeventhub3274.page.gd/checkout/jazz-night-2024) |
+| **TUGAS 11**| Integrasi Midtrans (Snap) | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/checkout/jazz-night-2024) | [Buka](http://amikomeventhub3274.page.gd/checkout/jazz-night-2024) |
+| **TUGAS 12**| Handling Webhook & Dashboard Admin | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin) | [Buka](http://amikomeventhub3274.page.gd/admin) |
 <!-- | **UTS**     | Script Video UTS   | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/partners) | [Buka](http://amikomeventhub3274.page.gd/admin/partners) | -->
 
 ---
