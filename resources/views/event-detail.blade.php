@@ -3,6 +3,10 @@
 @section('title', $event->title . ' - Amikom Event Hub')
 
 @section('content')
+@php
+    $eventDate = $event->getRawOriginal('date');
+    $isExpired = $eventDate && \Carbon\Carbon::parse($eventDate)->startOfDay()->isPast();
+@endphp
 <main class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Left: Poster -->
         <div class="lg:col-span-1">
@@ -26,6 +30,17 @@
 
         <!-- Right: Details -->
         <div class="lg:col-span-2 space-y-12">
+            @if(session('error') || $isExpired)
+                <div class="p-5 bg-rose-50 border border-rose-100 rounded-3xl flex items-start gap-4 text-rose-800 shadow-sm">
+                    <span class="text-xl">⚠️</span>
+                    <div>
+                        <span class="font-bold text-sm block">Informasi Event</span>
+                        <p class="text-xs text-rose-600 font-semibold mt-1">
+                            {{ session('error') ?? 'Event ini telah berakhir. Pemesanan tiket sudah tidak tersedia.' }}
+                        </p>
+                    </div>
+                </div>
+            @endif
             <div class="space-y-4">
                 <span
                     class="px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-bold uppercase tracking-wider">{{ $event->category->name ?? 'Uncategorized' }}</span>
@@ -74,11 +89,42 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Sisa stok: <span class="font-bold underline">{{ $event->stock }} Tiket lagi!</span>
+                        <p class="mt-4 text-indigo-100 flex items-center gap-2">
+                            @if($isExpired)
+                                <span class="inline-flex items-center px-3 py-1 bg-slate-500/30 text-slate-300 border border-slate-500/40 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    ⚫ EVENT BERAKHIR
+                                </span>
+                            @elseif($event->stock > 50)
+                                <span class="inline-flex items-center px-3 py-1 bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    🟢 Tersedia: {{ $event->stock }} tiket
+                                </span>
+                            @elseif($event->stock <= 50 && $event->stock > 10)
+                                <span class="inline-flex items-center px-3 py-1 bg-amber-500/20 text-amber-200 border border-amber-500/30 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    🟡 Segera Habis! Sisa {{ $event->stock }} tiket
+                                </span>
+                            @elseif($event->stock <= 10 && $event->stock > 0)
+                                <span class="inline-flex items-center px-3 py-1 bg-red-500/20 text-red-200 border border-red-500/30 rounded-lg text-xs font-bold uppercase tracking-wider animate-pulse">
+                                    🔥 Hampir Habis! Sisa {{ $event->stock }} tiket!
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-3 py-1 bg-slate-500/30 text-slate-300 border border-slate-500/40 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    ⚫ Tiket Habis (SOLD OUT)
+                                </span>
+                            @endif
                         </p>
                     </div>
                     <div>
-                        @auth
+                        @if($isExpired)
+                            <button disabled
+                                class="inline-block px-10 py-5 bg-slate-300 text-slate-500 rounded-2xl font-black text-xl cursor-not-allowed shadow-inner">
+                                BERAKHIR
+                            </button>
+                        @elseif($event->stock <= 0)
+                            <button disabled
+                                class="inline-block px-10 py-5 bg-slate-300 text-slate-500 rounded-2xl font-black text-xl cursor-not-allowed shadow-inner">
+                                SOLD OUT
+                            </button>
+                        @elseif(Auth::check())
                             <a href="{{ route('checkout', $event->slug) }}"
                                 class="inline-block px-10 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl">
                                 Pesan Sekarang
@@ -88,7 +134,7 @@
                                 class="inline-block px-10 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl">
                                 Pesan Sekarang
                             </button>
-                        @endauth
+                        @endif
                     </div>
                 </div>
                 <!-- Decoration -->

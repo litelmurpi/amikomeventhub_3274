@@ -12,7 +12,7 @@ class EventController extends Controller
     {
         $categories = Category::all();
 
-        $query = Event::with('category');
+        $query = Event::with('category')->where('date', '>=', now()->startOfDay());
 
         if ($request->has('category') && $request->category != '') {
             $query->whereHas('category', function ($q) use ($request) {
@@ -30,12 +30,5 @@ class EventController extends Controller
         $event = Event::with('category')->where('slug', $slug)->firstOrFail();
 
         return view('event-detail', compact('event'));
-    }
-
-    public function checkout($slug)
-    {
-        $event = Event::with('category')->where('slug', $slug)->firstOrFail();
-
-        return view('checkout', compact('event'));
     }
 }

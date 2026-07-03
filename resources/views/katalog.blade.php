@@ -35,6 +35,23 @@
             <div class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur rounded-lg text-xs font-bold uppercase text-indigo-600">
               {{ $event->category->name ?? 'Uncategorized' }}
             </div>
+            @if($event->stock > 50)
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                Tersedia
+              </div>
+            @elseif($event->stock <= 50 && $event->stock > 10)
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                {{ $event->stock }} Tiket
+              </div>
+            @elseif($event->stock <= 10 && $event->stock > 0)
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-red-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider animate-pulse shadow-sm">
+                Sisa {{ $event->stock }}!
+              </div>
+            @else
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-slate-800 text-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                Habis
+              </div>
+            @endif
           </div>
           <div class="p-6 flex flex-col flex-1">
             <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-600 transition line-clamp-2">{{ $event->title }}</h3>

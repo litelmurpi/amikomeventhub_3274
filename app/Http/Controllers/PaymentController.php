@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Mail\EventTicketMail;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class PaymentController
@@ -324,18 +326,18 @@ class PaymentController extends Controller
         // Update database and adjust event stock based on mapped payment status
         if ($status === 'Success') {
             // Run a thread-safe database transaction with pessimistic locking
-            DB::transaction(function () use ($transaction, $notification) {
+            $updated = DB::transaction(function () use ($transaction, $notification) {
                 // Lock the event record to prevent race conditions on stock check
                 $event = Event::lockForUpdate()->find($transaction->event_id);
 
                 if (!$event) {
                     $transaction->update(['status' => 'Expired']);
-                    return;
+                    return false;
                 }
 
                 // If transaction is already successful, do nothing (idempotent webhook)
                 if ($transaction->status === 'Success') {
-                    return;
+                    return false;
                 }
 
                 // Prevent negative stock
@@ -343,7 +345,7 @@ class PaymentController extends Controller
                     $transaction->update([
                         'status' => 'Expired'
                     ]);
-                    return;
+                    return false;
                 }
 
                 // Decrement stock, update transaction status, and generate ticket code
@@ -361,7 +363,17 @@ class PaymentController extends Controller
                         $promo->increment('used_count');
                     }
                 }
+
+                return true;
             });
+
+            if ($updated) {
+                try {
+                    Mail::to($transaction->customer_email)->send(new EventTicketMail($transaction));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Gagal mengirim email E-Ticket via Webhook: ' . $e->getMessage());
+                }
+            }
         } elseif ($status === 'Expired') {
             $transaction->update([
                 'status' => 'Expired',
@@ -407,7 +419,7 @@ class PaymentController extends Controller
                 }
 
                 if ($mappedStatus === 'Success') {
-                    DB::transaction(function () use ($transaction, $status) {
+                    $updated = DB::transaction(function () use ($transaction, $status) {
                         $event = Event::lockForUpdate()->find($transaction->event_id);
                         
                         // Prevent race condition or duplicate stock decrement
@@ -427,14 +439,25 @@ class PaymentController extends Controller
                                         $promo->increment('used_count');
                                     }
                                 }
+                                return true;
                             } else {
                                 $transaction->update([
                                     'status' => 'Expired'
                                 ]);
                             }
                         }
+                        return false;
                     });
-                    $transaction->refresh();
+                    if ($updated) {
+                        $transaction->refresh();
+                        try {
+                            Mail::to($transaction->customer_email)->send(new EventTicketMail($transaction));
+                        } catch (\Exception $e) {
+                            \Illuminate\Support\Facades\Log::error('Gagal mengirim email E-Ticket via Success Fallback Check: ' . $e->getMessage());
+                        }
+                    } else {
+                        $transaction->refresh();
+                    }
                 } elseif ($mappedStatus === 'Expired') {
                     $transaction->update([
                         'status' => 'Expired'

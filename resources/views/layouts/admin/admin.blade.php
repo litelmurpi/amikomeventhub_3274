@@ -86,6 +86,24 @@
                 </svg>
                 Transaksi
             </a>
+            <a href="{{ route('admin.checkin') }}"
+                class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.checkin*') ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-800' }} rounded-xl font-bold transition">
+                <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                    </path>
+                </svg>
+                Check-in Tiket
+            </a>
+            <a href="{{ route('admin.promo-codes.index') }}"
+                class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.promo-codes*') ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-800' }} rounded-xl font-bold transition">
+                <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                    </path>
+                </svg>
+                Kelola Promo
+            </a>
             {{-- <a href="{{ route('uts-guide') }}"
                 class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('uts-guide') ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-800' }} rounded-xl font-bold transition">
                 <svg class="w-5 h-5 text-indigo-400 group-hover:text-indigo-300" fill="none" stroke="currentColor"
