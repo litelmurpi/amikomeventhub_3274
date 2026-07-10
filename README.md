@@ -49,6 +49,8 @@
 <!-- | **UTS**     | Script Video UTS   | [Buka](https://amikomeventhub-3274-main-oeqkoy.free.laravel.cloud/admin/partners) | [Buka](http://amikomeventhub3274.page.gd/admin/partners) | -->
 
 ---
+Link eventhub_gemini : [Buka](https://github.com/litelmurpi/newamikomeventhub3274)
+---
 
 ### 🚀 Panduan Setup & Instalasi Lokal
 
