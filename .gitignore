@@ -41,6 +41,7 @@ storage/.s.PGSQL.5432.lock
 
 # Except README.md at the root
 !/README.md
+!/jobdesk.md
 
 # Exclude credentials, SQL dumps, and helper scripts
 if.txt

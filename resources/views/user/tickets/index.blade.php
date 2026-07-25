@@ -20,6 +20,7 @@
                         <th class="px-8 py-4">Tgl Pemesanan</th>
                         <th class="px-8 py-4">Total Bayar</th>
                         <th class="px-8 py-4">Status</th>
+                        <th class="px-8 py-4 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y border-t">
@@ -60,6 +61,21 @@
                                 <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold uppercase ring-1 ring-orange-200">Pending</span>
                             @else
                                 <span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-lg text-xs font-bold uppercase ring-1 ring-rose-200">{{ $ticket->status }}</span>
+                            @endif
+                        </td>
+                        <td class="px-8 py-6 text-center">
+                            @if((strtolower($ticket->status) === 'success' || strtolower($ticket->status) === 'settlement') && $ticket->ticket_code)
+                                <a href="{{ route('eticket.show', $ticket->ticket_code) }}" target="_blank"
+                                    class="inline-block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-indigo-100 hover:shadow-lg">
+                                    🎫 Lihat E-Ticket
+                                </a>
+                            @elseif(strtolower($ticket->status) === 'pending')
+                                <a href="{{ route('payment.success', $ticket->order_id) }}"
+                                    class="inline-block px-4 py-2 bg-amber-50 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition shadow-md shadow-amber-100 hover:shadow-lg">
+                                    💳 Bayar Sekarang
+                                </a>
+                            @else
+                                <span class="text-xs text-slate-400 font-semibold">-</span>
                             @endif
                         </td>
                     </tr>
