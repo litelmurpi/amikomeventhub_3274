@@ -56,6 +56,7 @@ class Transaction extends Model
         'checked_in_at',
         'promo_code',
         'discount_amount',
+        'wa_reminder_sent_at',
     ];
 
     /**
@@ -64,8 +65,9 @@ class Transaction extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'is_checked_in' => 'boolean',
-        'checked_in_at' => 'datetime',
+        'is_checked_in'        => 'boolean',
+        'checked_in_at'        => 'datetime',
+        'wa_reminder_sent_at'  => 'datetime',
     ];
 
     /**

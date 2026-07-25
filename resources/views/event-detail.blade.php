@@ -18,9 +18,9 @@
                     <div class="flex items-center gap-4">
                         <div
                             class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold">
-                            {{ $event->organizer_initials }}</div>
+                            {{ $event->organization ? strtoupper(substr($event->organization->name, 0, 2)) : ($event->organizer_initials ?? 'AH') }}</div>
                         <div>
-                            <p class="font-bold text-slate-800">{{ $event->organizer_name }}</p>
+                            <p class="font-bold text-slate-800">{{ $event->organization->name ?? ($event->organizer_name ?? 'AmikomEventHub') }}</p>
                             <p class="text-xs text-slate-500">Verified Organizer</p>
                         </div>
                     </div>

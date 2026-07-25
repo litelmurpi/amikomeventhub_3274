@@ -38,17 +38,21 @@
                     <span>Harga Tiket</span>
                     <span>{{ $event->price }}</span>
                 </div>
+                @if(!$isFreeEvent)
                 <div class="flex justify-between text-slate-500">
                     <span>Biaya Layanan</span>
                     <span>Rp {{ number_format($serviceFee, 0, ',', '.') }}</span>
                 </div>
+                @endif
                 <div id="discount-row" class="flex justify-between text-emerald-600 hidden">
                     <span>Diskon (<span id="discount-code-label"></span>)</span>
                     <span>-Rp <span id="discount-value-label">0</span></span>
                 </div>
                 <div class="flex justify-between text-2xl font-black mt-4 pt-4 border-t">
                     <span>Total Bayar</span>
-                    <span id="total-price-label" class="text-indigo-600">Rp {{ number_format($event->price_value + $serviceFee, 0, ',', '.') }}</span>
+                    <span id="total-price-label" class="text-indigo-600">
+                        {{ $isFreeEvent ? 'Gratis' : 'Rp ' . number_format($event->price_value + $serviceFee, 0, ',', '.') }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -108,7 +112,7 @@
 
                 <button type="button" id="pay-button"
                     class="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-3">
-                    <span id="button-text">Lanjut Pembayaran</span>
+                    <span id="button-text">{{ $isFreeEvent ? 'Daftar Gratis' : 'Lanjut Pembayaran' }}</span>
                     <span id="button-spinner" class="hidden">
                         <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -287,7 +291,15 @@
                     return;
                 }
 
-                const { snap_token, order_id } = await res.json();
+                const responseData = await res.json();
+
+                // Handle Free Event Bypass
+                if (responseData.free_event) {
+                    window.location.href = responseData.redirect_url;
+                    return;
+                }
+
+                const { snap_token, order_id } = responseData;
 
                 // Open Midtrans Snap modal popup overlay
                 window.snap.pay(snap_token, {

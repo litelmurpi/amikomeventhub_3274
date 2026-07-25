@@ -64,7 +64,9 @@ class PaymentController extends Controller
                 ->with('error', 'Maaf, tiket sudah habis.');
         }
 
-        return view('checkout.create', compact('event', 'categories', 'serviceFee'));
+        $isFreeEvent = (int) $event->price_value === 0;
+
+        return view('checkout.create', compact('event', 'categories', 'serviceFee', 'isFreeEvent'));
     }
 
     /**
@@ -184,6 +186,69 @@ class PaymentController extends Controller
 
         // 4. Generate unique order ID
         $orderId = 'TRX-' . time() . '-' . strtoupper(Str::random(5));
+
+        // === BYPASS FREE EVENT ===
+        if ((int) $event->price_value === 0) {
+            $transaction = DB::transaction(function () use ($event, $request, $orderId, $promoCode, $discountAmount) {
+                $eventLocked = Event::lockForUpdate()->find($event->id);
+
+                if (!$eventLocked || $eventLocked->stock <= 0) {
+                    return null;
+                }
+
+                $eventLocked->decrement('stock');
+
+                return Transaction::create([
+                    'event_id'        => $event->id,
+                    'user_id'         => Auth::id(),
+                    'order_id'        => $orderId,
+                    'customer_name'   => $request->customer_name,
+                    'customer_email'  => $request->customer_email,
+                    'customer_phone'  => $request->customer_phone,
+                    'total_price'     => 0,
+                    'status'          => 'Success',
+                    'payment_type'    => 'free',
+                    'ticket_code'     => Transaction::generateTicketCode(),
+                    'promo_code'      => $promoCode ? $promoCode->code : null,
+                    'discount_amount' => $discountAmount,
+                ]);
+            });
+
+            if (!$transaction) {
+                return response()->json(['message' => 'Maaf, tiket untuk event ini sudah habis.'], 400);
+            }
+
+            try {
+                Mail::to($transaction->customer_email)->send(new EventTicketMail($transaction));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Gagal mengirim email E-Ticket (Free Event): ' . $e->getMessage());
+            }
+
+            // Dispatch Asynchronous WhatsApp Notification Job
+            try {
+                $ticketUrl = route('eticket.show', $transaction->ticket_code);
+                $waMsg = "✅ *Pendaftaran Event Berhasil!*\n\n"
+                    . "Halo {$transaction->customer_name},\n"
+                    . "Pendaftaran Anda untuk *{$event->title}* telah berhasil.\n\n"
+                    . "🎫 Kode Tiket: `{$transaction->ticket_code}`\n"
+                    . "📅 Tanggal: {$event->date}\n"
+                    . "📍 Lokasi: {$event->location}\n\n"
+                    . "Lihat E-Ticket Anda di sini:\n"
+                    . "👉 {$ticketUrl}\n\n"
+                    . "— AmikomEventHub";
+
+                \App\Jobs\SendWhatsAppNotificationJob::dispatch($transaction->customer_phone, $waMsg);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Gagal dispatch WA Job (Free Event): ' . $e->getMessage());
+            }
+
+            return response()->json([
+                'free_event'   => true,
+                'redirect_url' => route('payment.success', $transaction->order_id),
+            ]);
+        }
+        // === END BYPASS FREE EVENT ===
+
         $serviceFee = config('midtrans.service_fee', 5000);
         
         // Calculate total price with discount applied. Price cannot drop below 0.
@@ -372,6 +437,23 @@ class PaymentController extends Controller
                     Mail::to($transaction->customer_email)->send(new EventTicketMail($transaction));
                 } catch (\Exception $e) {
                     \Illuminate\Support\Facades\Log::error('Gagal mengirim email E-Ticket via Webhook: ' . $e->getMessage());
+                }
+
+                try {
+                    $eventTitle = $transaction->event->title ?? 'AmikomEventHub';
+                    $ticketUrl = route('eticket.show', $transaction->ticket_code);
+                    $waMsg = "✅ *Pembayaran Tiket Berhasil!*\n\n"
+                        . "Halo {$transaction->customer_name},\n"
+                        . "Pembayaran Anda untuk *{$eventTitle}* telah berhasil dikonfirmasi.\n\n"
+                        . "🎫 Kode Tiket: `{$transaction->ticket_code}`\n"
+                        . "💰 Total: Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n\n"
+                        . "Lihat E-Ticket Anda di sini:\n"
+                        . "👉 {$ticketUrl}\n\n"
+                        . "— AmikomEventHub";
+
+                    \App\Jobs\SendWhatsAppNotificationJob::dispatch($transaction->customer_phone, $waMsg);
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Gagal dispatch WA Job via Webhook: ' . $e->getMessage());
                 }
             }
         } elseif ($status === 'Expired') {

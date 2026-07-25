@@ -41,7 +41,7 @@
         </a>
         <div class="hidden md:flex gap-8 font-medium">
             <a href="{{ route('katalog') }}" class="hover:text-indigo-600 transition">Jelajahi</a>
-            <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
+            <a href="{{ route('organizer.register') }}" class="hover:text-indigo-600 transition">Penyelenggara</a>
             <a href="{{ route('tentang') }}" class="hover:text-indigo-600 transition">Tentang Kami</a>
             <a href="{{ route('gallery') }}" class="hover:text-indigo-600 transition">Galeri</a>
             {{-- <a href="{{ route('uts-guide') }}"
@@ -50,10 +50,20 @@
         </div>
         <div class="flex gap-3 items-center">
             @auth
-                @if(Auth::user()->role === 'admin')
+                @if(Auth::user()->role === 'superadmin')
                     <a href="{{ route('admin.dashboard') }}"
                         class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold text-sm hover:bg-indigo-100 transition">
-                        Admin Panel
+                        Superadmin Panel
+                    </a>
+                @elseif(Auth::user()->role === 'organizer')
+                    <a href="{{ route('organizer.dashboard') }}"
+                        class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-sm hover:bg-emerald-100 transition">
+                        Panel Organizer
+                    </a>
+                @else
+                    <a href="{{ route('organizer.register') }}"
+                        class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-sm hover:bg-emerald-100 transition">
+                        + Buat Event (Jadi Penyelenggara)
                     </a>
                 @endif
                 <a href="{{ route('user.tickets') }}" class="px-4 py-2 border border-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-100 transition">
