@@ -26,6 +26,7 @@
 
 <body class="bg-slate-50 text-slate-900 flex flex-col md:flex-row min-h-screen">
     @include('components.pwa-splash')
+    @include('components.pwa-install-prompt')
 
     <!-- Mobile Header -->
     <header class="md:hidden bg-indigo-900 text-white px-4 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
