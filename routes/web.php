@@ -12,6 +12,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EticketController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Organizer\CheckinController as OrganizerCheckinController;
 use App\Http\Controllers\Organizer\OrganizerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterOrganizerController;
@@ -58,6 +59,10 @@ Route::prefix('organizer')->name('organizer.')->group(function () {
         Route::get('/events/{event}/edit', [OrganizerController::class, 'editEvent'])->name('events.edit');
         Route::put('/events/{event}', [OrganizerController::class, 'updateEvent'])->name('events.update');
         Route::delete('/events/{event}', [OrganizerController::class, 'destroyEvent'])->name('events.destroy');
+
+        Route::get('/checkin', [OrganizerCheckinController::class, 'index'])->name('checkin');
+        Route::post('/checkin', [OrganizerCheckinController::class, 'verify'])->name('checkin.verify');
+        Route::post('/checkin/ajax', [OrganizerCheckinController::class, 'verifyAjax'])->name('checkin.ajax');
     });
 });
 
