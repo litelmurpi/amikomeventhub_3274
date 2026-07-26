@@ -33,6 +33,7 @@
         </div>
         <p class="text-slate-400 text-xs md:text-sm font-bold uppercase mb-1">Total Pendapatan</p>
         <h3 class="text-xl md:text-2xl font-black">Rp {{ $stats['total_revenue'] }}</h3>
+        <p class="text-xs text-slate-400 mt-2 font-medium">Dari {{ $stats['tickets_sold'] }} tiket terjual</p>
     </div>
     <div class="bg-white p-5 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-4">
@@ -44,6 +45,7 @@
         </div>
         <p class="text-slate-400 text-xs md:text-sm font-bold uppercase mb-1">Tiket Terjual</p>
         <h3 class="text-xl md:text-2xl font-black">{{ $stats['tickets_sold'] }}</h3>
+        <p class="text-xs text-slate-400 mt-2 font-medium">Transaksi sukses</p>
     </div>
     <div class="bg-white p-5 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-4">
@@ -52,18 +54,26 @@
                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
         </div>
-        <p class="text-slate-400 text-xs md:text-sm font-bold uppercase mb-1">Event Aktif</p>
-        <h3 class="text-xl md:text-2xl font-black">{{ $stats['active_events'] }} Event</h3>
+        <p class="text-slate-400 text-xs md:text-sm font-bold uppercase mb-1">Event Aktif Publik</p>
+        <h3 class="text-xl md:text-2xl font-black text-slate-800">{{ $stats['active_events'] }} Event</h3>
+        <p class="text-xs text-slate-400 mt-2 font-medium">Dari total {{ $stats['total_events'] }} event terdaftar</p>
     </div>
     <div class="bg-white p-5 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm">
-        <div class="w-10 h-10 md:w-12 md:h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mb-4">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-4">
             <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4m-4 0H9m4 0V5 font-bold"></path>
             </svg>
         </div>
-        <p class="text-slate-400 text-xs md:text-sm font-bold uppercase mb-1">Pesanan Pending</p>
-        <h3 class="text-xl md:text-2xl font-black">{{ $stats['pending_orders'] }} Pesanan</h3>
+        <p class="text-slate-400 text-xs md:text-sm font-bold uppercase mb-1">Penyelenggara</p>
+        <h3 class="text-xl md:text-2xl font-black text-slate-800">{{ $stats['verified_orgs'] }} Aktif</h3>
+        <p class="text-xs text-slate-400 mt-2 font-medium">
+            @if(($stats['pending_orgs'] ?? 0) > 0)
+                <span class="text-amber-600 font-bold">{{ $stats['pending_orgs'] }} Menunggu Verifikasi</span>
+            @else
+                Semua terverifikasi
+            @endif
+        </p>
     </div>
 </div>
 

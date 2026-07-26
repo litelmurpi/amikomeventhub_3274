@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Transaction;
 use App\Models\Category;
+use App\Models\Organization;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +19,10 @@ class AdminController extends Controller
         $stats = [
             'total_revenue' => number_format(Transaction::where('status', 'Success')->sum('total_price'), 0, ',', '.'),
             'tickets_sold' => Transaction::where('status', 'Success')->count(),
-            'active_events' => Event::count(),
+            'active_events' => Event::publicApproved()->where('date', '>=', now()->startOfDay())->count(),
+            'total_events' => Event::count(),
+            'verified_orgs' => Organization::where(function($q) { $q->where('status', 'approved')->orWhere('is_verified', true); })->count(),
+            'pending_orgs' => Organization::where('status', 'pending')->where('is_verified', false)->count(),
             'pending_orders' => Transaction::where('status', 'Pending')->count()
         ];
 
@@ -29,17 +33,23 @@ class AdminController extends Controller
 
     public function events(Request $request)
     {
-        $query = $request->input('search');
+        $search = $request->input('search');
+        $categoryId = $request->input('category_id');
         $operator = DB::connection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
 
-        $events = Event::with('category')
-            ->when($query, function($q) use ($query, $operator) {
-                return $q->where('title', $operator, '%' . $query . '%');
+        $categories = Category::all();
+
+        $events = Event::with(['category', 'organization'])
+            ->when($search, function($q) use ($search, $operator) {
+                return $q->where('title', $operator, '%' . $search . '%');
+            })
+            ->when($categoryId, function($q) use ($categoryId) {
+                return $q->where('category_id', $categoryId);
             })
             ->latest()
             ->get();
 
-        return view('admin.events', compact('events'));
+        return view('admin.events', compact('events', 'categories'));
     }
 
     public function transactions()
