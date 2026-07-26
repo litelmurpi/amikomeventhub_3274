@@ -136,6 +136,15 @@
             @endif
           </div>
           <div class="p-5 sm:p-6">
+            <!-- Tambahan Person B: Rating Rata-rata di Card Event -->
+            <div class="flex items-center gap-1.5 mb-2">
+              <span class="text-amber-500 text-sm">⭐</span>
+              <span class="font-bold text-slate-800 text-sm">
+                {{ number_format($event->average_rating, 1) }}
+              </span>
+              <span class="text-slate-400 text-xs">({{ $event->review_count }} ulasan)</span>
+            </div>
+
             <h3
               class="text-lg sm:text-xl font-bold mb-2 group-hover:text-indigo-600 transition"
             >

@@ -16,11 +16,19 @@ use App\Http\Controllers\Organizer\OrganizerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterOrganizerController;
 use App\Http\Controllers\User\TicketController;
-use App\Http\Controllers\SocialAuthController; // Tambahan Person B
+use App\Http\Controllers\SocialAuthController; // Tambahan Person B (SSO)
+use App\Http\Controllers\ReviewController; // Tambahan Person B (Rating & Review)
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
+
+// ======================================================================
+// FITUR PERSON B: RATING & REVIEW
+// Ditambahkan secara terpisah agar tidak bentrok saat proses merge
+// ======================================================================
+Route::post('/event-detail/{slug}/review', [ReviewController::class, 'store'])->name('review.store')->middleware('auth');
+
 Route::get('/checkout/{slug}', [PaymentController::class, 'create'])->name('checkout')->middleware('auth');
 Route::post('/checkout/{slug}', [PaymentController::class, 'process'])->name('checkout.process')->middleware('auth');
 Route::post('/promo/validate', [PaymentController::class, 'validatePromo'])->name('promo.validate')->middleware('auth');

@@ -41,10 +41,41 @@
                     </div>
                 </div>
             @endif
+
+            <!-- Notifikasi Sukses / Gagal untuk Review -->
+            @if(session('success'))
+                <div class="p-5 bg-emerald-50 border border-emerald-100 rounded-3xl flex items-start gap-4 text-emerald-800 shadow-sm">
+                    <span class="text-xl shrink-0">✅</span>
+                    <div>
+                        <span class="font-bold text-sm block">Berhasil</span>
+                        <p class="text-xs text-emerald-600 font-semibold mt-1">{{ session('success') }}</p>
+                    </div>
+                </div>
+            @endif
+            @if(session('error') && !$isExpired)
+                <div class="p-5 bg-rose-50 border border-rose-100 rounded-3xl flex items-start gap-4 text-rose-800 shadow-sm">
+                    <span class="text-xl shrink-0">⚠️</span>
+                    <div>
+                        <span class="font-bold text-sm block">Perhatian</span>
+                        <p class="text-xs text-rose-600 font-semibold mt-1">{{ session('error') }}</p>
+                    </div>
+                </div>
+            @endif
+
             <div class="space-y-4">
                 <span
                     class="px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider">{{ $event->category->name ?? 'Uncategorized' }}</span>
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-slate-900">{{ $event->title }}</h1>
+                
+                <!-- Rating Ringkasan di Header Event -->
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-1 text-amber-500 text-lg">
+                        ⭐
+                    </div>
+                    <span class="font-black text-slate-800 text-lg">{{ number_format($event->average_rating, 1) }}</span>
+                    <span class="text-slate-400 text-sm font-medium">({{ $event->review_count }} Ulasan Peserta)</span>
+                </div>
+
                 <div class="flex flex-wrap gap-4 sm:gap-6 text-slate-500 font-medium text-sm sm:text-base">
                     <div class="flex items-center gap-2">
                         <svg class="w-5 h-5 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,6 +168,86 @@
                 <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-white opacity-10 rounded-full pointer-events-none"></div>
                 <div class="absolute -left-10 -top-10 w-32 h-32 bg-indigo-400 opacity-20 rounded-full pointer-events-none"></div>
             </div>
+
+            <!-- ========================================== -->
+            <!-- SECTION TAMBAHAN PERSON B: REVIEW & RATING -->
+            <!-- ========================================== -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b pb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">Ulasan & Rating Peserta</h3>
+                        <p class="text-xs text-slate-500 mt-1">Pendapat dan pengalaman dari peserta yang telah mengikuti event ini.</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-2xl font-black text-indigo-600">{{ number_format($event->average_rating, 1) }}</span>
+                        <span class="text-slate-400 text-sm">/ 5.0</span>
+                    </div>
+                </div>
+
+                <!-- Form Beri Ulasan (Hanya muncul jika user login) -->
+                @auth
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 mb-3">Tulis Ulasan Anda</h4>
+                        <form action="{{ route('review.store', $event->slug) }}" method="POST" class="space-y-4">
+                            @csrf
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Rating Bintang</label>
+                                <select name="rating" required class="w-full md:w-1/3 px-4 py-2.5 bg-white border border-slate-200 rounded-xl font-bold text-slate-700 focus:outline-none focus:border-indigo-600">
+                                    <option value="5">⭐⭐⭐⭐⭐ (5 - Sangat Memuaskan)</option>
+                                    <option value="4">⭐⭐⭐⭐ (4 - Memuaskan)</option>
+                                    <option value="3">⭐⭐⭐ (3 - Cukup)</option>
+                                    <option value="2">⭐⭐ (2 - Kurang)</option>
+                                    <option value="1">⭐ (1 - Sangat Kurang)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Komentar / Pesan</label>
+                                <textarea name="comment" rows="3" placeholder="Ceritakan pengalaman atau masukan kamu mengenai event ini..." class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-700 focus:outline-none focus:border-indigo-600 text-sm"></textarea>
+                            </div>
+                            <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition shadow-md shadow-indigo-100">
+                                Kirim Ulasan
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-2xl text-center text-indigo-700 text-sm font-semibold">
+                        Silakan <a href="{{ route('login') }}" class="underline font-bold">login</a> terlebih dahulu untuk memberikan ulasan pada event ini.
+                    </div>
+                @endauth
+
+                <!-- List Daftar Ulasan -->
+                <div class="space-y-4 pt-2">
+                    @forelse($event->reviews()->latest()->get() as $review)
+                        <div class="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center font-bold text-indigo-600 text-sm">
+                                        {{ strtoupper(substr($review->user->name, 0, 2)) }}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-800 text-sm">{{ $review->user->name }}</p>
+                                        <p class="text-[10px] text-slate-400">{{ $review->created_at->diffForHumans() }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-amber-500 text-sm font-bold gap-1">
+                                    <span>⭐</span>
+                                    <span>{{ $review->rating }}.0</span>
+                                </div>
+                            </div>
+                            @if($review->comment)
+                                <p class="text-slate-600 text-sm pl-13 leading-relaxed">
+                                    {{ $review->comment }}
+                                </p>
+                            @endif
+                        </div>
+                    @empty
+                        <div class="text-center py-8 text-slate-400 text-sm font-medium">
+                            Belum ada ulasan untuk event ini. Jadilah yang pertama memberikan ulasan!
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+            <!-- ========================================== -->
 
             <div class="space-y-4">
                 <h3 class="text-xl font-bold">Kebijakan Tiket</h3>
