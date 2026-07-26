@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->string('promo_code')->nullable()->after('total_price');
-            $table->integer('discount_amount')->default(0)->after('promo_code');
+            if (!Schema::hasColumn('transactions', 'promo_code')) {
+                $table->string('promo_code')->nullable()->after('total_price');
+            }
+            if (!Schema::hasColumn('transactions', 'discount_amount')) {
+                $table->integer('discount_amount')->default(0)->after('promo_code');
+            }
         });
     }
 
@@ -23,7 +27,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn(['promo_code', 'discount_amount']);
+            $columns = array_filter(['promo_code', 'discount_amount'], function($col) {
+                return Schema::hasColumn('transactions', $col);
+            });
+            if (!empty($columns)) {
+                $table->dropColumn($columns);
+            }
         });
     }
 };
