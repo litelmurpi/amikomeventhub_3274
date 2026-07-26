@@ -66,6 +66,17 @@
 
         <!-- Form Card -->
         <div class="glass rounded-3xl border border-white/60 shadow-xl shadow-slate-200/50 p-8">
+            @if(request('info') === 'organizer')
+                <div class="mb-6 p-4 bg-indigo-50 border border-indigo-200 rounded-2xl flex items-center gap-3 text-indigo-700">
+                    <svg class="w-6 h-6 flex-shrink-0 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-xs font-bold leading-relaxed">
+                        Silakan login atau buat akun terlebih dahulu untuk mendaftarkan HIMA / Komunitas Anda sebagai Penyelenggara.
+                    </span>
+                </div>
+            @endif
+
             <!-- Error Messages -->
             @if($errors->any())
                 <div class="mb-6 p-4 bg-rose-50 border border-rose-200 rounded-2xl">
@@ -91,6 +102,9 @@
 
             <form method="POST" action="{{ route('login') }}" class="space-y-5">
                 @csrf
+                @if(request('info'))
+                    <input type="hidden" name="info" value="{{ request('info') }}">
+                @endif
 
                 <!-- Email -->
                 <div>

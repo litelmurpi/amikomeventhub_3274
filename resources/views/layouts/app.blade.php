@@ -26,6 +26,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
@@ -50,14 +54,14 @@
     <!-- Navigation -->
     <nav class="glass sticky top-2 md:top-6 z-40 mx-2 sm:mx-4 mt-2 sm:mt-4 px-3 sm:px-6 py-2.5 sm:py-4 rounded-2xl border border-white/20 shadow-lg">
         <div class="flex justify-between items-center">
-            <a href="{{ route('home') }}" class="flex items-center gap-2.5 min-w-0">
+            <a href="{{ route('home') }}" onclick="if (window.location.pathname === '/') { event.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); history.pushState(null, null, window.location.pathname); }" class="flex items-center gap-2.5 min-w-0">
                 <img src="{{ asset('assets/logo-icon.svg') }}" alt="Logo" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl shadow-md shadow-indigo-100 shrink-0">
                 <span class="text-base sm:text-xl font-extrabold tracking-tight truncate text-slate-900 max-w-[120px] min-[380px]:max-w-none">Amikom<span class="text-indigo-600">EventHub</span></span>
             </a>
             
             <div class="hidden md:flex gap-8 font-medium">
                 <a href="{{ route('katalog') }}" class="hover:text-indigo-600 transition">Jelajahi</a>
-                <a href="{{ route('organizer.register') }}" class="hover:text-indigo-600 transition">Penyelenggara</a>
+                <a href="{{ route('home') }}#become-organizer" class="hover:text-indigo-600 transition">Penyelenggara</a>
                 <a href="{{ route('tentang') }}" class="hover:text-indigo-600 transition">Tentang Kami</a>
                 <a href="{{ route('gallery') }}" class="hover:text-indigo-600 transition">Galeri</a>
             </div>
@@ -172,7 +176,7 @@
             <div>
                 <h4 class="text-white font-bold mb-4 md:mb-6">Navigasi</h4>
                 <ul class="space-y-3 md:space-y-4">
-                    <li><a href="{{ route('home') }}" class="hover:text-white transition">Home</a></li>
+                    <li><a href="{{ route('home') }}" onclick="if (window.location.pathname === '/') { event.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); history.pushState(null, null, window.location.pathname); }" class="hover:text-white transition">Home</a></li>
                     <li><a href="{{ route('katalog') }}" class="hover:text-white transition">Semua Event</a></li>
                     <li><a href="{{ route('gallery') }}" class="hover:text-white transition">Galeri</a></li>
                 </ul>

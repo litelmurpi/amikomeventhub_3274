@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $events = Event::with('category')
+        $events = Event::with(['category', 'organization'])
             ->publicApproved()
             ->where('date', '>=', now()->startOfDay())
             ->get();
