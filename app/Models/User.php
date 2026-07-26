@@ -18,6 +18,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'google_id',
+        'avatar',
     ];
 
     protected $hidden = [
@@ -56,5 +58,10 @@ class User extends Authenticatable
     public function isUser(): bool
     {
         return $this->role === 'user';
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

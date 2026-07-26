@@ -17,6 +17,8 @@ use App\Http\Controllers\Organizer\OrganizerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterOrganizerController;
 use App\Http\Controllers\User\TicketController;
+use App\Http\Controllers\SocialAuthController; // Tambahan Person B (SSO)
+use App\Http\Controllers\ReviewController; // Tambahan Person B (Rating & Review)
 use Illuminate\Support\Facades\Route;
 
 // PWA Service Worker & Manifest Routes (Explicit MIME Types for Shared Hosting / InfinityFree)
@@ -44,6 +46,13 @@ Route::get('/offline.html', function () {
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
+
+// ======================================================================
+// FITUR PERSON B: RATING & REVIEW
+// Ditambahkan secara terpisah agar tidak bentrok saat proses merge
+// ======================================================================
+Route::post('/event-detail/{slug}/review', [ReviewController::class, 'store'])->name('review.store')->middleware('auth');
+
 Route::get('/checkout/{slug}', [PaymentController::class, 'create'])->name('checkout')->middleware('auth');
 Route::post('/checkout/{slug}', [PaymentController::class, 'process'])->name('checkout.process')->middleware('auth');
 Route::post('/promo/validate', [PaymentController::class, 'validatePromo'])->name('promo.validate')->middleware('auth');
@@ -62,6 +71,15 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
+});
+
+// ======================================================================
+// FITUR PERSON B: GOOGLE SSO ROUTES
+// Ditambahkan dalam blok terpisah untuk menghindari konflik saat merge Git
+// ======================================================================
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('google.login');
+    Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 });
 
 // Logout (harus sudah login)

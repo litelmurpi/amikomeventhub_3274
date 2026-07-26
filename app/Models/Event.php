@@ -57,7 +57,6 @@ class Event extends Model
         return $this->category->name ?? 'Uncategorized';
     }
 
-
     // Standard date format if needed by view
     // The previous array had "16 November 2024"
     public function getDateAttribute($value)
@@ -65,6 +64,23 @@ class Event extends Model
         return \Carbon\Carbon::parse($value)->translatedFormat('d F Y');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    // Accessor untuk mendapatkan rata-rata rating (1-5)
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    // Accessor untuk mendapatkan total jumlah ulasan
+    public function getReviewCountAttribute()
+    {
+        return $this->reviews()->count();
+    }
+}
     /**
      * Scope to filter only public events from approved organizations or superadmin.
      */

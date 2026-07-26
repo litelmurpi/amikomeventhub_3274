@@ -79,17 +79,54 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+            @if($event->stock > 50)
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                Tersedia
+              </div>
+            @elseif($event->stock <= 50 && $event->stock > 10)
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                {{ $event->stock }} Tiket
+              </div>
+            @elseif($event->stock <= 10 && $event->stock > 0)
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-red-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider animate-pulse shadow-sm">
+                Sisa {{ $event->stock }}!
+              </div>
+            @else
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-slate-800 text-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                Habis
+              </div>
+            @endif
+          </div>
+          <div class="p-5 sm:p-6">
+            <!-- Tambahan Person B: Rating Rata-rata di Card Event -->
+            <div class="flex items-center gap-1.5 mb-2">
+              <span class="text-amber-500 text-sm">⭐</span>
+              <span class="font-bold text-slate-800 text-sm">
+                {{ number_format($event->average_rating, 1) }}
+              </span>
+              <span class="text-slate-400 text-xs">({{ $event->review_count }} ulasan)</span>
+            </div>
 
-    <!-- Events Grid -->
-    <section id="events" class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-20 reveal scroll-mt-24 md:scroll-mt-28">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 md:mb-12">
-            <div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Event Terdekat</h2>
-                <p class="text-slate-500 font-medium text-sm sm:text-base">
-                    Jangan sampai ketinggalan acara seru minggu ini!
-                </p>
+            <h3
+              class="text-lg sm:text-xl font-bold mb-2 group-hover:text-indigo-600 transition"
+            >
+              {{ $event->title }}
+            </h3>
+            <div class="flex items-center gap-2 text-slate-500 text-sm mb-4">
+              <svg
+                class="w-4 h-4 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span class="truncate">{{ $event->date }}</span>
             </div>
             <div class="flex gap-2">
                 <a href="{{ route('katalog') }}"
