@@ -19,21 +19,27 @@ use App\Http\Controllers\RegisterOrganizerController;
 use App\Http\Controllers\User\TicketController;
 use Illuminate\Support\Facades\Route;
 
-// PWA Service Worker & Manifest Routes (Guarantees 200 OK across all hosting environments)
+// PWA Service Worker & Manifest Routes (Explicit MIME Types for Shared Hosting / InfinityFree)
 Route::get('/manifest.json', function () {
-    return response()->file(public_path('manifest.json'), [
-        'Content-Type' => 'application/json'
-    ]);
+    $path = public_path('manifest.json');
+    if (!file_exists($path)) abort(404);
+    return response(file_get_contents($path), 200)
+        ->header('Content-Type', 'application/manifest+json; charset=utf-8');
 });
 
 Route::get('/sw.js', function () {
-    return response()->file(public_path('sw.js'), [
-        'Content-Type' => 'application/javascript'
-    ]);
+    $path = public_path('sw.js');
+    if (!file_exists($path)) abort(404);
+    return response(file_get_contents($path), 200)
+        ->header('Content-Type', 'text/javascript; charset=utf-8')
+        ->header('Service-Worker-Allowed', '/');
 });
 
 Route::get('/offline.html', function () {
-    return response()->file(public_path('offline.html'));
+    $path = public_path('offline.html');
+    if (!file_exists($path)) abort(404);
+    return response(file_get_contents($path), 200)
+        ->header('Content-Type', 'text/html; charset=utf-8');
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
