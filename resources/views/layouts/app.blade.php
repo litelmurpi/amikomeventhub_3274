@@ -107,13 +107,15 @@
                         </form>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="px-2.5 sm:px-5 py-1.5 sm:py-2.5 text-xs sm:text-base rounded-xl font-semibold hover:bg-slate-200 transition">Login</a>
-                    <a href="{{ route('register') }}"
-                        class="px-2.5 sm:px-5 py-1.5 sm:py-2.5 bg-indigo-600 text-white rounded-xl font-semibold text-xs sm:text-base shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</a>
+                    <div class="hidden sm:flex items-center gap-2">
+                        <a href="{{ route('login') }}" class="px-4 py-2 text-sm rounded-xl font-semibold hover:bg-slate-200 transition">Login</a>
+                        <a href="{{ route('register') }}"
+                            class="px-4 py-2 bg-indigo-600 text-white rounded-xl font-semibold text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</a>
+                    </div>
                 @endauth
 
                 <!-- Mobile Menu Button -->
-                <button onclick="toggleMobileMenu()" class="md:hidden p-1.5 sm:p-2 text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition" title="Menu">
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition" title="Menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                     </svg>
@@ -122,28 +124,38 @@
         </div>
 
         <!-- Mobile Dropdown Menu -->
-        <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-slate-200/80 flex flex-col gap-3 font-medium text-slate-700">
-            <a href="{{ route('katalog') }}" class="px-3 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Jelajahi Event</a>
-            <a href="{{ route('tentang') }}" class="px-3 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Tentang Kami</a>
-            <a href="{{ route('gallery') }}" class="px-3 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Galeri</a>
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-slate-200/80 flex flex-col gap-2 font-medium text-slate-700">
+            <a href="{{ route('katalog') }}" class="px-3 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Jelajahi Event</a>
+            <a href="{{ route('home') }}#become-organizer" onclick="toggleMobileMenu()" class="px-3 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Penyelenggara</a>
+            <a href="{{ route('tentang') }}" class="px-3 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Tentang Kami</a>
+            <a href="{{ route('gallery') }}" class="px-3 py-2.5 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Galeri</a>
 
             @auth
                 <div class="pt-2 border-t border-slate-200/60 flex flex-col gap-2">
                     <p class="px-3 text-xs font-bold text-slate-400 uppercase">Akun Saya ({{ Auth::user()->name }})</p>
-                    <a href="{{ route('user.tickets') }}" class="px-3 py-2 bg-indigo-50 text-indigo-600 font-bold rounded-xl text-sm">
+                    <a href="{{ route('user.tickets') }}" class="px-3 py-2.5 bg-indigo-50 text-indigo-600 font-bold rounded-xl text-sm">
                         🎟️ Tiket Saya
                     </a>
-                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'superadmin')
-                        <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 bg-amber-50 text-amber-700 font-bold rounded-xl text-sm">
+                    @if(Auth::user()->role === 'organizer')
+                        <a href="{{ route('organizer.dashboard') }}" class="px-3 py-2.5 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-sm">
+                            💼 Panel Organizer
+                        </a>
+                    @elseif(Auth::user()->role === 'admin' || Auth::user()->role === 'superadmin')
+                        <a href="{{ route('admin.dashboard') }}" class="px-3 py-2.5 bg-amber-50 text-amber-700 font-bold rounded-xl text-sm">
                             ⚡ Panel Admin
                         </a>
                     @endif
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="w-full text-left px-3 py-2 text-rose-600 font-bold rounded-xl hover:bg-rose-50 text-sm transition">
+                        <button type="submit" class="w-full text-left px-3 py-2.5 text-rose-600 font-bold rounded-xl hover:bg-rose-50 text-sm transition">
                             🚪 Logout
                         </button>
                     </form>
+                </div>
+            @else
+                <div class="pt-3 border-t border-slate-200/60 grid grid-cols-2 gap-2 sm:hidden">
+                    <a href="{{ route('login') }}" class="py-2.5 border border-slate-200 text-slate-700 text-center rounded-xl font-bold text-sm hover:bg-slate-100 transition">Login</a>
+                    <a href="{{ route('register') }}" class="py-2.5 bg-indigo-600 text-white text-center rounded-xl font-bold text-sm shadow-md shadow-indigo-100 hover:bg-indigo-700 transition">Daftar</a>
                 </div>
             @endauth
         </div>

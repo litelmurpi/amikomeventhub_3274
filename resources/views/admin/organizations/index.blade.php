@@ -3,11 +3,10 @@
 @section('title', 'Kelola Penyelenggara - Admin Amikom Event Hub')
 
 @section('content')
-<main class="flex-1 p-10 overflow-y-auto">
-    <header class="flex justify-between items-center mb-10">
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-10">
         <div>
-            <h1 class="text-3xl font-black">Manajemen Penyelenggara</h1>
-            <p class="text-slate-500 font-medium">Verifikasi dan kelola kepanitiaan / HIMA terdaftar (Multi-Tenant).</p>
+            <h1 class="text-2xl sm:text-3xl font-black">Manajemen Penyelenggara</h1>
+            <p class="text-slate-500 text-sm sm:text-base font-medium">Verifikasi dan kelola kepanitiaan / HIMA terdaftar (Multi-Tenant).</p>
         </div>
     </header>
 
@@ -17,43 +16,43 @@
         </div>
     @endif
 
-    <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-3xl sm:rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
         <!-- Status Filter Tabs & Search -->
-        <div class="px-8 pt-6 pb-4 bg-slate-50/50 border-b space-y-4">
-            <div class="flex flex-wrap gap-2">
+        <div class="p-4 sm:px-8 sm:pt-6 sm:pb-4 bg-slate-50/50 border-b space-y-4">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
                 <a href="{{ route('admin.organizations', array_merge(request()->except('status'), ['status' => ''])) }}"
-                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 {{ request('status') == '' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-100' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
+                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap {{ request('status') == '' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-100' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
                     Semua <span class="{{ request('status') == '' ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-600' }} px-2 py-0.5 rounded-lg text-[10px]">{{ $counts['all'] ?? 0 }}</span>
                 </a>
                 <a href="{{ route('admin.organizations', array_merge(request()->except('status'), ['status' => 'approved'])) }}"
-                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 {{ request('status') == 'approved' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-100' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
+                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap {{ request('status') == 'approved' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-100' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
                     Terverifikasi <span class="{{ request('status') == 'approved' ? 'bg-emerald-500 text-white' : 'bg-emerald-50 text-emerald-700' }} px-2 py-0.5 rounded-lg text-[10px]">{{ $counts['approved'] ?? 0 }}</span>
                 </a>
                 <a href="{{ route('admin.organizations', array_merge(request()->except('status'), ['status' => 'pending'])) }}"
-                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 {{ request('status') == 'pending' ? 'bg-amber-600 text-white shadow-md shadow-amber-100' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
+                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap {{ request('status') == 'pending' ? 'bg-amber-600 text-white shadow-md shadow-amber-100' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
                     Menunggu Approval <span class="{{ request('status') == 'pending' ? 'bg-amber-500 text-white' : 'bg-amber-50 text-amber-700' }} px-2 py-0.5 rounded-lg text-[10px]">{{ $counts['pending'] ?? 0 }}</span>
                 </a>
                 <a href="{{ route('admin.organizations', array_merge(request()->except('status'), ['status' => 'rejected'])) }}"
-                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 {{ request('status') == 'rejected' ? 'bg-rose-600 text-white shadow-md shadow-rose-100' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
+                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap {{ request('status') == 'rejected' ? 'bg-rose-600 text-white shadow-md shadow-rose-100' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200' }}">
                     Nonaktif / Ditolak <span class="{{ request('status') == 'rejected' ? 'bg-rose-500 text-white' : 'bg-rose-50 text-rose-700' }} px-2 py-0.5 rounded-lg text-[10px]">{{ $counts['rejected'] ?? 0 }}</span>
                 </a>
             </div>
 
-            <form method="GET" action="{{ route('admin.organizations') }}" id="search-form" class="flex gap-2">
+            <form method="GET" action="{{ route('admin.organizations') }}" id="search-form" class="flex flex-col sm:flex-row gap-2">
                 @if(request('status'))
                     <input type="hidden" name="status" value="{{ request('status') }}">
                 @endif
                 <input type="text" name="search" id="search-input" value="{{ request('search') }}" placeholder="Cari nama organisasi..."
                     class="flex-1 px-5 py-3 rounded-xl border-slate-200 border bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition text-sm">
-                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition text-sm">Cari</button>
+                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition text-sm whitespace-nowrap">Cari</button>
                 @if(request('search'))
-                    <a href="{{ route('admin.organizations', request()->only('status')) }}" class="px-4 py-3 bg-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-300 transition flex items-center text-sm">Reset</a>
+                    <a href="{{ route('admin.organizations', request()->only('status')) }}" class="px-4 py-3 bg-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-300 transition flex items-center justify-center text-sm whitespace-nowrap">Reset</a>
                 @endif
             </form>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse min-w-[850px]">
                 <thead class="bg-slate-50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
                     <tr>
                         <th class="px-8 py-4 w-16">No</th>
@@ -234,5 +233,4 @@
             }
         }
     </script>
-</main>
 @endsection

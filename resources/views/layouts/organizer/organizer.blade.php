@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Organizer Dashboard - AmikomEventHub')</title>
+    
+    <!-- PWA Meta Tags & Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EventHub">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -15,20 +24,48 @@
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900 flex min-h-screen">
+<body class="bg-slate-50 text-slate-900 flex flex-col md:flex-row min-h-screen">
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-indigo-900 text-indigo-100 flex flex-col p-6 space-y-8 sticky top-0 h-screen">
-        <div class="flex items-center gap-3">
+    <!-- Mobile Header -->
+    <header class="md:hidden bg-indigo-900 text-white px-4 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
+        <a href="{{ route('organizer.dashboard') }}" class="flex items-center gap-2.5 min-w-0">
             @if(isset($org) && $org->logo_path)
-                <img src="{{ asset($org->logo_path) }}" alt="Logo" class="w-10 h-10 rounded-xl object-cover shadow">
+                <img src="{{ asset($org->logo_path) }}" alt="Logo" class="w-8 h-8 rounded-lg object-cover shadow shrink-0">
             @else
-                <img src="{{ asset('assets/logo-icon.svg') }}" alt="Logo" class="w-10 h-10 rounded-xl shadow">
+                <img src="{{ asset('assets/logo-icon.svg') }}" alt="Logo" class="w-8 h-8 rounded-lg shadow shrink-0">
             @endif
-            <div class="overflow-hidden">
-                <span class="text-xl font-bold text-white tracking-tight block truncate">{{ $org->name ?? 'AmikomEventHub' }}</span>
-                <span class="text-[10px] uppercase font-bold text-indigo-300 tracking-wider">Panel Penyelenggara</span>
+            <span class="text-base font-bold tracking-tight text-white truncate">{{ $org->name ?? 'Organizer Panel' }}</span>
+        </a>
+        <button onclick="toggleOrganizerSidebar()" class="p-2 text-indigo-200 hover:text-white rounded-lg hover:bg-indigo-800 transition" title="Toggle Sidebar">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Sidebar Backdrop Overlay (Mobile) -->
+    <div id="sidebar-backdrop" onclick="toggleOrganizerSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
+
+    <!-- Sidebar (Desktop & Mobile Drawer) -->
+    <aside id="organizer-sidebar" class="fixed md:sticky top-0 left-0 z-50 md:z-auto w-64 bg-indigo-900 text-indigo-100 flex flex-col p-6 space-y-8 h-screen transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none flex-shrink-0 overflow-y-auto">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3 min-w-0">
+                @if(isset($org) && $org->logo_path)
+                    <img src="{{ asset($org->logo_path) }}" alt="Logo" class="w-10 h-10 rounded-xl object-cover shadow shrink-0">
+                @else
+                    <img src="{{ asset('assets/logo-icon.svg') }}" alt="Logo" class="w-10 h-10 rounded-xl shadow shrink-0">
+                @endif
+                <div class="overflow-hidden">
+                    <span class="text-xl font-bold text-white tracking-tight block truncate">{{ $org->name ?? 'AmikomEventHub' }}</span>
+                    <span class="text-[10px] uppercase font-bold text-indigo-300 tracking-wider">Panel Penyelenggara</span>
+                </div>
             </div>
+            <!-- Close Button for Mobile -->
+            <button onclick="toggleOrganizerSidebar()" class="md:hidden text-indigo-300 hover:text-white shrink-0">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
         </div>
 
         <nav class="flex-1 space-y-2">
@@ -101,8 +138,27 @@
     </aside>
 
     <!-- Main Content -->
-    @yield('content')
+    <main class="flex-1 p-4 md:p-8 lg:p-10 overflow-y-auto min-w-0">
+        @yield('content')
+    </main>
 
+    <script>
+        function toggleOrganizerSidebar() {
+            const sidebar = document.getElementById('organizer-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            backdrop.classList.toggle('hidden');
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => console.log('[PWA Organizer] Service Worker registered:', reg.scope))
+                    .catch((err) => console.error('[PWA Organizer] Service Worker registration failed:', err));
+            });
+        }
+    </script>
 </body>
 
 </html>

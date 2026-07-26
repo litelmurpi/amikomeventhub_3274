@@ -3,7 +3,6 @@
 @section('title', 'Check-in Tiket Peserta - ' . ($org->name ?? 'Organizer'))
 
 @section('content')
-<main class="flex-1 p-6 sm:p-10 overflow-y-auto space-y-6 sm:space-y-8">
     
     <!-- Header -->
     <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
@@ -175,7 +174,6 @@
         </div>
 
     </div>
-</main>
 
 <!-- HTML5 QR Code Library -->
 <script src="https://unpkg.com/html5-qrcode"></script>

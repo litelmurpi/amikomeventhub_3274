@@ -3,13 +3,12 @@
 @section('title', 'Edit Event - Amikom Event Hub')
 
 @section('content')
-<main class="flex-1 p-10 overflow-y-auto">
-    <header class="flex justify-between items-center mb-10">
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-10">
         <div>
-            <h1 class="text-3xl font-black">Edit Event</h1>
-            <p class="text-slate-500 font-medium">Ubah informasi event Anda di bawah ini.</p>
+            <h1 class="text-2xl sm:text-3xl font-black">Edit Event</h1>
+            <p class="text-slate-500 text-sm sm:text-base font-medium">Ubah informasi event Anda di bawah ini.</p>
         </div>
-        <a href="{{ route('admin.events') }}" class="px-6 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold hover:bg-slate-200 transition">
+        <a href="{{ route('admin.events') }}" class="px-6 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold hover:bg-slate-200 transition text-center">
             Kembali
         </a>
     </header>
@@ -126,5 +125,4 @@
             </div>
         </form>
     </div>
-</main>
 @endsection
