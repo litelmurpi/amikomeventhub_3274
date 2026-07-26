@@ -16,6 +16,7 @@ use App\Http\Controllers\Organizer\OrganizerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterOrganizerController;
 use App\Http\Controllers\User\TicketController;
+use App\Http\Controllers\SocialAuthController; // Tambahan Person B
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -38,6 +39,15 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
+});
+
+// ======================================================================
+// FITUR PERSON B: GOOGLE SSO ROUTES
+// Ditambahkan dalam blok terpisah untuk menghindari konflik saat merge Git
+// ======================================================================
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('google.login');
+    Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 });
 
 // Logout (harus sudah login)
