@@ -327,9 +327,10 @@ class PaymentController extends Controller
             $transaction->update([
                 'status' => 'Expired'
             ]);
-
+ 
+            \Illuminate\Support\Facades\Log::error('Midtrans Snap token creation failed: ' . $e->getMessage());
             return response()->json([
-                'message' => 'Gagal terhubung dengan layanan pembayaran: ' . $e->getMessage()
+                'message' => 'Gagal terhubung dengan layanan pembayaran. Silakan coba lagi nanti.'
             ], 500);
         }
     }

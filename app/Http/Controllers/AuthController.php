@@ -87,14 +87,30 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
+ 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        if ($request->has('redirect_to')) {
-            return redirect($request->input('redirect_to'));
+ 
+        $redirectTo = $request->input('redirect_to');
+        if ($redirectTo && $this->isSafeRedirectUrl($redirectTo, $request)) {
+            return redirect($redirectTo);
         }
-
+ 
         return redirect()->route('home');
+    }
+ 
+    private function isSafeRedirectUrl(string $url, Request $request): bool
+    {
+        if (str_starts_with($url, ['//', '\\'])) {
+            return false;
+        }
+ 
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        if (!$scheme) {
+            return true;
+        }
+ 
+        $host = parse_url($url, PHP_URL_HOST);
+        return $host === $request->getHost();
     }
 }
