@@ -19,6 +19,23 @@ use App\Http\Controllers\RegisterOrganizerController;
 use App\Http\Controllers\User\TicketController;
 use Illuminate\Support\Facades\Route;
 
+// PWA Service Worker & Manifest Routes (Guarantees 200 OK across all hosting environments)
+Route::get('/manifest.json', function () {
+    return response()->file(public_path('manifest.json'), [
+        'Content-Type' => 'application/json'
+    ]);
+});
+
+Route::get('/sw.js', function () {
+    return response()->file(public_path('sw.js'), [
+        'Content-Type' => 'application/javascript'
+    ]);
+});
+
+Route::get('/offline.html', function () {
+    return response()->file(public_path('offline.html'));
+});
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
 Route::get('/checkout/{slug}', [PaymentController::class, 'create'])->name('checkout')->middleware('auth');

@@ -8,12 +8,12 @@
     <title>AmikomEventHub - Temukan Event Seru!</title>
 
     <!-- PWA Meta Tags & Manifest -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <meta name="theme-color" content="#4f46e5">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="EventHub">
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -212,7 +212,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register("{{ asset('sw.js') }}")
                     .then((reg) => console.log('[PWA] Service Worker registered:', reg.scope))
                     .catch((err) => console.error('[PWA] Service Worker registration failed:', err));
             });

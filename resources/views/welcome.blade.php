@@ -332,26 +332,42 @@
     </style>
 
     <script>
-        // Intersection Observer for Reveal on Scroll
-        document.addEventListener('DOMContentLoaded', () => {
+        // Intersection Observer & Viewport Fallback for Reveal on Scroll
+        function initReveals() {
             const reveals = document.querySelectorAll('.reveal');
+            if (!reveals.length) return;
+
             const revealOptions = {
-                threshold: 0.15,
-                rootMargin: "0px 0px -50px 0px"
+                threshold: 0.05,
+                rootMargin: "0px 0px 100px 0px"
             };
 
             const revealOnScroll = new IntersectionObserver(function(entries, observer) {
                 entries.forEach(entry => {
-                    if (!entry.isIntersecting) return;
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
                 });
             }, revealOptions);
 
             reveals.forEach(reveal => {
-                revealOnScroll.observe(reveal);
+                const rect = reveal.getBoundingClientRect();
+                if (rect.top < window.innerHeight + 150) {
+                    reveal.classList.add('active');
+                } else {
+                    revealOnScroll.observe(reveal);
+                }
             });
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initReveals);
+        } else {
+            initReveals();
+        }
+        window.addEventListener('load', initReveals);
+        window.addEventListener('scroll', initReveals, { passive: true });
 
         function openWelcomeLightbox(imgUrl, caption) {
             const lightbox = document.getElementById('welcome-lightbox');
