@@ -23,40 +23,71 @@
 </div>
 
 <script>
-    let deferredPrompt = null;
+    (function() {
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || document.referrer.includes('android-app://');
+        
+        // Sembunyikan banner jika aplikasi sudah di-install & dibuka dalam mode PWA Standalone
+        if (isStandalone) return;
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent default browser mini-infobar
-        e.preventDefault();
-        deferredPrompt = e;
+        let deferredPrompt = null;
 
-        // Don't show if user dismissed prompt recently
-        if (localStorage.getItem('pwa_install_dismissed')) return;
+        function showBanner(subtextMessage = null, hideBtn = false) {
+            if (localStorage.getItem('pwa_install_dismissed')) return;
 
-        // Show custom install banner with smooth animation
-        const banner = document.getElementById('pwa-install-banner');
-        if (banner) {
-            banner.classList.remove('hidden');
-            setTimeout(() => {
-                banner.classList.remove('translate-y-8', 'opacity-0');
-            }, 100);
+            const banner = document.getElementById('pwa-install-banner');
+            const subtext = document.getElementById('pwa-prompt-subtext');
+            const btn = document.getElementById('pwa-install-btn');
+
+            if (banner) {
+                if (subtextMessage && subtext) subtext.innerText = subtextMessage;
+                if (hideBtn && btn) btn.style.display = 'none';
+
+                banner.classList.remove('hidden');
+                setTimeout(() => {
+                    banner.classList.remove('translate-y-8', 'opacity-0');
+                }, 300);
+            }
         }
-    });
 
-    const installBtn = document.getElementById('pwa-install-btn');
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-
-            // Show native browser install prompt
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`[PWA] Install prompt outcome: ${outcome}`);
-
-            deferredPrompt = null;
-            closePwaBanner();
+        // 1. Tangkap event beforeinstallprompt resmi dari Chrome/Android
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showBanner("Akses cepat & fitur scan tiket offline di HP Anda.");
         });
-    }
+
+        // 2. Fallback: Munculkan banner di mobile setelah page load jika beforeinstallprompt belum panggil
+        window.addEventListener('load', () => {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (isIOS) {
+                showBanner('Tap 📤 (Bagikan) lalu pilih "Tambah ke Utama"', true);
+            } else if (isMobile) {
+                setTimeout(() => {
+                    showBanner("Akses cepat & fitur scan tiket offline di HP Anda.");
+                }, 1500);
+            }
+        });
+
+        // 3. Eksekusi klik tombol Install
+        document.addEventListener('DOMContentLoaded', () => {
+            const installBtn = document.getElementById('pwa-install-btn');
+            if (installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(`[PWA] User choice: ${outcome}`);
+                        deferredPrompt = null;
+                        closePwaBanner();
+                    } else {
+                        alert("Untuk menginstall aplikasi:\n1. Tap tombol titik tiga (⋮) di kanan atas browser Chrome.\n2. Pilih 'Install Aplikasi' atau 'Tambahkan ke Layar Utama'.");
+                    }
+                });
+            }
+        });
+    })();
 
     function closePwaBanner() {
         const banner = document.getElementById('pwa-install-banner');
@@ -67,26 +98,5 @@
             }, 500);
         }
         localStorage.setItem('pwa_install_dismissed', 'true');
-    }
-
-    // Check if running on iOS Safari
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-    if (isIOS && !isStandalone && !localStorage.getItem('pwa_install_dismissed')) {
-        window.addEventListener('load', () => {
-            const banner = document.getElementById('pwa-install-banner');
-            const subtext = document.getElementById('pwa-prompt-subtext');
-            const btn = document.getElementById('pwa-install-btn');
-
-            if (banner && subtext && btn) {
-                subtext.innerText = 'Tap 📤 (Bagikan) lalu pilih "Tambah ke Utama"';
-                btn.style.display = 'none';
-                banner.classList.remove('hidden');
-                setTimeout(() => {
-                    banner.classList.remove('translate-y-8', 'opacity-0');
-                }, 1000);
-            }
-        });
     }
 </script>
