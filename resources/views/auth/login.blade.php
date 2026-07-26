@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - AmikomEventHub</title>
+    
+    <!-- PWA Meta Tags & Manifest -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EventHub">
+    <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -13,30 +21,17 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        .glass {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(3deg); }
+        @media (min-width: 640px) {
+            .glass-card {
+                background: rgba(255, 255, 255, 0.85);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
         }
-
-        @keyframes float-reverse {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(20px) rotate(-3deg); }
-        }
-
-        @keyframes fade-in-up {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        .animate-float-reverse { animation: float-reverse 7s ease-in-out infinite; }
-        .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
 
         .input-focus:focus {
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
@@ -44,28 +39,27 @@
     </style>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/20 flex items-center justify-center p-4 relative overflow-hidden">
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/30 flex items-center justify-center p-4 relative overflow-hidden">
 
-    <!-- Background Decorations -->
-    <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl animate-float"></div>
-    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-float-reverse"></div>
-    <div class="absolute top-1/2 left-1/4 w-64 h-64 bg-amber-300/5 rounded-full blur-3xl animate-float-reverse"></div>
+    <!-- Subtle Static Background Gradient Blobs (No GPU Animation Loop) -->
+    <div class="absolute -top-32 -left-32 w-80 h-80 bg-indigo-300/20 rounded-full blur-2xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-purple-300/20 rounded-full blur-2xl pointer-events-none"></div>
 
     <!-- Main Card -->
-    <div class="w-full max-w-md animate-fade-in-up" style="animation-delay: 0.1s;">
+    <div class="w-full max-w-md my-auto py-6">
         <!-- Logo & Header -->
-        <div class="text-center mb-8">
-            <a href="{{ route('home') }}" class="inline-flex items-center gap-3 mb-6 group">
-                <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-200 group-hover:scale-110 transition-transform">
+        <div class="text-center mb-6 sm:mb-8">
+            <a href="{{ route('home') }}" class="inline-flex items-center gap-3 mb-4 sm:mb-6 group">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg shadow-indigo-200 group-hover:scale-105 transition-transform">
                     AH</div>
-                <span class="text-2xl font-bold tracking-tight text-slate-800">AmikomEventHub</span>
+                <span class="text-xl sm:text-2xl font-bold tracking-tight text-slate-800">AmikomEventHub</span>
             </a>
-            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Selamat Datang Kembali</h1>
-            <p class="text-slate-500 font-medium">Masuk ke akun Anda untuk melanjutkan</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1.5">Selamat Datang Kembali</h1>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium">Masuk ke akun Anda untuk melanjutkan</p>
         </div>
 
         <!-- Form Card -->
-        <div class="glass rounded-3xl border border-white/60 shadow-xl shadow-slate-200/50 p-8">
+        <div class="glass-card rounded-3xl border border-white/80 shadow-xl shadow-slate-200/50 p-6 sm:p-8">
             @if(request('info') === 'organizer')
                 <div class="mb-6 p-4 bg-indigo-50 border border-indigo-200 rounded-2xl flex items-center gap-3 text-indigo-700">
                     <svg class="w-6 h-6 flex-shrink-0 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
