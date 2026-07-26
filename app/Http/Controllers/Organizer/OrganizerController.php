@@ -153,6 +153,13 @@ class OrganizerController extends Controller
             'poster' => 'nullable|image|max:2048',
         ]);
 
+        $soldTickets = Transaction::where('event_id', $event->id)->where('status', 'Success')->count();
+        if ($validated['stock'] < $soldTickets) {
+            return redirect()->back()
+                ->withErrors(['stock' => "Stok tidak boleh kurang dari {$soldTickets} (jumlah tiket yang sudah lunas terjual)."])
+                ->withInput();
+        }
+
         if ($request->title !== $event->title) {
             $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
         }

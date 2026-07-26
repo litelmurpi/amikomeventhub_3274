@@ -12,6 +12,7 @@ class HomeController extends Controller
     public function index()
     {
         $events = Event::with('category')
+            ->publicApproved()
             ->where('date', '>=', now()->startOfDay())
             ->get();
         $partners = Partner::latest()->get();
