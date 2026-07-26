@@ -34,34 +34,52 @@
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
         }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
 
     <!-- Navigation -->
-    <nav class="glass sticky top-4 md:top-8 z-40 mx-2 md:mx-4 mt-2 md:mt-4 px-4 md:px-6 py-3 md:py-4 rounded-2xl border border-white/20 shadow-lg">
+    <nav class="glass sticky top-2 md:top-6 z-40 mx-2 sm:mx-4 mt-2 sm:mt-4 px-3 sm:px-6 py-2.5 sm:py-4 rounded-2xl border border-white/20 shadow-lg">
         <div class="flex justify-between items-center">
-            <a href="{{ route('home') }}" class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md shadow-indigo-200">
+            <a href="{{ route('home') }}" class="flex items-center gap-2 min-w-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-md shadow-indigo-200 shrink-0">
                     AH
                 </div>
-                <span class="text-lg md:text-xl font-bold tracking-tight">AmikomEventHub</span>
+                <span class="text-base sm:text-xl font-bold tracking-tight truncate max-w-[120px] min-[380px]:max-w-none">AmikomEventHub</span>
             </a>
             
             <div class="hidden md:flex gap-8 font-medium">
                 <a href="{{ route('katalog') }}" class="hover:text-indigo-600 transition">Jelajahi</a>
-                <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
+                <a href="{{ route('organizer.register') }}" class="hover:text-indigo-600 transition">Penyelenggara</a>
                 <a href="{{ route('tentang') }}" class="hover:text-indigo-600 transition">Tentang Kami</a>
                 <a href="{{ route('gallery') }}" class="hover:text-indigo-600 transition">Galeri</a>
             </div>
 
-            <div class="flex gap-2 md:gap-3 items-center">
+            <div class="flex gap-1.5 sm:gap-3 items-center">
                 @auth
-                    @if(Auth::user()->role === 'admin')
+                    @if(Auth::user()->role === 'superadmin')
                         <a href="{{ route('admin.dashboard') }}"
                             class="hidden sm:inline-block px-3 md:px-4 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xs md:text-sm hover:bg-indigo-100 transition">
-                            Admin Panel
+                            Superadmin Panel
+                    </a>
+                @elseif(Auth::user()->role === 'organizer')
+                    <a href="{{ route('organizer.dashboard') }}"
+                        class="px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs sm:text-sm hover:bg-emerald-100 transition">
+                        Panel Organizer
+                    </a>
+                @else
+                    <a href="{{ route('organizer.register') }}"
+                        class="px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs sm:text-sm hover:bg-emerald-100 transition">
+                        + Buat Event
                         </a>
                     @endif
                     <a href="{{ route('user.tickets') }}" class="hidden sm:inline-block px-3 md:px-4 py-2 border border-slate-200 text-slate-700 rounded-xl font-bold text-xs md:text-sm hover:bg-slate-100 transition">
@@ -72,7 +90,7 @@
                             <p class="text-sm font-bold text-slate-700">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-slate-400">{{ Auth::user()->email }}</p>
                         </div>
-                        <div class="w-9 h-9 md:w-10 md:h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold text-xs md:text-sm shadow-sm">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold text-xs sm:text-sm shadow-sm shrink-0">
                             {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
                         </div>
                         <form method="POST" action="{{ route('logout') }}" class="hidden sm:block">
@@ -87,13 +105,13 @@
                         </form>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="px-3 md:px-5 py-2 md:py-2.5 text-sm md:text-base rounded-xl font-semibold hover:bg-slate-200 transition">Login</a>
+                    <a href="{{ route('login') }}" class="px-2.5 sm:px-5 py-1.5 sm:py-2.5 text-xs sm:text-base rounded-xl font-semibold hover:bg-slate-200 transition">Login</a>
                     <a href="{{ route('register') }}"
-                        class="px-3 md:px-5 py-2 md:py-2.5 bg-indigo-600 text-white rounded-xl font-semibold text-sm md:text-base shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</a>
+                        class="px-2.5 sm:px-5 py-1.5 sm:py-2.5 bg-indigo-600 text-white rounded-xl font-semibold text-xs sm:text-base shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</a>
                 @endauth
 
                 <!-- Mobile Menu Button -->
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition" title="Menu">
+                <button onclick="toggleMobileMenu()" class="md:hidden p-1.5 sm:p-2 text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition" title="Menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                     </svg>
@@ -104,7 +122,6 @@
         <!-- Mobile Dropdown Menu -->
         <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-slate-200/80 flex flex-col gap-3 font-medium text-slate-700">
             <a href="{{ route('katalog') }}" class="px-3 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Jelajahi Event</a>
-            <a href="#" class="px-3 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Kategori</a>
             <a href="{{ route('tentang') }}" class="px-3 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Tentang Kami</a>
             <a href="{{ route('gallery') }}" class="px-3 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition">Galeri</a>
 
@@ -114,9 +131,9 @@
                     <a href="{{ route('user.tickets') }}" class="px-3 py-2 bg-indigo-50 text-indigo-600 font-bold rounded-xl text-sm">
                         🎟️ Tiket Saya
                     </a>
-                    @if(Auth::user()->role === 'admin')
+                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'superadmin')
                         <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 bg-amber-50 text-amber-700 font-bold rounded-xl text-sm">
-                            ⚡ Admin Panel
+                            ⚡ Panel Admin
                         </a>
                     @endif
                     <form method="POST" action="{{ route('logout') }}">
@@ -142,9 +159,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-indigo-900 text-indigo-100 py-20 px-6 mt-20">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="space-y-4 col-span-2">
+    <footer class="bg-indigo-900 text-indigo-100 py-12 md:py-20 px-4 sm:px-6 mt-12 md:mt-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+            <div class="space-y-4 col-span-1 sm:col-span-2">
                 <div class="flex items-center gap-2">
                     <div
                         class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-900 font-bold text-xl">
@@ -155,23 +172,22 @@
                     penyelenggara profesional.</p>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-6">Navigasi</h4>
-                <ul class="space-y-4">
+                <h4 class="text-white font-bold mb-4 md:mb-6">Navigasi</h4>
+                <ul class="space-y-3 md:space-y-4">
                     <li><a href="{{ route('home') }}" class="hover:text-white transition">Home</a></li>
                     <li><a href="{{ route('katalog') }}" class="hover:text-white transition">Semua Event</a></li>
                     <li><a href="{{ route('gallery') }}" class="hover:text-white transition">Galeri</a></li>
-                    <li><a href="#" class="hover:text-white transition">Cara Bayar</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-6">Hubungi Kami</h4>
-                <ul class="space-y-4">
+                <h4 class="text-white font-bold mb-4 md:mb-6">Hubungi Kami</h4>
+                <ul class="space-y-3 md:space-y-4">
                     <li>support@eventtiket.com</li>
                     <li>+62 812 3456 7890</li>
                 </ul>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto pt-12 mt-12 border-t border-indigo-800 text-center text-indigo-400 text-sm">
+        <div class="max-w-7xl mx-auto pt-8 md:pt-12 mt-8 md:mt-12 border-t border-indigo-800 text-center text-indigo-400 text-sm">
             &copy; 2024 AmikomEventHub. Built with Laravel & Tailwind CSS.
         </div>
     </footer>

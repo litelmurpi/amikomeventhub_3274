@@ -5,43 +5,43 @@
 @section('content')
 <!-- Hero Section -->
     <section
-      class="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center gap-12"
+      class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-20 flex flex-col lg:flex-row items-center gap-8 md:gap-12 overflow-hidden"
     >
-      <div class="flex-1 space-y-8 reveal">
+      <div class="flex-1 space-y-6 sm:space-y-8 reveal">
         <span
-          class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-bold uppercase tracking-wider"
+          class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider"
           >#1 Event Platform</span
         >
-        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight">
+        <h1 class="text-3xl sm:text-5xl md:text-7xl font-extrabold leading-tight">
           Temukan & Pesan
           <span class="text-indigo-600">Tiket Event</span> Impianmu.
         </h1>
-        <p class="text-lg text-slate-500 max-w-lg leading-relaxed reveal reveal-delay-1">
+        <p class="text-base sm:text-lg text-slate-500 max-w-lg leading-relaxed reveal reveal-delay-1">
           Dari konser musik hingga workshop teknologi, semua ada di genggamanmu.
           Pesan aman & cepat dengan Midtrans.
         </p>
-        <div class="flex gap-4 reveal reveal-delay-2">
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 reveal reveal-delay-2">
           <a
             href="#events"
-            class="group flex items-center gap-2 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-200 hover:scale-105 hover:shadow-indigo-300 transition-all"
+            class="group flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-indigo-600 text-white rounded-2xl font-bold text-base sm:text-lg shadow-xl shadow-indigo-200 hover:scale-105 hover:shadow-indigo-300 transition-all text-center"
           >
             Mulai Jelajah
             <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
           </a>
           <a
-            href="#"
-            class="px-8 py-4 border-2 border-slate-200 rounded-2xl font-bold text-lg hover:border-indigo-600 hover:text-indigo-600 transition-colors"
+            href="{{ route('katalog') }}"
+            class="px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-slate-200 rounded-2xl font-bold text-base sm:text-lg hover:border-indigo-600 hover:text-indigo-600 transition-colors text-center"
           >
-            Cara Pesan
+            Lihat Katalog
           </a>
         </div>
       </div>
-      <div class="flex-1 relative reveal reveal-delay-3">
+      <div class="flex-1 relative reveal reveal-delay-3 w-full">
         <div
-          class="absolute -top-10 -left-10 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"
+          class="absolute -top-10 -left-10 w-48 sm:w-64 h-48 sm:h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"
         ></div>
         <div
-          class="absolute -bottom-10 -right-10 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"
+          class="absolute -bottom-10 -right-10 w-48 sm:w-64 h-48 sm:h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"
         ></div>
         
         <img
@@ -51,14 +51,14 @@
         />
 
         <div
-          class="absolute -bottom-6 -left-6 glass p-6 rounded-2xl shadow-xl z-20 border border-white hover:-translate-y-2 transition-transform duration-500"
+          class="absolute -bottom-4 left-2 sm:-left-6 glass p-4 sm:p-6 rounded-2xl shadow-xl z-20 border border-white hover:-translate-y-2 transition-transform duration-500 max-w-[90%] sm:max-w-none"
         >
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-3 sm:gap-4">
             <div
-              class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600"
+              class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0"
             >
               <svg
-                class="w-6 h-6"
+                class="w-5 h-5 sm:w-6 sm:h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -72,10 +72,10 @@
               </svg>
             </div>
             <div>
-              <p class="text-xs text-slate-500 font-bold uppercase">
+              <p class="text-[10px] sm:text-xs text-slate-500 font-bold uppercase">
                 Terverifikasi
               </p>
-              <p class="font-bold">Pembayaran Aman via Midtrans</p>
+              <p class="font-bold text-xs sm:text-base">Pembayaran Aman via Midtrans</p>
             </div>
           </div>
         </div>
@@ -83,25 +83,25 @@
     </section>
 
     <!-- Events Grid -->
-    <section id="events" class="max-w-7xl mx-auto px-6 py-20 reveal">
-      <div class="flex justify-between items-end mb-12">
+    <section id="events" class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-20 reveal">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 md:mb-12">
         <div>
-          <h2 class="text-3xl font-extrabold mb-2">Event Terdekat</h2>
-          <p class="text-slate-500 font-medium">
+          <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Event Terdekat</h2>
+          <p class="text-slate-500 font-medium text-sm sm:text-base">
             Jangan sampai ketinggalan acara seru minggu ini!
           </p>
         </div>
         <div class="flex gap-2">
           <a
             href="{{ route('katalog') }}"
-            class="p-3 border rounded-xl hover:bg-white hover:shadow-md hover:border-indigo-200 transition"
+            class="px-4 py-2.5 border rounded-xl text-sm font-bold hover:bg-white hover:shadow-md hover:border-indigo-200 transition"
           >
-            Semua Kategori
+            Semua Kategori &rarr;
           </a>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @foreach($events as $event)
         <div
           class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden"
@@ -135,15 +135,15 @@
               </div>
             @endif
           </div>
-          <div class="p-6">
+          <div class="p-5 sm:p-6">
             <h3
-              class="text-xl font-bold mb-2 group-hover:text-indigo-600 transition"
+              class="text-lg sm:text-xl font-bold mb-2 group-hover:text-indigo-600 transition"
             >
               {{ $event->title }}
             </h3>
             <div class="flex items-center gap-2 text-slate-500 text-sm mb-4">
               <svg
-                class="w-4 h-4"
+                class="w-4 h-4 shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -155,13 +155,13 @@
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                 ></path>
               </svg>
-              <span>{{ $event->date }}</span>
+              <span class="truncate">{{ $event->date }}</span>
             </div>
-            <div class="flex justify-between items-center pt-4 border-t">
-              <span class="text-2xl font-black text-indigo-600">{{ $event->price }}</span>
+            <div class="flex justify-between items-center pt-4 border-t gap-2">
+              <span class="text-xl sm:text-2xl font-black text-indigo-600 truncate">{{ $event->price }}</span>
               <a
                 href="{{ route('event-detail', $event->slug) }}"
-                class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition"
+                class="px-4 sm:px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xs sm:text-sm hover:bg-indigo-600 hover:text-white transition whitespace-nowrap shrink-0"
                 >Lihat Detail</a
               >
             </div>
@@ -172,18 +172,18 @@
     </section>
 
     <!-- Gallery Preview Section -->
-    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100 reveal">
-      <div class="flex justify-between items-end mb-12">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-20 border-t border-slate-100 reveal">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 md:mb-12">
         <div>
-          <h2 class="text-3xl font-extrabold mb-2">Galeri Foto Event</h2>
-          <p class="text-slate-500 font-medium">
+          <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Galeri Foto Event</h2>
+          <p class="text-slate-500 font-medium text-sm sm:text-base">
             Keseruan dan dokumentasi momen terbaik dari event-event kami.
           </p>
         </div>
         <div class="flex gap-2">
           <a
             href="{{ route('gallery') }}"
-            class="px-6 py-3 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition"
+            class="px-4 sm:px-6 py-2.5 sm:py-3 bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xs sm:text-sm hover:bg-indigo-600 hover:text-white transition whitespace-nowrap"
           >
             Lihat Semua Foto &rarr;
           </a>
@@ -343,10 +343,10 @@
     </script>
 
     <!-- Partners Section -->
-    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100 reveal">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-extrabold mb-2">Partner & Sponsor Kami</h2>
-        <p class="text-slate-500 font-medium">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-20 border-t border-slate-100 reveal">
+      <div class="text-center mb-8 md:mb-12">
+        <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Partner & Sponsor Kami</h2>
+        <p class="text-slate-500 font-medium text-sm sm:text-base">
           Bekerja sama dengan institusi dan perusahaan terkemuka untuk menghadirkan event terbaik.
         </p>
       </div>

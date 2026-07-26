@@ -20,8 +20,8 @@ class AdminMiddleware
                 ->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        if (Auth::user()->role !== 'admin') {
-            abort(403, 'Kamu tidak memiliki akses ke halaman admin.');
+        if (Auth::user()->role !== 'superadmin') {
+            abort(403, 'Hanya Superadmin yang memiliki akses ke halaman ini.');
         }
 
         return $next($request);

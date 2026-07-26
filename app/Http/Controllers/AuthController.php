@@ -31,8 +31,12 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // Redirect berdasarkan role
-            if (Auth::user()->role === 'admin') {
+            if (Auth::user()->role === 'superadmin') {
                 return redirect()->intended(route('admin.dashboard'));
+            }
+
+            if (Auth::user()->role === 'organizer') {
+                return redirect()->intended(route('organizer.dashboard'));
             }
 
             return redirect()->intended(route('home'));
