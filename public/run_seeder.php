@@ -13,15 +13,35 @@ if (!isset($_GET['key']) || $_GET['key'] !== $secretKey) {
     die('<h2 style="color:red; font-family:sans-serif; text-align:center; margin-top:50px;">403 Forbidden: Akses Ditolak. Gunakan parameter ?key=amikom2026</h2>');
 }
 
-// Bootstrap Laravel Application
+// Bootstrap Laravel Application dynamically for standard or InfinityFree structure
 define('LARAVEL_START', microtime(true));
 
-if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-    require __DIR__ . '/../vendor/autoload.php';
-    $app = require_once __DIR__ . '/../bootstrap/app.php';
-} else {
-    die('Autoload vendor file not found.');
+$autoloadPath = null;
+$appPath = null;
+
+$possiblePaths = [
+    // Standard structure
+    ['autoload' => __DIR__ . '/../vendor/autoload.php', 'app' => __DIR__ . '/../bootstrap/app.php'],
+    // InfinityFree subfolder structure (/htdocs/eventhub_app)
+    ['autoload' => __DIR__ . '/eventhub_app/vendor/autoload.php', 'app' => __DIR__ . '/eventhub_app/bootstrap/app.php'],
+    // Root level
+    ['autoload' => __DIR__ . '/vendor/autoload.php', 'app' => __DIR__ . '/bootstrap/app.php'],
+];
+
+foreach ($possiblePaths as $p) {
+    if (file_exists($p['autoload']) && file_exists($p['app'])) {
+        $autoloadPath = $p['autoload'];
+        $appPath = $p['app'];
+        break;
+    }
 }
+
+if (!$autoloadPath) {
+    die('<h2 style="color:red; font-family:sans-serif; text-align:center; margin-top:50px;">Error: Berkas vendor/autoload.php tidak ditemukan di server. Pastikan folder eventhub_app atau vendor sudah di-upload.</h2>');
+}
+
+require $autoloadPath;
+$app = require_once $appPath;
 
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
@@ -49,7 +69,7 @@ use Illuminate\Support\Facades\DB;
 <body>
     <div class="card">
         <h1>🚀 InfinityFree Web Seeder — Amikom Event Hub</h1>
-        <p style="color: #94a3b8; font-size: 14px;">Memproses eksekusi seeder database di server hosting...</p>
+        <p style="color: #94a3b8; font-size: 14px;">Memproses eksekusi seeder database di server hosting InfinityFree...</p>
 
         <div class="log">
 <?php
