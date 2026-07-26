@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             if (!Schema::hasColumn('events', 'organization_id')) {
-                $table->foreignId('organization_id')->nullable()->after('id')->constrained('organizations')->nullOnDelete();
+                $table->unsignedBigInteger('organization_id')->nullable()->after('id');
             }
         });
     }
@@ -25,7 +25,6 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             if (Schema::hasColumn('events', 'organization_id')) {
-                $table->dropForeign(['organization_id']);
                 $table->dropColumn('organization_id');
             }
         });
