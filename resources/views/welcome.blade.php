@@ -51,6 +51,10 @@
                 @endauth
             </div>
         </div>
+        @php
+            $featuredEvent = $events->first();
+        @endphp
+
         <div class="flex-1 relative reveal reveal-delay-3 w-full">
             <div
                 class="absolute -top-10 -left-10 w-48 sm:w-64 h-48 sm:h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob">
@@ -59,80 +63,84 @@
                 class="absolute -bottom-10 -right-10 w-48 sm:w-64 h-48 sm:h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000">
             </div>
 
-            <img src="assets/concert.png" alt="Concert"
-                class="rounded-[2.5rem] shadow-2xl relative z-10 w-full object-cover aspect-[4/5] object-center border-4 border-white transition-all duration-500 hover:scale-[1.01]" />
+            <div class="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white bg-slate-100">
+                <img src="{{ asset(optional($featuredEvent)->poster_path ?? 'assets/concert.png') }}" alt="{{ optional($featuredEvent)->title ?? 'Concert' }}"
+                    class="w-full object-cover aspect-[4/5] object-center transition-all duration-500 hover:scale-[1.01]" />
 
-            <div
-                class="absolute -bottom-4 left-2 sm:-left-6 glass p-4 sm:p-6 rounded-2xl shadow-xl z-20 border border-white hover:-translate-y-2 transition-transform duration-500 max-w-[90%] sm:max-w-none">
-                <div class="flex items-center gap-3 sm:gap-4">
-                    <div
-                        class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0">
-                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-[10px] sm:text-xs text-slate-500 font-bold uppercase">
-                            Terverifikasi
-                        </p>
-                        <p class="font-bold text-xs sm:text-base">Pembayaran Aman via Midtrans</p>
+                <div
+                    class="absolute -bottom-4 left-2 sm:-left-6 glass p-4 sm:p-6 rounded-2xl shadow-xl z-20 border border-white hover:-translate-y-2 transition-transform duration-500 max-w-[90%] sm:max-w-none">
+                    <div class="flex items-center gap-3 sm:gap-4">
+                        <div
+                            class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] sm:text-xs text-slate-500 font-bold uppercase">
+                                Terverifikasi
+                            </p>
+                            <p class="font-bold text-xs sm:text-base">Pembayaran Aman via Midtrans</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            @if($event->stock > 50)
-              <div class="absolute top-4 right-4 px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                Tersedia
-              </div>
-            @elseif($event->stock <= 50 && $event->stock > 10)
-              <div class="absolute top-4 right-4 px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                {{ $event->stock }} Tiket
-              </div>
-            @elseif($event->stock <= 10 && $event->stock > 0)
-              <div class="absolute top-4 right-4 px-2.5 py-1 bg-red-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider animate-pulse shadow-sm">
-                Sisa {{ $event->stock }}!
-              </div>
-            @else
-              <div class="absolute top-4 right-4 px-2.5 py-1 bg-slate-800 text-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                Habis
-              </div>
-            @endif
-          </div>
-          <div class="p-5 sm:p-6">
-            <!-- Tambahan Person B: Rating Rata-rata di Card Event -->
-            <div class="flex items-center gap-1.5 mb-2">
-              <span class="text-amber-500 text-sm">⭐</span>
-              <span class="font-bold text-slate-800 text-sm">
-                {{ number_format($event->average_rating, 1) }}
-              </span>
-              <span class="text-slate-400 text-xs">({{ $event->review_count }} ulasan)</span>
+
+                @if ($featuredEvent)
+                    @if($featuredEvent->stock > 50)
+                        <div class="absolute top-4 right-4 px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                            Tersedia
+                        </div>
+                    @elseif($featuredEvent->stock <= 50 && $featuredEvent->stock > 10)
+                        <div class="absolute top-4 right-4 px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                            {{ $featuredEvent->stock }} Tiket
+                        </div>
+                    @elseif($featuredEvent->stock <= 10 && $featuredEvent->stock > 0)
+                        <div class="absolute top-4 right-4 px-2.5 py-1 bg-red-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider animate-pulse shadow-sm">
+                            Sisa {{ $featuredEvent->stock }}!
+                        </div>
+                    @else
+                        <div class="absolute top-4 right-4 px-2.5 py-1 bg-slate-800 text-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                            Habis
+                        </div>
+                    @endif
+                @endif
             </div>
 
-            <h3
-              class="text-lg sm:text-xl font-bold mb-2 group-hover:text-indigo-600 transition"
-            >
-              {{ $event->title }}
-            </h3>
-            <div class="flex items-center gap-2 text-slate-500 text-sm mb-4">
-              <svg
-                class="w-4 h-4 shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-              <span class="truncate">{{ $event->date }}</span>
-            </div>
-            <div class="flex gap-2">
-                <a href="{{ route('katalog') }}"
-                    class="px-4 py-2.5 border rounded-xl text-sm font-bold hover:bg-white hover:shadow-md hover:border-indigo-200 transition">
-                    Semua Kategori &rarr;
-                </a>
+            <div class="p-5 sm:p-6 bg-white rounded-b-[2.5rem] shadow-sm -mt-6 relative z-10">
+                @if ($featuredEvent)
+                    <div class="flex items-center gap-1.5 mb-2">
+                        <span class="text-amber-500 text-sm">⭐</span>
+                        <span class="font-bold text-slate-800 text-sm">
+                            {{ number_format($featuredEvent->average_rating, 1) }}
+                        </span>
+                        <span class="text-slate-400 text-xs">({{ $featuredEvent->review_count }} ulasan)</span>
+                    </div>
+
+                    <h3 class="text-lg sm:text-xl font-bold mb-2 group-hover:text-indigo-600 transition">
+                        {{ $featuredEvent->title }}
+                    </h3>
+                    <div class="flex items-center gap-2 text-slate-500 text-sm mb-4">
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="truncate">{{ $featuredEvent->date }}</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="{{ route('event-detail', $featuredEvent->slug) }}"
+                            class="px-4 py-2.5 border rounded-xl text-sm font-bold hover:bg-white hover:shadow-md hover:border-indigo-200 transition">
+                            Lihat Event Unggulan &rarr;
+                        </a>
+                    </div>
+                @else
+                    <div class="text-center">
+                        <p class="text-sm text-slate-500 mb-4">Belum ada event unggulan saat ini.</p>
+                        <a href="{{ route('katalog') }}"
+                            class="inline-flex px-5 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 transition">
+                            Jelajahi Semua Event
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -178,6 +186,17 @@
                                     {{ $event->organization->name }}
                                 </p>
                             @endif
+
+                            <div class="flex items-center gap-2 text-sm text-slate-500 mb-3">
+                                <span class="flex items-center gap-1 font-semibold text-amber-500">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.95a1 1 0 00.95.69h4.15c.969 0 1.371 1.24.588 1.81l-3.36 2.44a1 1 0 00-.364 1.118l1.286 3.95c.3.921-.755 1.688-1.54 1.118l-3.36-2.44a1 1 0 00-1.176 0l-3.36 2.44c-.784.57-1.838-.197-1.539-1.118l1.286-3.95a1 1 0 00-.364-1.118L2.07 9.377c-.783-.57-.38-1.81.588-1.81h4.15a1 1 0 00.95-.69l1.286-3.95z" />
+                                    </svg>
+                                    {{ number_format($event->average_rating, 1) }}
+                                </span>
+                                <span class="text-slate-400">({{ $event->review_count }} ulasan)</span>
+                            </div>
+
                             <a href="{{ route('event-detail', $event->slug) }}" class="block">
                                 <h3
                                     class="text-lg sm:text-xl font-bold mb-2 group-hover:text-indigo-600 transition line-clamp-2">
