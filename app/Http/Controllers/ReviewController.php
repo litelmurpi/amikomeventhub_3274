@@ -32,7 +32,7 @@ class ReviewController extends Controller
         // Validasi 2: User punya transaksi Success untuk event ini
         $hasTicket = Transaction::where('user_id', $user->id)
             ->where('event_id', $event->id)
-            ->where('status', 'success')
+            ->where('status', 'Success')
             ->exists();
 
         if (!$hasTicket) {
