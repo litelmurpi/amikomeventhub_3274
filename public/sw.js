@@ -1,4 +1,4 @@
-const CACHE_NAME = 'amikom-eventhub-v1';
+const CACHE_NAME = 'amikom-eventhub-v2';
 const STATIC_ASSETS = [
     '/',
     '/offline.html',
@@ -35,8 +35,9 @@ self.addEventListener('activate', (event) => {
 
 // Fetch Event
 self.addEventListener('fetch', (event) => {
-    // Only handle GET requests
+    // Only handle HTTP & HTTPS GET requests (ignore chrome-extension:// and non-http URLs)
     if (event.request.method !== 'GET') return;
+    if (!event.request.url.startsWith('http://') && !event.request.url.startsWith('https://')) return;
 
     // For HTML navigation requests (pages)
     if (event.request.mode === 'navigate') {
@@ -44,10 +45,12 @@ self.addEventListener('fetch', (event) => {
             fetch(event.request)
                 .then((response) => {
                     // Update cache with fresh version
-                    const responseClone = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseClone);
-                    });
+                    if (response.status === 200) {
+                        const responseClone = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, responseClone);
+                        });
+                    }
                     return response;
                 })
                 .catch(async () => {
@@ -69,7 +72,7 @@ self.addEventListener('fetch', (event) => {
             if (cachedResponse) {
                 // Return cached asset, update cache in background
                 fetch(event.request).then((response) => {
-                    if (response.status === 200) {
+                    if (response.status === 200 && (event.request.url.startsWith('http://') || event.request.url.startsWith('https://'))) {
                         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response));
                     }
                 }).catch(() => {/* ignore background fetch errors */});
@@ -78,7 +81,7 @@ self.addEventListener('fetch', (event) => {
 
             // Network fallback
             return fetch(event.request).then((response) => {
-                if (response.status === 200) {
+                if (response.status === 200 && (event.request.url.startsWith('http://') || event.request.url.startsWith('https://'))) {
                     const responseClone = response.clone();
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
                 }

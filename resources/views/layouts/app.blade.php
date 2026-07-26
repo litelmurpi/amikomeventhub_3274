@@ -50,6 +50,7 @@
 </head>
 
 <body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+    @include('components.pwa-splash')
 
     <!-- Navigation -->
     <nav class="glass sticky top-2 md:top-6 z-40 mx-2 sm:mx-4 mt-2 sm:mt-4 px-3 sm:px-6 py-2.5 sm:py-4 rounded-2xl border border-white/20 shadow-lg">
