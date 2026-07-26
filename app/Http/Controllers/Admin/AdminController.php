@@ -8,9 +8,11 @@ use App\Models\Event;
 use App\Models\Transaction;
 use App\Models\Category;
 use App\Models\Organization;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -28,7 +30,41 @@ class AdminController extends Controller
 
         $transactions = Transaction::with('event')->latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'transactions'));
+        // Mengambil data grafik untuk 6 bulan terakhir
+        $months = [];
+        $revenues = [];
+        $users = [];
+        $eventsData = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $date = Carbon::now()->subMonths($i);
+            $months[] = $date->translatedFormat('M Y'); // Contoh: Jul 2026
+
+            // Query total pendapatan per bulan
+            $revenues[] = Transaction::where('status', 'Success')
+                ->whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->sum('total_price');
+
+            // Query user baru per bulan
+            $users[] = User::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->count();
+
+            // Query event baru per bulan
+            $eventsData[] = Event::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->count();
+        }
+
+        $chartData = [
+            'labels' => $months,
+            'revenues' => $revenues,
+            'users' => $users,
+            'events' => $eventsData,
+        ];
+
+        return view('admin.dashboard', compact('stats', 'transactions', 'chartData'));
     }
 
     public function events(Request $request)

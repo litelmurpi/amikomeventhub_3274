@@ -77,6 +77,25 @@
     </div>
 </div>
 
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-10">
+    <!-- Line Chart: Tren Pendapatan -->
+    <div class="bg-white p-5 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm">
+        <h3 class="font-black text-lg md:text-xl text-slate-800 mb-6">Tren Pendapatan Bulanan</h3>
+        <div class="relative h-64 w-full">
+            <canvas id="revenueChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Bar Chart: Pertumbuhan User & Event -->
+    <div class="bg-white p-5 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm">
+        <h3 class="font-black text-lg md:text-xl text-slate-800 mb-6">Pertumbuhan User & Event</h3>
+        <div class="relative h-64 w-full">
+            <canvas id="growthChart"></canvas>
+        </div>
+    </div>
+</div>
+
 <!-- Latest Sales Table -->
 <div class="bg-white rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
     <div class="p-4 md:p-6 border-b flex justify-between items-center">
@@ -112,4 +131,111 @@
         </table>
     </div>
 </div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const chartData = @json($chartData);
+
+        // 1. Line Chart untuk Tren Pendapatan
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: 'Total Pendapatan (Rp)',
+                    data: chartData.revenues,
+                    borderColor: '#4f46e5', // warna indigo-600 Tailwind
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#4f46e5',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#4f46e5',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                if (value >= 1000000) {
+                                    return 'Rp ' + (value / 1000000) + ' Jt';
+                                }
+                                return 'Rp ' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Bar Chart untuk Pertumbuhan User dan Event
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        new Chart(growthCtx, {
+            type: 'bar',
+            data: {
+                labels: chartData.labels,
+                datasets: [
+                    {
+                        label: 'Registrasi User Baru',
+                        data: chartData.users,
+                        backgroundColor: '#0ea5e9', // warna sky-500 Tailwind
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Event Baru',
+                        data: chartData.events,
+                        backgroundColor: '#f59e0b', // warna amber-500 Tailwind
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
 @endsection
