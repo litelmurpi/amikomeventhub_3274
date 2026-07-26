@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use Illuminate\Support\Carbon;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Class CheckinController
@@ -91,5 +92,70 @@ class CheckinController extends Controller
 
         return redirect()->back()
             ->with('success', "✓ Check-in Berhasil! Nama: {$transaction->customer_name} | Acara: {$eventTitle}.");
+    }
+
+    /**
+     * Verify ticket code via AJAX for real-time QR Code Camera Scanner.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verifyAjax(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ticket_code' => 'required|string',
+        ]);
+
+        $ticketCode = trim(strtoupper($request->ticket_code));
+
+        $transaction = Transaction::with('event')
+            ->where('ticket_code', $ticketCode)
+            ->first();
+
+        if (!$transaction) {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Kode Tiket [{$ticketCode}] tidak ditemukan.",
+            ]);
+        }
+
+        if ($transaction->status !== 'Success') {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Gagal Check-in: Transaksi belum lunas (Status: {$transaction->status}).",
+            ]);
+        }
+
+        if ($transaction->is_checked_in) {
+            $formattedTime = Carbon::parse($transaction->checked_in_at)->format('d M Y, H:i');
+            return response()->json([
+                'status' => 'warning',
+                'message' => "Tiket [{$ticketCode}] sudah digunakan untuk Check-in pada {$formattedTime} oleh {$transaction->customer_name}.",
+                'data' => [
+                    'customer_name' => $transaction->customer_name,
+                    'event_title' => $transaction->event->title ?? 'Event',
+                    'checked_in_at' => $formattedTime,
+                    'ticket_code' => $ticketCode,
+                ]
+            ]);
+        }
+
+        $transaction->update([
+            'is_checked_in' => true,
+            'checked_in_at' => now(),
+        ]);
+
+        $eventTitle = $transaction->event->title ?? 'Event';
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Check-in Berhasil! Nama: {$transaction->customer_name} | Acara: {$eventTitle}.",
+            'data' => [
+                'customer_name' => $transaction->customer_name,
+                'event_title' => $eventTitle,
+                'ticket_code' => $ticketCode,
+                'checked_in_at' => now()->format('d M Y, H:i'),
+            ]
+        ]);
     }
 }

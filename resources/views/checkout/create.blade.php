@@ -3,34 +3,34 @@
 @section('title', 'Checkout - ' . $event->title)
 
 @section('content')
-<main class="max-w-3xl mx-auto px-6 py-20">
-    <div class="mb-12">
-        <a href="{{ route('event-detail', $event->slug) }}" class="text-indigo-600 font-bold flex items-center gap-2 mb-6">
+<main class="max-w-3xl mx-auto px-4 sm:px-6 py-8 md:py-16">
+    <div class="mb-8 md:mb-12">
+        <a href="{{ route('event-detail', $event->slug) }}" class="text-indigo-600 font-bold text-xs sm:text-sm flex items-center gap-2 mb-4">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
             Kembali ke Event
         </a>
-        <h1 class="text-4xl font-extrabold">Checkout</h1>
-        <p class="text-slate-500 mt-2">Lengkapi data Anda untuk mendapatkan tiket.</p>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Checkout Tiket</h1>
+        <p class="text-slate-500 mt-2 text-sm sm:text-base">Lengkapi data Anda untuk mendapatkan tiket.</p>
     </div>
 
     @if(session('error'))
-    <div class="mb-6 p-4 bg-red-100 text-red-700 rounded-xl font-bold">
+    <div class="mb-6 p-4 bg-red-100 text-red-700 rounded-xl font-bold text-sm">
         {{ session('error') }}
     </div>
     @endif
 
-    <div class="grid grid-cols-1 gap-8">
+    <div class="grid grid-cols-1 gap-6 md:gap-8">
         <!-- Summary Card -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
-            <h3 class="text-xl font-bold mb-6 border-b pb-4">Pesanan Anda</h3>
-            <div class="flex gap-6 items-start">
-                <img src="{{ asset($event->image) }}" alt="Event" class="w-24 h-24 rounded-2xl object-cover">
-                <div>
-                    <h4 class="font-extrabold text-lg">{{ $event->title }}</h4>
-                    <p class="text-slate-500">{{ $event->date }} • {{ $event->location }}</p>
-                    <p class="text-indigo-600 font-bold mt-2">1 x {{ $event->price }}</p>
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+            <h3 class="text-lg sm:text-xl font-bold mb-6 border-b pb-4">Pesanan Anda</h3>
+            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
+                <img src="{{ asset($event->image) }}" alt="Event" class="w-full sm:w-24 h-48 sm:h-24 rounded-2xl object-cover">
+                <div class="min-w-0 flex-1">
+                    <h4 class="font-extrabold text-base sm:text-lg text-slate-900 leading-snug">{{ $event->title }}</h4>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-1">{{ $event->date }} • {{ $event->location }}</p>
+                    <p class="text-indigo-600 font-bold mt-2 text-sm sm:text-base">1 x {{ $event->price }}</p>
                 </div>
             </div>
             <div class="mt-8 pt-6 border-t space-y-3">
@@ -38,17 +38,21 @@
                     <span>Harga Tiket</span>
                     <span>{{ $event->price }}</span>
                 </div>
+                @if(!$isFreeEvent)
                 <div class="flex justify-between text-slate-500">
                     <span>Biaya Layanan</span>
                     <span>Rp {{ number_format($serviceFee, 0, ',', '.') }}</span>
                 </div>
+                @endif
                 <div id="discount-row" class="flex justify-between text-emerald-600 hidden">
                     <span>Diskon (<span id="discount-code-label"></span>)</span>
                     <span>-Rp <span id="discount-value-label">0</span></span>
                 </div>
                 <div class="flex justify-between text-2xl font-black mt-4 pt-4 border-t">
                     <span>Total Bayar</span>
-                    <span id="total-price-label" class="text-indigo-600">Rp {{ number_format($event->price_value + $serviceFee, 0, ',', '.') }}</span>
+                    <span id="total-price-label" class="text-indigo-600">
+                        {{ $isFreeEvent ? 'Gratis' : 'Rp ' . number_format($event->price_value + $serviceFee, 0, ',', '.') }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -93,13 +97,11 @@
                 </div>
 
                 <!-- Promo Code Section -->
-                <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
-                    <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Punya Kode Promo?</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="promo-input" placeholder="Masukkan kode promo (e.g. MERDEKA)"
-                            class="flex-1 px-4 py-3 border border-slate-200 bg-white rounded-xl focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition uppercase text-sm font-bold font-mono tracking-wider">
-                        <button type="button" id="btn-apply-promo"
-                            class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-bold transition select-none">
+                <div class="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200/80">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Punya Kode Promo?</label>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="promo-input" placeholder="Masukkan kode promo" class="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider focus:outline-none focus:border-indigo-500 transition">
+                        <button type="button" id="btn-apply-promo" class="px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-bold transition shrink-0">
                             Terapkan
                         </button>
                     </div>
@@ -108,7 +110,7 @@
 
                 <button type="button" id="pay-button"
                     class="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-3">
-                    <span id="button-text">Lanjut Pembayaran</span>
+                    <span id="button-text">{{ $isFreeEvent ? 'Daftar Gratis' : 'Lanjut Pembayaran' }}</span>
                     <span id="button-spinner" class="hidden">
                         <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -287,7 +289,15 @@
                     return;
                 }
 
-                const { snap_token, order_id } = await res.json();
+                const responseData = await res.json();
+
+                // Handle Free Event Bypass
+                if (responseData.free_event) {
+                    window.location.href = responseData.redirect_url;
+                    return;
+                }
+
+                const { snap_token, order_id } = responseData;
 
                 // Open Midtrans Snap modal popup overlay
                 window.snap.pay(snap_token, {

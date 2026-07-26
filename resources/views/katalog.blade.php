@@ -3,23 +3,23 @@
 @section('title', 'Katalog - Amikom Event Hub')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-6 py-20 space-y-12 min-h-screen">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 space-y-8 md:space-y-12 min-h-screen">
     <!-- Header & Filters -->
-    <div class="flex flex-col gap-6 border-b border-slate-100 pb-8">
+    <div class="flex flex-col gap-4 sm:gap-6 border-b border-slate-100 pb-6 md:pb-8">
         <div class="space-y-2">
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                 Katalog <span class="text-indigo-600">Event</span>
             </h1>
-            <p class="text-slate-500 font-medium text-lg">Temukan event menarik yang sesuai dengan minatmu.</p>
+            <p class="text-slate-500 font-medium text-base sm:text-lg">Temukan event menarik yang sesuai dengan minatmu.</p>
         </div>
         
         <!-- Filters (Dynamic) -->
-        <div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
-            <a href="{{ route('katalog') }}" class="px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 {{ !request('category') ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-white border border-slate-200 text-slate-500 hover:border-indigo-600 hover:text-indigo-600' }}">
+        <div class="flex gap-2 sm:gap-3 overflow-x-auto pb-3 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar">
+            <a href="{{ route('katalog') }}" class="shrink-0 px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-300 {{ !request('category') ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-white border border-slate-200 text-slate-500 hover:border-indigo-600 hover:text-indigo-600' }}">
                 Semua
             </a>
             @foreach($categories as $category)
-                <a href="{{ route('katalog', ['category' => $category->slug]) }}" class="px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 {{ request('category') == $category->slug ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-white border border-slate-200 text-slate-500 hover:border-indigo-600 hover:text-indigo-600' }}">
+                <a href="{{ route('katalog', ['category' => $category->slug]) }}" class="shrink-0 px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-300 {{ request('category') == $category->slug ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-white border border-slate-200 text-slate-500 hover:border-indigo-600 hover:text-indigo-600' }}">
                     {{ $category->name }}
                 </a>
             @endforeach
@@ -27,7 +27,7 @@
     </div>
 
     <!-- Event Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @forelse($events as $event)
         <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col">
           <div class="relative overflow-hidden aspect-[4/3] sm:aspect-[3/4]">
@@ -53,8 +53,8 @@
               </div>
             @endif
           </div>
-          <div class="p-6 flex flex-col flex-1">
-            <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-600 transition line-clamp-2">{{ $event->title }}</h3>
+          <div class="p-5 sm:p-6 flex flex-col flex-1">
+            <h3 class="text-lg sm:text-xl font-bold mb-2 group-hover:text-indigo-600 transition line-clamp-2">{{ $event->title }}</h3>
             
             <div class="space-y-2 mb-6">
                 <div class="flex items-center gap-2 text-slate-500 text-sm font-medium">
@@ -67,9 +67,9 @@
                 </div>
             </div>
 
-            <div class="mt-auto flex justify-between items-center pt-4 border-t border-slate-100">
-              <span class="text-xl font-black text-indigo-600">{{ $event->price }}</span>
-              <a href="{{ route('event-detail', $event->slug) }}" class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition whitespace-nowrap">Lihat Detail</a>
+            <div class="mt-auto flex justify-between items-center pt-4 border-t border-slate-100 gap-2">
+              <span class="text-lg sm:text-xl font-black text-indigo-600 truncate">{{ $event->price }}</span>
+              <a href="{{ route('event-detail', $event->slug) }}" class="px-4 sm:px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xs sm:text-sm hover:bg-indigo-600 hover:text-white transition whitespace-nowrap shrink-0">Lihat Detail</a>
             </div>
           </div>
         </div>

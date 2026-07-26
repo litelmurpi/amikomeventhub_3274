@@ -4,32 +4,32 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="max-w-7xl mx-auto px-6 pt-16 pb-8 text-center">
-        <span class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 pt-10 md:pt-16 pb-6 md:pb-8 text-center">
+        <span class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider mb-4">
             Dokumentasi Event
         </span>
-        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+        <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight mb-4">
             Galeri <span class="text-indigo-600">Amikom Event Hub</span>
         </h1>
-        <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+        <p class="text-base sm:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Kumpulan momen-momen terbaik dan dokumentasi keseruan event yang telah diselenggarakan oleh Universitas Amikom Yogyakarta.
         </p>
     </section>
 
     <!-- Gallery Grid Section -->
-    <section class="max-w-7xl mx-auto px-6 py-12">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
         @if($galleries->isEmpty())
-            <div class="text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="text-center py-16 sm:py-20 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-slate-800 mb-2">Belum Ada Foto</h3>
-                <p class="text-slate-500">Saat ini galeri foto masih kosong. Silakan kembali lagi nanti!</p>
+                <h3 class="text-xl sm:text-2xl font-bold text-slate-800 mb-2">Belum Ada Foto</h3>
+                <p class="text-slate-500 text-sm sm:text-base">Saat ini galeri foto masih kosong. Silakan kembali lagi nanti!</p>
             </div>
         @else
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
                 @foreach($galleries as $gallery)
                     <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer" onclick="openLightbox('{{ asset($gallery->image) }}', '{{ addslashes($gallery->caption) }}')">
                         <div class="relative overflow-hidden aspect-[4/3] bg-slate-100">

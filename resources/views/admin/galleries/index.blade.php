@@ -3,125 +3,124 @@
 @section('title', 'Kelola Galeri - Admin Amikom Event Hub')
 
 @section('content')
-<main class="flex-1 p-10 overflow-y-auto">
-    <header class="flex justify-between items-center mb-10">
-        <div>
-            <h1 class="text-3xl font-black">Kelola Galeri</h1>
-            <p class="text-slate-500 font-medium">Atur galeri foto untuk event-event Amikom.</p>
-        </div>
-        <a href="{{ route('admin.galleries.create') }}"
-            class="inline-block px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition">
-            + Tambah Galeri
-        </a>
-    </header>
-
-    @if(session('success'))
-    <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-2xl font-semibold flex items-center gap-3">
-        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        {{ session('success') }}
+<header class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6 md:mb-10">
+    <div>
+        <h1 class="text-2xl md:text-3xl font-black text-slate-800">Kelola Galeri</h1>
+        <p class="text-sm md:text-base text-slate-500 font-medium">Atur galeri foto untuk event-event Amikom.</p>
     </div>
-    @endif
+    <a href="{{ route('admin.galleries.create') }}"
+        class="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-sm md:text-base shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition">
+        + Tambah Galeri
+    </a>
+</header>
 
-    <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-        <div class="px-8 py-6 bg-slate-50/50 border-b">
-            <form method="GET" action="{{ route('admin.galleries') }}" id="search-form" class="flex gap-2">
-                <input type="text" name="search" id="search-input" value="{{ request('search') }}" placeholder="Cari caption galeri..."
-                    class="flex-1 px-5 py-3 rounded-xl border-slate-200 border bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
-                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition">Cari</button>
+@if(session('success'))
+<div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-2xl font-semibold flex items-center gap-3 text-sm md:text-base">
+    <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    {{ session('success') }}
+</div>
+@endif
+
+<div class="bg-white rounded-2xl md:rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+    <div class="p-4 md:px-8 md:py-6 bg-slate-50/50 border-b">
+        <form method="GET" action="{{ route('admin.galleries') }}" id="search-form" class="flex flex-col sm:flex-row gap-2">
+            <input type="text" name="search" id="search-input" value="{{ request('search') }}" placeholder="Cari caption galeri..."
+                class="flex-1 px-4 md:px-5 py-2.5 md:py-3 rounded-xl border-slate-200 border bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm transition">
+            <div class="flex gap-2">
+                <button type="submit" class="flex-1 sm:flex-none px-6 py-2.5 md:py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition">Cari</button>
                 @if(request('search'))
-                    <a href="{{ route('admin.galleries') }}" class="px-4 py-3 bg-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-300 transition flex items-center">Reset</a>
+                    <a href="{{ route('admin.galleries') }}" class="px-4 py-2.5 md:py-3 bg-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-300 transition flex items-center justify-center">Reset</a>
                 @endif
-            </form>
-        </div>
+            </div>
+        </form>
+    </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead class="bg-slate-50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
-                    <tr>
-                        <th class="px-8 py-4 w-16">No</th>
-                        <th class="px-8 py-4 w-24">Image</th>
-                        <th class="px-8 py-4">Caption</th>
-                        <th class="px-8 py-4">Tanggal</th>
-                        <th class="px-8 py-4 w-32">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y border-t">
-                    @forelse($galleries as $gallery)
-                    <tr class="hover:bg-slate-50/50 transition">
-                        <td class="px-8 py-6 font-bold text-slate-400">{{ $loop->iteration }}</td>
-                        <td class="px-8 py-6">
-                            <div class="w-16 h-16 rounded-xl border border-slate-100 bg-white p-1 flex items-center justify-center overflow-hidden shadow-sm">
-                                <img src="{{ asset($gallery->image) }}" 
-                                     alt="{{ $gallery->caption }}" 
-                                     class="max-h-full max-w-full object-cover rounded-lg">
-                            </div>
-                        </td>
-                        <td class="px-8 py-6">
-                            <p class="font-black text-slate-800">{{ $gallery->caption }}</p>
-                        </td>
-                        <td class="px-8 py-6">
-                            <span class="text-slate-500 text-sm font-medium">{{ $gallery->created_at->format('d M Y, H:i') }}</span>
-                        </td>
-                        <td class="px-8 py-6">
-                            <div class="flex gap-2">
-                                <a href="{{ route('admin.galleries.edit', $gallery->id) }}"
-                                    class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse min-w-[550px]">
+            <thead class="bg-slate-50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
+                <tr>
+                    <th class="px-6 py-4 w-12">No</th>
+                    <th class="px-6 py-4 w-20">Gambar</th>
+                    <th class="px-6 py-4">Caption</th>
+                    <th class="px-6 py-4">Tanggal</th>
+                    <th class="px-6 py-4 w-28">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y border-t">
+                @forelse($galleries as $gallery)
+                <tr class="hover:bg-slate-50/50 transition">
+                    <td class="px-6 py-4 font-bold text-slate-400 text-sm">{{ $loop->iteration }}</td>
+                    <td class="px-6 py-4">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl border border-slate-100 bg-white p-1 flex items-center justify-center overflow-hidden shadow-sm">
+                            <img src="{{ asset($gallery->image) }}" 
+                                 alt="{{ $gallery->caption }}" 
+                                 class="max-h-full max-w-full object-cover rounded-lg">
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="font-black text-slate-800 text-sm md:text-base">{{ $gallery->caption }}</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-slate-500 text-xs md:text-sm font-medium">{{ $gallery->created_at->format('d M Y, H:i') }}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex gap-2">
+                            <a href="{{ route('admin.galleries.edit', $gallery->id) }}"
+                                class="p-2 md:p-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition" title="Edit">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 00-2 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                            </a>
+                            <form action="{{ route('admin.galleries.destroy', $gallery->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus galeri ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="p-2 md:p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition" title="Hapus">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 00-2 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                         </path>
                                     </svg>
-                                </a>
-                                <form action="{{ route('admin.galleries.destroy', $gallery->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus galeri ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="px-8 py-10 text-center text-slate-400 font-semibold">
-                            Tidak ada galeri ditemukan.
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5" class="px-6 py-10 text-center text-slate-400 font-semibold text-sm">
+                        Tidak ada galeri ditemukan.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <script>
-        let searchTimeout = null;
-        const searchInput = document.getElementById('search-input');
-        const searchForm = document.getElementById('search-form');
+<script>
+    let searchTimeout = null;
+    const searchInput = document.getElementById('search-input');
+    const searchForm = document.getElementById('search-form');
 
-        if (searchInput && searchForm) {
-            searchInput.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    searchForm.submit();
-                }, 500); // Debounce 500ms
-            });
+    if (searchInput && searchForm) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchForm.submit();
+            }, 500);
+        });
 
-            // Keep cursor at the end of input
-            if (searchInput.value) {
-                const val = searchInput.value;
-                searchInput.value = '';
-                searchInput.focus();
-                searchInput.value = val;
-            }
+        if (searchInput.value) {
+            const val = searchInput.value;
+            searchInput.value = '';
+            searchInput.focus();
+            searchInput.value = val;
         }
-    </script>
-</main>
+    }
+</script>
 @endsection

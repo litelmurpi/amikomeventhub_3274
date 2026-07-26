@@ -37,4 +37,24 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function organization()
+    {
+        return $this->hasOne(Organization::class, 'owner_id');
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'superadmin';
+    }
+
+    public function isOrganizer(): bool
+    {
+        return $this->role === 'organizer';
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
 }

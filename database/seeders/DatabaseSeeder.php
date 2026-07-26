@@ -23,7 +23,21 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@amikom.ac.id',
             'password' => bcrypt('password'),
-            'role' => 'admin',
+            'role' => 'superadmin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'azfa',
+            'email' => 'azfa@dev.id',
+            'password' => bcrypt('12345678'),
+            'role' => 'user',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Organizer',
+            'email' => 'organizer@amikom.ac.id',
+            'password' => bcrypt('password'),
+            'role' => 'organizer',
         ]);
 
         // Categories

@@ -47,37 +47,40 @@ graph LR
 > [!IMPORTANT]
 > Fitur ini harus selesai **paling awal** karena Person B bergantung pada role system & model Organization yang dibuat di sini.
 
-- [ ] Buat migration `create_organizations_table` (name, slug, description, logo_path, owner_id, is_verified)
-- [ ] Buat migration `add_organization_id_to_events_table`
-- [ ] Buat migration `update_users_role_for_multitenant` (rename admin→superadmin, tambah organizer)
-- [ ] Buat model `Organization.php` + relasi
-- [ ] Update model `User.php` — tambah relasi, helpers `isOrganizer()`, `isSuperAdmin()`
-- [ ] Update model `Event.php` — tambah `organization_id`, relasi `belongsTo(Organization)`
-- [ ] Buat `OrganizerMiddleware.php`
-- [ ] Update `AdminMiddleware.php` — hanya superadmin
-- [ ] Buat controller `Organizer/OrganizerController.php` — dashboard, CRUD events (scoped per organisasi)
-- [ ] Buat controller `RegisterOrganizerController.php` — form daftar organisasi
-- [ ] Tambah halaman admin: list organisasi + approve/reject
-- [ ] Buat views `organizer/` (dashboard, events CRUD, profil organisasi)
-- [ ] Buat layout `layouts/organizer/organizer.blade.php`
-- [ ] Update `routes/web.php` — group organizer + route daftar organisasi
-- [ ] Update admin dashboard — link ke manajemen penyelenggara
-- [ ] Update event detail & homepage — tampilkan nama organisasi
+- [x] Buat migration `create_organizations_table` (name, slug, description, logo_path, owner_id, status: pending/approved/rejected, rejection_reason)
+- [x] Buat migration `add_organization_id_to_events_table`
+- [x] Buat migration `update_users_role_for_multitenant` (rename admin→superadmin, tambah organizer)
+- [x] Buat model `Organization.php` + relasi & helper status
+- [x] Update model `User.php` — tambah relasi, helpers `isOrganizer()`, `isSuperAdmin()`
+- [x] Update model `Event.php` — tambah `organization_id`, relasi `belongsTo(Organization)`
+- [x] Buat `OrganizerMiddleware.php` & `EventPolicy.php` (Tenant Isolation — pencegahan IDOR antar organisasi)
+- [x] Update `AdminMiddleware.php` — khusus superadmin
+- [x] Buat controller `Organizer/OrganizerController.php` — dashboard, CRUD events (strictly scoped per organisasi)
+- [x] Buat controller `RegisterOrganizerController.php` — form daftar organisasi
+- [x] Tambah halaman admin: list organisasi + approve/reject dengan modal input alasan penolakan
+- [x] Buat views `organizer/` (dashboard, events CRUD, profil organisasi, banner status pengajuan pending/rejected)
+- [x] Buat layout `layouts/organizer/organizer.blade.php`
+- [x] Update `routes/web.php` — group organizer + route daftar organisasi
+- [x] Update admin dashboard — link ke manajemen penyelenggara
+- [x] Update event detail & homepage — tampilkan nama organisasi & logo
 
-#### 🟢 Fase 2: Bypass Free Events
+#### 🟢 Fase 2: Bypass Free Events & Race-Condition Safety
 
-- [ ] Modifikasi `PaymentController@process` — if `price_value == 0`: skip Midtrans, langsung Success + generate ticket_code + decrement stock
-- [ ] Modifikasi `PaymentController@create` — ubah label tombol jadi "Daftar Gratis" jika harga 0
-- [ ] Update `checkout/create.blade.php` — sembunyikan komponen Midtrans jika gratis
+- [x] Modifikasi `PaymentController@process` — implementasi `DB::transaction()` & `lockForUpdate()` saat klaim stok (mencegah overbooking jika di-checkout bersamaan)
+- [x] Modifikasi `PaymentController@process` — jika `price_value == 0`: skip Midtrans, langsung Success + generate `ticket_code` + decrement stock
+- [x] Modifikasi `PaymentController@create` — ubah label tombol jadi "Daftar Gratis" jika harga 0
+- [x] Update `checkout/create.blade.php` — sembunyikan komponen Midtrans jika gratis
 
-#### 🟡 Fase 3: WhatsApp Notification & Abandoned Cart
+#### 🟡 Fase 3: WhatsApp Notification (Queue) & Anti-Spam Abandoned Cart
 
-- [ ] Setup akun Fonnte + dapatkan API token
-- [ ] Buat `config/fonnte.php`
-- [ ] Buat service `App\Services\WhatsAppService.php` — method `sendMessage($phone, $message)`
-- [ ] Modifikasi `PaymentController@callback` — kirim WA setelah pembayaran Success (link E-Ticket)
-- [ ] Buat Artisan command `AbandonedCartReminder.php` — cari Pending > 1 jam, kirim WA reminder + link bayar
-- [ ] Schedule command di `routes/console.php` — jalankan setiap 30 menit
+- [x] Setup akun Fonnte + dapatkan API token di `.env`
+- [x] Buat `config/fonnte.php`
+- [x] Buat service `App\Services\WhatsAppService.php` — method `sendMessage($phone, $message)` + Phone Number Sanitizer (`0812...` -> `62812...`)
+- [x] Buat migration `add_wa_sent_at_to_transactions_table` (tracking notifikasi WA untuk cegah pengiriman ganda)
+- [x] Buat Laravel Job `SendWhatsAppNotificationJob.php` — pengiriman WA secara Asynchronous (Background Queue agar HTTP response cepat < 100ms)
+- [x] Modifikasi `PaymentController@callback` — pemicu dispatch `SendWhatsAppNotificationJob` setelah pembayaran Success (link E-Ticket)
+- [x] Buat Artisan command `AbandonedCartReminder.php` — cari Pending > 1 jam & `wa_sent_at IS NULL`, kirim WA reminder + link bayar, set `wa_sent_at` timestamp
+- [x] Schedule command di `routes/console.php` — jalankan setiap 30 menit
 
 ### Deliverables
 - ✅ Sistem role 3-tier (user/organizer/superadmin) berfungsi

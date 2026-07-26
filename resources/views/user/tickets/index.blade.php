@@ -3,58 +3,58 @@
 @section('title', 'Tiket Saya')
 
 @section('content')
-<main class="max-w-5xl mx-auto px-6 py-20">
-    <div class="mb-12">
-        <h1 class="text-4xl font-extrabold text-slate-900">Tiket Saya</h1>
-        <p class="text-slate-500 mt-2">Daftar semua tiket event yang telah Anda pesan.</p>
+<main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-16">
+    <div class="mb-8 md:mb-12">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Tiket Saya</h1>
+        <p class="text-slate-500 mt-2 text-sm sm:text-base">Daftar semua tiket event yang telah Anda pesan.</p>
     </div>
 
     <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         @if($tickets->count() > 0)
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+        <div class="overflow-x-auto w-full no-scrollbar">
+            <table class="w-full text-left border-collapse min-w-[640px]">
                 <thead class="bg-slate-50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
                     <tr>
-                        <th class="px-8 py-4">Order ID</th>
-                        <th class="px-8 py-4">Event</th>
-                        <th class="px-8 py-4">Tgl Pemesanan</th>
-                        <th class="px-8 py-4">Total Bayar</th>
-                        <th class="px-8 py-4">Status</th>
-                        <th class="px-8 py-4 text-center">Aksi</th>
+                        <th class="px-4 sm:px-8 py-4">Order ID</th>
+                        <th class="px-4 sm:px-8 py-4">Event</th>
+                        <th class="px-4 sm:px-8 py-4">Tgl Pemesanan</th>
+                        <th class="px-4 sm:px-8 py-4">Total Bayar</th>
+                        <th class="px-4 sm:px-8 py-4">Status</th>
+                        <th class="px-4 sm:px-8 py-4 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y border-t">
                     @foreach($tickets as $ticket)
                     <tr class="hover:bg-slate-50/50 transition">
-                        <td class="px-8 py-6">
-                            <span class="font-mono font-bold text-slate-700">
+                        <td class="px-4 sm:px-8 py-4 sm:py-6">
+                            <span class="font-mono font-bold text-slate-700 text-xs sm:text-sm">
                                 {{ $ticket->order_id }}
                             </span>
                         </td>
-                        <td class="px-8 py-6">
-                            <div class="flex items-center gap-4">
+                        <td class="px-4 sm:px-8 py-4 sm:py-6">
+                            <div class="flex items-center gap-3 sm:gap-4">
                                 @if($ticket->event && $ticket->event->image)
-                                    <img src="{{ asset($ticket->event->image) }}" class="w-12 h-12 rounded-xl object-cover">
+                                    <img src="{{ asset($ticket->event->image) }}" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-cover shrink-0">
                                 @else
-                                    <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 shrink-0">
+                                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                         </svg>
                                     </div>
                                 @endif
-                                <div>
-                                    <p class="font-bold text-slate-800">{{ $ticket->event->title ?? 'Event Dihapus' }}</p>
+                                <div class="min-w-0">
+                                    <p class="font-bold text-slate-800 text-sm sm:text-base truncate max-w-[180px] sm:max-w-none">{{ $ticket->event->title ?? 'Event Dihapus' }}</p>
                                     <p class="text-xs text-slate-500">{{ $ticket->event->date ?? '-' }}</p>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-8 py-6 text-sm text-slate-500">
+                        <td class="px-4 sm:px-8 py-4 sm:py-6 text-xs sm:text-sm text-slate-500 whitespace-nowrap">
                             {{ $ticket->created_at->format('d M Y, H:i') }}
                         </td>
-                        <td class="px-8 py-6 font-black text-slate-900">
+                        <td class="px-4 sm:px-8 py-4 sm:py-6 font-black text-slate-900 text-xs sm:text-sm whitespace-nowrap">
                             Rp {{ number_format($ticket->total_price, 0, ',', '.') }}
                         </td>
-                        <td class="px-8 py-6">
+                        <td class="px-4 sm:px-8 py-4 sm:py-6 whitespace-nowrap">
                             @if(strtolower($ticket->status) === 'settlement' || strtolower($ticket->status) === 'success')
                                 <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold uppercase ring-1 ring-green-200">Success</span>
                             @elseif(strtolower($ticket->status) === 'pending')
@@ -63,15 +63,15 @@
                                 <span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-lg text-xs font-bold uppercase ring-1 ring-rose-200">{{ $ticket->status }}</span>
                             @endif
                         </td>
-                        <td class="px-8 py-6 text-center">
+                        <td class="px-4 sm:px-8 py-4 sm:py-6 text-center whitespace-nowrap">
                             @if((strtolower($ticket->status) === 'success' || strtolower($ticket->status) === 'settlement') && $ticket->ticket_code)
                                 <a href="{{ route('eticket.show', $ticket->ticket_code) }}" target="_blank"
-                                    class="inline-block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-indigo-100 hover:shadow-lg">
+                                    class="inline-block px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-indigo-100 hover:shadow-lg">
                                     🎫 Lihat E-Ticket
                                 </a>
                             @elseif(strtolower($ticket->status) === 'pending')
                                 <a href="{{ route('payment.success', $ticket->order_id) }}"
-                                    class="inline-block px-4 py-2 bg-amber-50 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition shadow-md shadow-amber-100 hover:shadow-lg">
+                                    class="inline-block px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition shadow-md shadow-amber-100 hover:shadow-lg">
                                     💳 Bayar Sekarang
                                 </a>
                             @else
@@ -83,7 +83,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="px-8 py-6 bg-slate-50/50 border-t">
+        <div class="px-4 sm:px-8 py-4 sm:py-6 bg-slate-50/50 border-t">
             {{ $tickets->links() }}
         </div>
         @else

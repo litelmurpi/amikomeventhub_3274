@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $fillable = [
+        'organization_id',
         'category_id',
         'title',
         'slug',
@@ -20,6 +21,11 @@ class Event extends Model
         'organizer_name',
         'organizer_initials',
     ];
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
 
     public function category()
     {
