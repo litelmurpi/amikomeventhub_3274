@@ -20,9 +20,11 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-indigo-900 text-indigo-100 flex flex-col p-6 space-y-8 sticky top-0 h-screen">
         <div class="flex items-center gap-3">
-            <div
-                class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-900 font-bold text-xl">
-                {{ strtoupper(substr($org->name ?? 'AH', 0, 2)) }}</div>
+            @if(isset($org) && $org->logo_path)
+                <img src="{{ asset($org->logo_path) }}" alt="Logo" class="w-10 h-10 rounded-xl object-cover shadow">
+            @else
+                <img src="{{ asset('assets/logo-icon.svg') }}" alt="Logo" class="w-10 h-10 rounded-xl shadow">
+            @endif
             <div class="overflow-hidden">
                 <span class="text-xl font-bold text-white tracking-tight block truncate">{{ $org->name ?? 'AmikomEventHub' }}</span>
                 <span class="text-[10px] uppercase font-bold text-indigo-300 tracking-wider">Panel Penyelenggara</span>

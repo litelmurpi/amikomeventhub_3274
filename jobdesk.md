@@ -186,57 +186,41 @@ graph LR
 > [!NOTE]
 > Bisa dikerjakan **sepenuhnya paralel** — tidak bergantung pada fitur lain.
 
-- [ ] Buat `public/manifest.json`:
-  ```json
-  {
-    "name": "Amikom Event Hub",
-    "short_name": "EventHub",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#4f46e5",
-    "icons": [...]
-  }
-  ```
-- [ ] Generate app icons (192x192, 512x512) — simpan di `public/icons/`
-- [ ] Buat `public/sw.js` (Service Worker):
+- [x] Buat `public/manifest.json`
+- [x] Generate app icons (192x192, 512x512) — simpan di `public/icons/`
+- [x] Buat `public/sw.js` (Service Worker):
   - Cache-first strategy untuk static assets (CSS, JS, images, fonts)
   - Network-first strategy untuk halaman HTML & API
   - Offline fallback page
-- [ ] Update layout utama (cari di `layouts/`) — tambah:
+- [x] Update layout utama — tambah:
   - `<link rel="manifest" href="/manifest.json">`
   - `<meta name="theme-color" content="#4f46e5">`
   - `<meta name="apple-mobile-web-app-capable" content="yes">`
   - JS snippet register Service Worker
-- [ ] Buat halaman offline fallback `public/offline.html`
-- [ ] Test: buka di Chrome mobile → pastikan prompt "Add to Home Screen" muncul
-- [ ] Test: matikan internet → pastikan halaman cached tetap bisa dibuka
+- [x] Buat halaman offline fallback `public/offline.html`
+- [x] Test: buka di Chrome mobile → pastikan prompt "Add to Home Screen" muncul
+- [x] Test: matikan internet → pastikan halaman cached tetap bisa dibuka
 
 #### 🟡 Fase 2: Check-in Scanner QR via Kamera
 
-- [ ] Update `CheckinController.php` — tambah method `verifyAjax(Request)`:
+- [x] Update `CheckinController.php` — tambah method `verifyAjax(Request)`:
   - Terima ticket_code via AJAX POST
   - Return JSON: `{status, message, data: {customer_name, event_title, ...}}`
-- [ ] Tambah route: `POST /admin/checkin/ajax` → `verifyAjax`
-- [ ] Update `admin/checkin.blade.php`:
+- [x] Tambah route: `POST /admin/checkin/ajax` → `verifyAjax`
+- [x] Update `admin/checkin.blade.php`:
   - Include html5-qrcode CDN: `https://unpkg.com/html5-qrcode`
   - Tambah tombol "📷 Buka Kamera Scanner" di atas form manual
   - Div untuk video preview kamera
   - JS: inisialisasi `Html5QrcodeScanner`, on scan success → AJAX POST ke `/admin/checkin/ajax`
   - Tampilkan hasil scan di card (success/error/warning) tanpa reload halaman
   - Tombol "Tutup Kamera" untuk stop scanner
-- [ ] Pastikan HTTPS — kamera browser hanya bekerja di HTTPS (sudah aman di Laravel Cloud)
+- [x] Pastikan HTTPS — kamera browser hanya bekerja di HTTPS (sudah aman di Laravel Cloud)
 
 #### 🟢 Fase 3: UI Polish & Deployment Support
 
-- [ ] Review semua view baru dari Person A & B — pastikan konsisten dengan design system (Tailwind, rounded-3xl, indigo-600, dll)
-- [ ] Pastikan responsive di mobile untuk semua halaman baru (organizer dashboard, review form, dll)
-- [ ] Bantu setup deployment:
-  - Test build: `npm run build` berhasil
-  - Verifikasi semua env vars di Laravel Cloud & InfinityFree
-  - Test migration di production: `php artisan migrate --force`
-- [ ] Hapus debug routes di `web.php` (baris 92-114) sebelum deploy final
-- [ ] Rekam video demonstrasi (max 4 menit) — cover semua 8 fitur
+- [x] Review semua view baru — pastikan konsisten dengan design system (Tailwind, rounded-3xl, indigo-600, dll)
+- [x] Pastikan responsive di mobile untuk semua halaman baru (organizer dashboard, checkin scanner, dll)
+- [x] Bantu setup deployment & CI/CD workflow
 
 ### Deliverables
 - ✅ Web bisa "di-install" di HP sebagai app (PWA)

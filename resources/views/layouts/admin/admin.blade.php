@@ -28,10 +28,8 @@
 
     <!-- Mobile Header -->
     <header class="md:hidden bg-indigo-900 text-white px-4 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
-        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-indigo-900 font-bold text-base shadow">
-                AH
-            </div>
+        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
+            <img src="{{ asset('assets/logo-icon.svg') }}" alt="Logo" class="w-8 h-8 rounded-lg shadow">
             <span class="text-lg font-bold tracking-tight text-white">Admin Panel</span>
         </a>
         <button onclick="toggleAdminSidebar()" class="p-2 text-indigo-200 hover:text-white rounded-lg hover:bg-indigo-800 transition" title="Toggle Sidebar">
@@ -48,9 +46,7 @@
     <aside id="admin-sidebar" class="fixed md:sticky top-0 left-0 z-50 md:z-auto w-64 bg-indigo-900 text-indigo-100 flex flex-col p-6 space-y-8 h-screen transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none flex-shrink-0 overflow-y-auto">
         <div class="flex items-center justify-between">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-900 font-bold text-xl shadow">
-                    AH
-                </div>
+                <img src="{{ asset('assets/logo-icon.svg') }}" alt="Logo" class="w-10 h-10 rounded-xl shadow">
                 <span class="text-xl font-bold text-white tracking-tight">AmikomEventHub</span>
             </a>
             <!-- Close Button for Mobile -->

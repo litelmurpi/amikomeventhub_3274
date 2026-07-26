@@ -106,7 +106,10 @@
             <div class="absolute right-0 bottom-0 w-8 h-8 bg-slate-50 rounded-full translate-y-4 translate-x-4 no-print"></div>
             
             <div class="flex justify-between items-center mb-6">
-                <span class="px-3 py-1 bg-indigo-800 text-indigo-200 border border-indigo-700 rounded-lg text-xs font-bold uppercase tracking-wider">E-Ticket Resmi</span>
+                <div class="flex items-center gap-2">
+                    <img src="{{ asset('assets/logo-icon.svg') }}" alt="Logo" class="w-7 h-7 rounded-lg shadow-sm">
+                    <span class="px-3 py-1 bg-indigo-800 text-indigo-200 border border-indigo-700 rounded-lg text-xs font-bold uppercase tracking-wider">E-Ticket Resmi</span>
+                </div>
                 <span class="text-xs font-bold text-indigo-300">Order ID: {{ $transaction->order_id }}</span>
             </div>
             <h2 class="text-2xl font-black tracking-tight leading-tight">{{ $transaction->event->title ?? 'Event Dihapus' }}</h2>

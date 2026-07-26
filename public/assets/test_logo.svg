@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 110" width="200" height="110">
+  <defs>
+    <mask id="ticket-mask">
+      <rect width="200" height="110" rx="16" fill="#ffffff" />
+      <circle cx="0" cy="55" r="16" fill="#000000" />
+      <circle cx="200" cy="55" r="16" fill="#000000" />
+    </mask>
+  </defs>
+
+  <!-- Indigo Ticket Background -->
+  <rect width="200" height="110" fill="#4f46e5" mask="url(#ticket-mask)" />
+
+  <!-- Exact AH Monogram Symbol -->
+  <g fill="#0f172a">
+    <!-- Left Slanted Stem of A -->
+    <polygon points="32,90 62,24 80,24 50,90" />
+    
+    <!-- Middle Vertical Stem (shared) -->
+    <rect x="75" y="24" width="18" height="66" />
+
+    <!-- Inner Triangle Cutout of A -->
+    <polygon points="60,46 75,46 72,28" fill="#4f46e5" />
+
+    <!-- Right Vertical Stem of H -->
+    <rect x="130" y="24" width="18" height="66" />
+
+    <!-- Angled / Horizontal Crossbar connecting A & H -->
+    <polygon points="42,70 148,52 148,67 36,85" />
+  </g>
+</svg>
