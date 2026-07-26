@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->timestamp('wa_reminder_sent_at')->nullable()->after('checked_in_at');
+            if (!Schema::hasColumn('transactions', 'wa_reminder_sent_at')) {
+                $table->timestamp('wa_reminder_sent_at')->nullable()->after('checked_in_at');
+            }
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn('wa_reminder_sent_at');
+            if (Schema::hasColumn('transactions', 'wa_reminder_sent_at')) {
+                $table->dropColumn('wa_reminder_sent_at');
+            }
         });
     }
 };

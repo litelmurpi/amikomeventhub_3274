@@ -12,6 +12,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EticketController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Organizer\CheckinController as OrganizerCheckinController;
 use App\Http\Controllers\Organizer\OrganizerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterOrganizerController;
@@ -19,6 +20,29 @@ use App\Http\Controllers\User\TicketController;
 use App\Http\Controllers\SocialAuthController; // Tambahan Person B (SSO)
 use App\Http\Controllers\ReviewController; // Tambahan Person B (Rating & Review)
 use Illuminate\Support\Facades\Route;
+
+// PWA Service Worker & Manifest Routes (Explicit MIME Types for Shared Hosting / InfinityFree)
+Route::get('/manifest.json', function () {
+    $path = public_path('manifest.json');
+    if (!file_exists($path)) abort(404);
+    return response(file_get_contents($path), 200)
+        ->header('Content-Type', 'application/manifest+json; charset=utf-8');
+});
+
+Route::get('/sw.js', function () {
+    $path = public_path('sw.js');
+    if (!file_exists($path)) abort(404);
+    return response(file_get_contents($path), 200)
+        ->header('Content-Type', 'text/javascript; charset=utf-8')
+        ->header('Service-Worker-Allowed', '/');
+});
+
+Route::get('/offline.html', function () {
+    $path = public_path('offline.html');
+    if (!file_exists($path)) abort(404);
+    return response(file_get_contents($path), 200)
+        ->header('Content-Type', 'text/html; charset=utf-8');
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-detail/{slug}', [EventController::class, 'show'])->name('event-detail');
@@ -76,6 +100,10 @@ Route::prefix('organizer')->name('organizer.')->group(function () {
         Route::get('/events/{event}/edit', [OrganizerController::class, 'editEvent'])->name('events.edit');
         Route::put('/events/{event}', [OrganizerController::class, 'updateEvent'])->name('events.update');
         Route::delete('/events/{event}', [OrganizerController::class, 'destroyEvent'])->name('events.destroy');
+
+        Route::get('/checkin', [OrganizerCheckinController::class, 'index'])->name('checkin');
+        Route::post('/checkin', [OrganizerCheckinController::class, 'verify'])->name('checkin.verify');
+        Route::post('/checkin/ajax', [OrganizerCheckinController::class, 'verifyAjax'])->name('checkin.ajax');
     });
 });
 

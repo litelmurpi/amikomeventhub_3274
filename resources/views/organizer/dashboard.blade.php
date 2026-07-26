@@ -3,12 +3,11 @@
 @section('title', 'Dashboard Penyelenggara - Amikom Event Hub')
 
 @section('content')
-<main class="flex-1 p-10 overflow-y-auto">
     <!-- Header -->
-    <header class="flex justify-between items-center mb-10">
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-10">
         <div>
-            <h1 class="text-3xl font-black">Dashboard {{ $org->name }}</h1>
-            <p class="text-slate-500 font-medium">Selamat datang kembali, Penyelenggara!</p>
+            <h1 class="text-2xl sm:text-3xl font-black">Dashboard {{ $org->name }}</h1>
+            <p class="text-slate-500 text-sm sm:text-base font-medium">Selamat datang kembali, Penyelenggara!</p>
         </div>
         <div class="flex items-center gap-4">
             <div class="text-right hidden md:block">
@@ -106,5 +105,4 @@
             </table>
         </div>
     </div>
-</main>
 @endsection

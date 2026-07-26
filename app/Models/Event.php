@@ -81,3 +81,16 @@ class Event extends Model
         return $this->reviews()->count();
     }
 }
+    /**
+     * Scope to filter only public events from approved organizations or superadmin.
+     */
+    public function scopePublicApproved($query)
+    {
+        return $query->where(function ($q) {
+            $q->whereNull('organization_id')
+              ->orWhereHas('organization', function ($orgQuery) {
+                  $orgQuery->where('status', 'approved');
+              });
+        });
+    }
+}

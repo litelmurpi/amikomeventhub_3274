@@ -3,14 +3,13 @@
 @section('title', 'Kelola Event - Amikom Event Hub')
 
 @section('content')
-<main class="flex-1 p-10 overflow-y-auto">
-    <header class="flex justify-between items-center mb-10">
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-10">
         <div>
-            <h1 class="text-3xl font-black">Kelola Event Saya</h1>
-            <p class="text-slate-500 font-medium">Buat dan atur acara {{ $org->name }} di sini.</p>
+            <h1 class="text-2xl sm:text-3xl font-black">Kelola Event Saya</h1>
+            <p class="text-slate-500 text-sm sm:text-base font-medium">Buat dan atur acara {{ $org->name }} di sini.</p>
         </div>
         <a href="{{ route('organizer.events.create') }}"
-            class="inline-block px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition">
+            class="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition text-sm sm:text-base whitespace-nowrap">
             + Buat Event Baru
         </a>
     </header>
@@ -122,5 +121,4 @@
             }
         }
     </script>
-</main>
 @endsection

@@ -19,9 +19,17 @@
         <form method="GET" action="{{ route('admin.events') }}" id="search-form" class="flex flex-col sm:flex-row gap-2">
             <input type="text" name="search" id="search-input" value="{{ request('search') }}" placeholder="Cari nama event..."
                 class="flex-1 px-4 md:px-5 py-2.5 md:py-3 rounded-xl border-slate-200 border bg-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm transition">
+            
+            <select name="category_id" onchange="document.getElementById('search-form').submit()" class="px-4 py-2.5 md:py-3 rounded-xl border-slate-200 border bg-white text-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium transition">
+                <option value="">Semua Kategori</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
+            </select>
+
             <div class="flex gap-2">
                 <button type="submit" class="flex-1 sm:flex-none px-6 py-2.5 md:py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition">Cari</button>
-                @if(request('search'))
+                @if(request('search') || request('category_id'))
                     <a href="{{ route('admin.events') }}" class="px-4 py-2.5 md:py-3 bg-slate-200 text-slate-700 rounded-xl font-bold text-sm hover:bg-slate-300 transition flex items-center justify-center">Reset</a>
                 @endif
             </div>
@@ -29,18 +37,24 @@
     </div>
 
     <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse min-w-[650px]">
+        <table class="w-full text-left border-collapse min-w-[700px]">
             <thead class="bg-slate-50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
                 <tr>
                     <th class="px-6 py-4 w-12">No</th>
                     <th class="px-6 py-4">Poster</th>
                     <th class="px-6 py-4">Event</th>
                     <th class="px-6 py-4">Harga / Stok</th>
+                    <th class="px-6 py-4">Status</th>
                     <th class="px-6 py-4">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y border-t">
                 @foreach($events as $event)
+                @php
+                    $isOrgInactive = $event->organization_id && !$event->organization?->isApproved();
+                    $rawDate = \Carbon\Carbon::parse($event->getRawOriginal('date'));
+                    $isPast = $rawDate->lt(now()->startOfDay());
+                @endphp
                 <tr class="hover:bg-slate-50/50 transition">
                     <td class="px-6 py-4 font-bold text-slate-400 text-sm">{{ $loop->iteration }}</td>
                     <td class="px-6 py-4">
@@ -48,11 +62,25 @@
                     </td>
                     <td class="px-6 py-4">
                         <p class="font-black text-slate-800 text-sm md:text-base">{{ $event->title }}</p>
-                        <p class="text-xs text-slate-400">{{ $event->category->name ?? 'Uncategorized' }} • {{ $event->date }}</p>
+                        <p class="text-xs text-slate-400">
+                            {{ $event->category->name ?? 'Uncategorized' }} • {{ $event->date }}
+                            @if($event->organization)
+                                • <span class="font-bold text-indigo-600">{{ $event->organization->name }}</span>
+                            @endif
+                        </p>
                     </td>
                     <td class="px-6 py-4">
                         <p class="font-bold text-indigo-600 text-sm">{{ $event->price }}</p>
                         <p class="text-xs text-slate-400">Stok: {{ $event->stock }}</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        @if($isOrgInactive)
+                            <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-md text-[10px] font-black uppercase tracking-wider" title="Organisasi penanggung jawab nonaktif/belum disetujui">Org Nonaktif</span>
+                        @elseif($isPast)
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-black uppercase tracking-wider">Selesai</span>
+                        @else
+                            <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-md text-[10px] font-black uppercase tracking-wider">Mendatang / Aktif</span>
+                        @endif
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex gap-2">

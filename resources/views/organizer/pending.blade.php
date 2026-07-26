@@ -7,19 +7,26 @@
     <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
         
         @if($org && $org->isRejected())
-            <!-- Rejected Header Accent -->
+            @php
+                $isDeactivated = ($org->events_count ?? 0) > 0 || \Illuminate\Support\Str::contains(strtolower($org->rejection_reason ?? ''), ['nonaktif', 'dinonaktifkan']);
+            @endphp
+            <!-- Rejected/Deactivated Header Accent -->
             <div class="h-4 bg-rose-500"></div>
 
             <div class="p-8 md:p-10 flex flex-col items-center">
                 <!-- Rejected Icon -->
                 <div class="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center text-rose-500 mb-6 ring-8 ring-rose-50/50">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                     </svg>
                 </div>
 
-                <h1 class="text-2xl font-black text-slate-800 text-center">Pendaftaran Organisasi Ditolak</h1>
-                <p class="text-slate-500 text-sm text-center mt-2">Mohon maaf, pengajuan organisasi Anda belum dapat disetujui saat ini.</p>
+                <h1 class="text-2xl font-black text-slate-800 text-center">
+                    {{ $isDeactivated ? 'Organisasi Dinonaktifkan' : 'Pendaftaran Organisasi Ditolak' }}
+                </h1>
+                <p class="text-slate-500 text-sm text-center mt-2">
+                    {{ $isDeactivated ? 'Akun dan organisasi Anda saat ini dalam status dinonaktifkan oleh Superadmin.' : 'Mohon maaf, pengajuan pendaftaran organisasi Anda belum dapat disetujui saat ini.' }}
+                </p>
 
                 <!-- Rejection Reason Alert -->
                 <div class="w-full mt-6 bg-rose-50 border border-rose-200 rounded-2xl p-5 text-sm text-rose-800">
@@ -27,7 +34,7 @@
                         <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        Alasan Penolakan dari Superadmin:
+                        {{ $isDeactivated ? 'Alasan Penonaktifan dari Superadmin:' : 'Alasan Penolakan dari Superadmin:' }}
                     </p>
                     <p class="text-slate-700 italic mt-1">{{ $org->rejection_reason ?? 'Persyaratan dokumen organisasi belum lengkap/tidak valid.' }}</p>
                 </div>
