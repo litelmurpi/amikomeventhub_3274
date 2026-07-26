@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Web-based Database Seeder Script for InfinityFree / Shared Hosting.
+ * Web-based Database Migrator & Seeder Script for InfinityFree / Shared Hosting.
  * 
  * Usage: Visit http://<your-domain>/run_seeder.php?key=amikom2026 in browser.
  */
@@ -20,11 +20,8 @@ $autoloadPath = null;
 $appPath = null;
 
 $possiblePaths = [
-    // Standard structure
     ['autoload' => __DIR__ . '/../vendor/autoload.php', 'app' => __DIR__ . '/../bootstrap/app.php'],
-    // InfinityFree subfolder structure (/htdocs/eventhub_app)
     ['autoload' => __DIR__ . '/eventhub_app/vendor/autoload.php', 'app' => __DIR__ . '/eventhub_app/bootstrap/app.php'],
-    // Root level
     ['autoload' => __DIR__ . '/vendor/autoload.php', 'app' => __DIR__ . '/bootstrap/app.php'],
 ];
 
@@ -47,7 +44,6 @@ $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 
 ?>
 <!DOCTYPE html>
@@ -55,12 +51,12 @@ use Illuminate\Support\Facades\DB;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InfinityFree Seeder — Amikom Event Hub</title>
+    <title>InfinityFree Migrator & Seeder — Amikom Event Hub</title>
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; padding: 40px; }
-        .card { max-width: 600px; margin: 0 auto; background: #1e293b; border-radius: 16px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .card { max-width: 650px; margin: 0 auto; background: #1e293b; border-radius: 16px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         h1 { color: #6366f1; font-size: 22px; margin-top: 0; }
-        .log { background: #020617; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 13px; color: #38bdf8; overflow-x: auto; white-space: pre-wrap; }
+        .log { background: #020617; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 13px; color: #38bdf8; overflow-x: auto; white-space: pre-wrap; margin-bottom: 16px; }
         .success { color: #10b981; font-weight: bold; }
         .error { color: #f43f5e; font-weight: bold; }
         .btn { display: inline-block; background: #6366f1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; margin-top: 16px; }
@@ -68,20 +64,25 @@ use Illuminate\Support\Facades\DB;
 </head>
 <body>
     <div class="card">
-        <h1>🚀 InfinityFree Web Seeder — Amikom Event Hub</h1>
-        <p style="color: #94a3b8; font-size: 14px;">Memproses eksekusi seeder database di server hosting InfinityFree...</p>
+        <h1>🚀 InfinityFree Migrator & Seeder — Amikom Event Hub</h1>
+        <p style="color: #94a3b8; font-size: 14px;">Menjalankan Migrasi Tabel & Seeder di server InfinityFree...</p>
 
         <div class="log">
 <?php
 try {
-    // Execute Artisan db:seed
+    // 1. Run Migrations first to ensure all new tables (organizations, etc.) exist
+    echo "--- MENJALANKAN MIGRASI TABEL ---\n";
+    Artisan::call('migrate', ['--force' => true]);
+    echo htmlspecialchars(Artisan::output()) . "\n";
+
+    // 2. Run Database Seeder
+    echo "--- MENJALANKAN DATABASE SEEDER ---\n";
     Artisan::call('db:seed', ['--force' => true]);
-    $output = Artisan::output();
-    
-    echo htmlspecialchars($output ?: "Seeding selesai tanpa peringatan.\n");
-    echo "<span class=\"success\">✓ BERHASIL! Database telah di-seed dengan 8 Event, 2 Organisasi, 6 Kategori, dan Akun Uji Coba.</span>\n";
+    echo htmlspecialchars(Artisan::output()) . "\n";
+
+    echo "<span class=\"success\">✓ BERHASIL! Seluruh tabel migrasi (termasuk organizations) telah dibuat & database telah di-seed dengan sukses.</span>\n";
 } catch (\Throwable $e) {
-    echo "<span class=\"error\">✕ GAGAL EKSEKUSI SEEDER:\n" . htmlspecialchars($e->getMessage()) . "</span>\n";
+    echo "<span class=\"error\">✕ GAGAL EKSEKUSI:\n" . htmlspecialchars($e->getMessage()) . "</span>\n";
 }
 ?>
         </div>
