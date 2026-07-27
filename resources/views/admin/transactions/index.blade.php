@@ -14,7 +14,8 @@
             @csrf
             <button type="submit"
                 class="w-full sm:w-auto px-4 md:px-5 py-2.5 md:py-3 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 rounded-xl md:rounded-2xl font-bold text-xs md:text-sm transition flex items-center justify-center gap-1.5 shadow-sm">
-                🧹 Bersihkan Kadaluarsa
+                <i class="ph ph-trash text-lg"></i>
+                <span>Bersihkan Kadaluarsa</span>
             </button>
         </form>
         <button
@@ -86,7 +87,7 @@
                     <td class="px-6 py-4">
                         <p class="font-medium text-slate-700 text-sm">{{ $trx->event->title ?? '-' }}</p>
                         @if($trx->ticket_code)
-                            <p class="text-xs text-indigo-600 font-mono mt-1 font-bold">🎫 {{ $trx->ticket_code }}</p>
+                            <p class="text-xs text-indigo-600 font-mono mt-1 font-bold">{{ $trx->ticket_code }}</p>
                         @endif
                     </td>
                     <td class="px-6 py-4 text-xs md:text-sm text-slate-500">

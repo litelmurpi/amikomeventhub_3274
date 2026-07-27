@@ -16,6 +16,8 @@
     <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons CDN -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script>
         tailwind.config = {
             theme: {

@@ -32,7 +32,7 @@
         <div class="lg:col-span-2 space-y-8 md:space-y-12">
             @if(session('error') || $isExpired)
                 <div class="p-5 bg-rose-50 border border-rose-100 rounded-3xl flex items-start gap-4 text-rose-800 shadow-sm">
-                    <span class="text-xl shrink-0">⚠️</span>
+                    <i class="ph ph-warning-circle text-2xl text-rose-600 shrink-0"></i>
                     <div>
                         <span class="font-bold text-sm block">Informasi Event</span>
                         <p class="text-xs text-rose-600 font-semibold mt-1">
@@ -45,7 +45,7 @@
             <!-- Notifikasi Sukses / Gagal untuk Review -->
             @if(session('success'))
                 <div class="p-5 bg-emerald-50 border border-emerald-100 rounded-3xl flex items-start gap-4 text-emerald-800 shadow-sm">
-                    <span class="text-xl shrink-0">✅</span>
+                    <i class="ph ph-check-circle text-2xl text-emerald-600 shrink-0"></i>
                     <div>
                         <span class="font-bold text-sm block">Berhasil</span>
                         <p class="text-xs text-emerald-600 font-semibold mt-1">{{ session('success') }}</p>
@@ -54,7 +54,7 @@
             @endif
             @if(session('error') && !$isExpired)
                 <div class="p-5 bg-rose-50 border border-rose-100 rounded-3xl flex items-start gap-4 text-rose-800 shadow-sm">
-                    <span class="text-xl shrink-0">⚠️</span>
+                    <i class="ph ph-warning-circle text-2xl text-rose-600 shrink-0"></i>
                     <div>
                         <span class="font-bold text-sm block">Perhatian</span>
                         <p class="text-xs text-rose-600 font-semibold mt-1">{{ session('error') }}</p>
@@ -69,8 +69,8 @@
                 
                 <!-- Rating Ringkasan di Header Event -->
                 <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-1 text-amber-500 text-lg">
-                        ⭐
+                    <div class="flex items-center gap-1 text-amber-500">
+                        <i class="ph-fill ph-star text-amber-400 text-xl"></i>
                     </div>
                     <span class="font-black text-slate-800 text-lg">{{ number_format($event->average_rating, 1) }}</span>
                     <span class="text-slate-400 text-sm font-medium">({{ $event->review_count }} Ulasan Peserta)</span>
@@ -78,21 +78,11 @@
 
                 <div class="flex flex-wrap gap-4 sm:gap-6 text-slate-500 font-medium text-sm sm:text-base">
                     <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                            </path>
-                        </svg>
+                        <i class="ph ph-calendar-blank text-indigo-600 text-xl"></i>
                         <span>{{ $event->date }}</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                            </path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
+                        <i class="ph ph-map-pin text-indigo-600 text-xl"></i>
                         <span>{{ $event->location }}</span>
                     </div>
                 </div>
@@ -118,24 +108,29 @@
                         <h2 class="text-3xl sm:text-5xl font-black">{{ $event->price }} <span class="text-base sm:text-lg font-medium text-indigo-200">/ orang</span></h2>
                         <div class="mt-4 text-indigo-100 flex items-center gap-2">
                             @if($isExpired)
-                                <span class="inline-flex items-center px-3 py-1 bg-slate-500/30 text-slate-300 border border-slate-500/40 rounded-lg text-xs font-bold uppercase tracking-wider">
-                                    ⚫ EVENT BERAKHIR
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-500/30 text-slate-300 border border-slate-500/40 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    <span class="w-2 h-2 rounded-full bg-slate-400 inline-block"></span>
+                                    Event Berakhir
                                 </span>
                             @elseif($event->stock > 50)
-                                <span class="inline-flex items-center px-3 py-1 bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 rounded-lg text-xs font-bold uppercase tracking-wider">
-                                    🟢 Tersedia: {{ $event->stock }} tiket
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+                                    Tersedia: {{ $event->stock }} tiket
                                 </span>
                             @elseif($event->stock <= 50 && $event->stock > 10)
-                                <span class="inline-flex items-center px-3 py-1 bg-amber-500/20 text-amber-200 border border-amber-500/30 rounded-lg text-xs font-bold uppercase tracking-wider">
-                                    🟡 Segera Habis! Sisa {{ $event->stock }} tiket
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 text-amber-200 border border-amber-500/30 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse inline-block"></span>
+                                    Segera Habis! Sisa {{ $event->stock }} tiket
                                 </span>
                             @elseif($event->stock <= 10 && $event->stock > 0)
-                                <span class="inline-flex items-center px-3 py-1 bg-red-500/20 text-red-200 border border-red-500/30 rounded-lg text-xs font-bold uppercase tracking-wider animate-pulse">
-                                    🔥 Hampir Habis! Sisa {{ $event->stock }} tiket!
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-500/20 text-red-200 border border-red-500/30 rounded-lg text-xs font-bold uppercase tracking-wider animate-pulse">
+                                    <span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse inline-block"></span>
+                                    Hampir Habis! Sisa {{ $event->stock }} tiket!
                                 </span>
                             @else
-                                <span class="inline-flex items-center px-3 py-1 bg-slate-500/30 text-slate-300 border border-slate-500/40 rounded-lg text-xs font-bold uppercase tracking-wider">
-                                    ⚫ Tiket Habis (SOLD OUT)
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-500/30 text-slate-300 border border-slate-500/40 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    <span class="w-2 h-2 rounded-full bg-slate-400 inline-block"></span>
+                                    Tiket Habis (SOLD OUT)
                                 </span>
                             @endif
                         </div>
@@ -230,7 +225,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center text-amber-500 text-sm font-bold gap-1">
-                                    <span>⭐</span>
+                                    <i class="ph-fill ph-star text-amber-400 text-base"></i>
                                     <span>{{ $review->rating }}.0</span>
                                 </div>
                             </div>

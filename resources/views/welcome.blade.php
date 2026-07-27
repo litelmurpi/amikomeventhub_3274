@@ -143,7 +143,7 @@
                             @endif
                             @if(isset($event->average_rating))
                                 <div class="flex items-center gap-1.5 mb-2">
-                                    <span class="text-amber-500 text-sm">⭐</span>
+                                    <i class="ph-fill ph-star text-amber-400 text-sm"></i>
                                     <span class="font-bold text-slate-800 text-sm">
                                         {{ number_format($event->average_rating, 1) }}
                                     </span>

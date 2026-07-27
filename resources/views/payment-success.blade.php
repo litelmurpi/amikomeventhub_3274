@@ -37,7 +37,8 @@
                 
                 @if($transaction->snap_token)
                     <button onclick="payPending()" class="mt-4 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl text-sm shadow-md shadow-amber-100 hover:shadow-lg transition flex items-center gap-2">
-                        💳 Bayar Sekarang via Midtrans
+                        <i class="ph ph-credit-card text-lg"></i>
+                        <span>Bayar Sekarang via Midtrans</span>
                     </button>
                 @endif
             @else
@@ -104,7 +105,8 @@
             <div class="w-full mt-10 space-y-3">
                 @if(strtolower($transaction->status) === 'success' && $transaction->ticket_code)
                     <a href="{{ route('eticket.show', $transaction->ticket_code) }}" target="_blank" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-indigo-700 shadow-lg shadow-indigo-100 active:scale-95 transition-all">
-                        🎫 Tampilkan E-Ticket Resmi
+                        <i class="ph ph-ticket text-lg"></i>
+                        <span>Tampilkan E-Ticket Resmi</span>
                     </a>
                 @endif
                 <a href="{{ route('home') }}" class="w-full py-4 border border-slate-200 text-slate-600 rounded-2xl font-bold flex items-center justify-center hover:bg-slate-50 active:scale-95 transition-all">

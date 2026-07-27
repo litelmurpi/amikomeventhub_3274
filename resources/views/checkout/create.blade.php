@@ -59,7 +59,10 @@
 
         <!-- Form Card -->
         <div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
-            <h3 class="text-xl font-bold mb-4 text-indigo-600">🎫 Data Pemesan</h3>
+            <h3 class="text-xl font-bold mb-4 text-indigo-600 flex items-center gap-2">
+                <i class="ph ph-user-circle text-2xl"></i>
+                <span>Data Pemesan</span>
+            </h3>
 
             <!-- Auto-fill toggle -->
             <div class="mb-6 p-4 bg-indigo-50 rounded-2xl border border-indigo-100">
