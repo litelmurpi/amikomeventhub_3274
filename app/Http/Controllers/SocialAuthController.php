@@ -15,7 +15,11 @@ class SocialAuthController extends Controller
      */
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        try {
+            return Socialite::driver('google')->redirect();
+        } catch (\Exception $e) {
+            return redirect('/login')->with('error', 'Login Google belum dapat digunakan. Silakan isi GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET di .env');
+        }
     }
 
     /**

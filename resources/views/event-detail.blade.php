@@ -172,7 +172,7 @@
             <!-- ========================================== -->
             <!-- SECTION TAMBAHAN PERSON B: REVIEW & RATING -->
             <!-- ========================================== -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm space-y-6">
+            <div id="review-section" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm space-y-6 scroll-mt-28">
                 <div class="flex items-center justify-between border-b pb-4">
                     <div>
                         <h3 class="text-xl font-bold text-slate-900">Ulasan & Rating Peserta</h3>

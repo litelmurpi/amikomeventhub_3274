@@ -64,19 +64,36 @@
                             @endif
                         </td>
                         <td class="px-4 sm:px-8 py-4 sm:py-6 text-center whitespace-nowrap">
-                            @if((strtolower($ticket->status) === 'success' || strtolower($ticket->status) === 'settlement') && $ticket->ticket_code)
-                                <a href="{{ route('eticket.show', $ticket->ticket_code) }}" target="_blank"
-                                    class="inline-block px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-indigo-100 hover:shadow-lg">
-                                    🎫 Lihat E-Ticket
-                                </a>
-                            @elseif(strtolower($ticket->status) === 'pending')
-                                <a href="{{ route('payment.success', $ticket->order_id) }}"
-                                    class="inline-block px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition shadow-md shadow-amber-100 hover:shadow-lg">
-                                    💳 Bayar Sekarang
-                                </a>
-                            @else
-                                <span class="text-xs text-slate-400 font-semibold">-</span>
-                            @endif
+                            <div class="flex items-center justify-center gap-2">
+                                @if((strtolower($ticket->status) === 'success' || strtolower($ticket->status) === 'settlement') && $ticket->ticket_code)
+                                    <a href="{{ route('eticket.show', $ticket->ticket_code) }}" target="_blank"
+                                        class="inline-block px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-indigo-100 hover:shadow-lg">
+                                        🎫 Lihat E-Ticket
+                                    </a>
+
+                                    @if($ticket->event)
+                                        @php
+                                            $eventDate = $ticket->event->getRawOriginal('date');
+                                            $isPast = $eventDate && \Carbon\Carbon::parse($eventDate)->startOfDay()->isPast();
+                                            $hasReviewed = $ticket->event->reviews()->where('user_id', Auth::id())->exists();
+                                        @endphp
+
+                                        @if($isPast)
+                                            <a href="{{ route('event-detail', $ticket->event->slug) }}#review-section"
+                                                class="inline-block px-3.5 py-2 {{ $hasReviewed ? 'bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100' : 'bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-100' }} rounded-xl text-xs font-bold transition">
+                                                ⭐ {{ $hasReviewed ? 'Ulasan Saya' : 'Beri Ulasan' }}
+                                            </a>
+                                        @endif
+                                    @endif
+                                @elseif(strtolower($ticket->status) === 'pending')
+                                    <a href="{{ route('payment.success', $ticket->order_id) }}"
+                                        class="inline-block px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition shadow-md shadow-amber-100 hover:shadow-lg">
+                                        💳 Bayar Sekarang
+                                    </a>
+                                @else
+                                    <span class="text-xs text-slate-400 font-semibold">-</span>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @endforeach
