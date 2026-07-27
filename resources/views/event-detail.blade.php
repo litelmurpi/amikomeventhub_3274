@@ -105,7 +105,7 @@
                 </p>
                 @if($event->description2)
                 <p class="text-base sm:text-lg text-slate-600 leading-relaxed mt-4">
-                    {!! $event->description2 !!}
+                    {!! nl2br(e($event->description2)) !!}
                 </p>
                 @endif
             </div>

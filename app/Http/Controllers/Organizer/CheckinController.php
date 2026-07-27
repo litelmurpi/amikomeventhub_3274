@@ -43,7 +43,10 @@ class CheckinController extends Controller
 
         // Selected event filter (optional)
         $selectedEventId = $request->query('event_id');
-        $scopedEventIds = $selectedEventId ? [$selectedEventId] : $myEventIds;
+        if ($selectedEventId !== null && !$myEventIds->contains((int) $selectedEventId)) {
+            $selectedEventId = null;
+        }
+        $scopedEventIds = $selectedEventId ? [(int) $selectedEventId] : $myEventIds;
 
         // Statistics calculation for this organizer
         $totalSoldTickets = Transaction::whereIn('event_id', $scopedEventIds)
