@@ -538,6 +538,24 @@ class PaymentController extends Controller
                         } catch (\Exception $e) {
                             \Illuminate\Support\Facades\Log::error('Gagal mengirim email E-Ticket via Success Fallback Check: ' . $e->getMessage());
                         }
+
+                        // Dispatch WA Notification for Fallback Check
+                        try {
+                            $eventTitle = $transaction->event->title ?? 'AmikomEventHub';
+                            $ticketUrl = route('eticket.show', $transaction->ticket_code);
+                            $waMsg = "✅ *Pembayaran Tiket Berhasil!*\n\n"
+                                . "Halo {$transaction->customer_name},\n"
+                                . "Pembayaran Anda untuk *{$eventTitle}* telah berhasil dikonfirmasi.\n\n"
+                                . "🎫 Kode Tiket: `{$transaction->ticket_code}`\n"
+                                . "💰 Total: Rp " . number_format($transaction->total_price, 0, ',', '.') . "\n\n"
+                                . "Lihat E-Ticket Anda di sini:\n"
+                                . "👉 {$ticketUrl}\n\n"
+                                . "— AmikomEventHub";
+
+                            \App\Jobs\SendWhatsAppNotificationJob::dispatch($transaction->customer_phone, $waMsg);
+                        } catch (\Exception $e) {
+                            \Illuminate\Support\Facades\Log::error('Gagal dispatch WA Job via Success Fallback Check: ' . $e->getMessage());
+                        }
                     } else {
                         $transaction->refresh();
                     }
