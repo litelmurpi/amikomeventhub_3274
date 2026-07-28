@@ -30,19 +30,6 @@
 
         <!-- Right: Details -->
         <div class="lg:col-span-2 space-y-8 md:space-y-12">
-            @if(session('error') || $isExpired)
-                <div class="p-5 bg-rose-50 border border-rose-100 rounded-3xl flex items-start gap-4 text-rose-800 shadow-sm">
-                    <i class="ph ph-warning-circle text-2xl text-rose-600 shrink-0"></i>
-                    <div>
-                        <span class="font-bold text-sm block">Informasi Event</span>
-                        <p class="text-xs text-rose-600 font-semibold mt-1">
-                            {{ session('error') ?? 'Event ini telah berakhir. Pemesanan tiket sudah tidak tersedia.' }}
-                        </p>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Notifikasi Sukses / Gagal untuk Review -->
             @if(session('success'))
                 <div class="p-5 bg-emerald-50 border border-emerald-100 rounded-3xl flex items-start gap-4 text-emerald-800 shadow-sm">
                     <i class="ph ph-check-circle text-2xl text-emerald-600 shrink-0"></i>
@@ -51,13 +38,22 @@
                         <p class="text-xs text-emerald-600 font-semibold mt-1">{{ session('success') }}</p>
                     </div>
                 </div>
-            @endif
-            @if(session('error') && !$isExpired)
+            @elseif(session('error'))
                 <div class="p-5 bg-rose-50 border border-rose-100 rounded-3xl flex items-start gap-4 text-rose-800 shadow-sm">
                     <i class="ph ph-warning-circle text-2xl text-rose-600 shrink-0"></i>
                     <div>
                         <span class="font-bold text-sm block">Perhatian</span>
                         <p class="text-xs text-rose-600 font-semibold mt-1">{{ session('error') }}</p>
+                    </div>
+                </div>
+            @elseif($isExpired)
+                <div class="p-5 bg-rose-50 border border-rose-100 rounded-3xl flex items-start gap-4 text-rose-800 shadow-sm">
+                    <i class="ph ph-warning-circle text-2xl text-rose-600 shrink-0"></i>
+                    <div>
+                        <span class="font-bold text-sm block">Informasi Event</span>
+                        <p class="text-xs text-rose-600 font-semibold mt-1">
+                            Event ini telah berakhir. Pemesanan tiket sudah tidak tersedia.
+                        </p>
                     </div>
                 </div>
             @endif
