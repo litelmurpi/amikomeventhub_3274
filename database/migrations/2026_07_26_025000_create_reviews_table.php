@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('event_id')->constrained()->cascadeOnDelete();
+            // Menghapus physical foreign key constraints agar kompatibel dengan MyISAM di InfinityFree
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('event_id');
             $table->tinyInteger('rating')->unsigned(); // rating 1-5
             $table->text('comment');
             $table->timestamps();
