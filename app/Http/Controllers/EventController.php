@@ -12,7 +12,7 @@ class EventController extends Controller
     {
         $categories = Category::all();
 
-        $query = Event::with('category')->publicApproved()->where('date', '>=', now()->startOfDay());
+        $query = Event::with('category')->publicApproved();
 
         if ($request->has('category') && $request->category != '') {
             $query->whereHas('category', function ($q) use ($request) {

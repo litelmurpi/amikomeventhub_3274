@@ -30,12 +30,20 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @forelse($events as $event)
         <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col">
+          @php
+              $eventDate = $event->getRawOriginal('date');
+              $isExpired = $eventDate && \Carbon\Carbon::parse($eventDate)->startOfDay()->isPast();
+          @endphp
           <div class="relative overflow-hidden aspect-[4/3] sm:aspect-[3/4]">
             <img src="{{ asset($event->poster_path ?? 'assets/concert.png') }}" alt="{{ $event->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
             <div class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur rounded-lg text-xs font-bold uppercase text-indigo-600">
               {{ $event->category->name ?? 'Uncategorized' }}
             </div>
-            @if($event->stock > 50)
+            @if($isExpired)
+              <div class="absolute top-4 right-4 px-2.5 py-1 bg-slate-800/80 backdrop-blur text-slate-300 border border-slate-700 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                Berakhir
+              </div>
+            @elseif($event->stock > 50)
               <div class="absolute top-4 right-4 px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm">
                 Tersedia
               </div>
