@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\Event;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -50,18 +52,40 @@ class TransactionController extends Controller
     }
 
     /**
-     * Manually expire pending transactions that are older than 24 hours.
+     * Manually expire pending transactions that are older than 15 minutes.
      * Fallback mechanism for hosting setups that do not support cron jobs.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function expirePending(): RedirectResponse
     {
-        $expiredCount = Transaction::where('status', 'Pending')
-            ->where('created_at', '<', now()->subHours(24))
-            ->update(['status' => 'Expired']);
+        $pendingTransactions = Transaction::where('status', 'Pending')
+            ->where('created_at', '<', now()->subMinutes(15))
+            ->get();
+
+        $expiredCount = 0;
+
+        foreach ($pendingTransactions as $transaction) {
+            $updated = DB::transaction(function () use ($transaction) {
+                $trx = Transaction::lockForUpdate()->find($transaction->id);
+
+                if ($trx && $trx->status === 'Pending') {
+                    $trx->update(['status' => 'Expired']);
+                    if ($trx->event_id) {
+                        Event::where('id', $trx->event_id)->increment('stock');
+                    }
+                    return true;
+                }
+
+                return false;
+            });
+
+            if ($updated) {
+                $expiredCount++;
+            }
+        }
 
         return redirect()->route('admin.transactions')
-            ->with('success', "Berhasil membersihkan database. Sebanyak {$expiredCount} transaksi pending (lebih dari 24 jam) diubah menjadi kadaluarsa.");
+            ->with('success', "Berhasil membersihkan database. Sebanyak {$expiredCount} transaksi pending (lebih dari 15 menit) diubah menjadi kadaluarsa dan stoknya telah dikembalikan.");
     }
 }

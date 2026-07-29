@@ -9,5 +9,5 @@ Artisan::command('inspire', function () {
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('transactions:expire-pending')->hourly();
+Schedule::command('transactions:expire-pending')->everyMinute();
 Schedule::command('cart:reminder-wa')->everyThirtyMinutes();

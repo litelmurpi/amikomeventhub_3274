@@ -167,13 +167,13 @@ class PaymentController extends Controller
             }
         }
 
-        // 3. Prevent duplicate pending transactions for the same user and event (re-use within 24 hours)
+        // 3. Prevent duplicate pending transactions for the same user and event (re-use within 15 minutes)
         // Note: We check if the previous pending transaction used the SAME promo code configuration to prevent abuse
         $existingTransaction = Transaction::where('user_id', Auth::id())
             ->where('event_id', $event->id)
             ->where('status', 'Pending')
             ->where('promo_code', $promoCode ? $promoCode->code : null)
-            ->where('created_at', '>', now()->subHours(24))
+            ->where('created_at', '>', now()->subMinutes(15))
             ->whereNotNull('snap_token')
             ->first();
 
@@ -254,21 +254,38 @@ class PaymentController extends Controller
         // Calculate total price with discount applied. Price cannot drop below 0.
         $totalPrice = max(0, $event->price_value - $discountAmount + $serviceFee);
 
-        // 5. Create Transaction record in database with initial status 'Pending'
-        $transaction = Transaction::create([
-            'event_id'        => $event->id,
-            'user_id'         => Auth::id(),
-            'order_id'        => $orderId,
-            'customer_name'   => $request->customer_name,
-            'customer_email'  => $request->customer_email,
-            'customer_phone'  => $request->customer_phone,
-            'total_price'     => $totalPrice,
-            'status'          => 'Pending',
-            'promo_code'      => $promoCode ? $promoCode->code : null,
-            'discount_amount' => $discountAmount,
-        ]);
+        // 5. Create Transaction record and immediately reserve stock inside atomic DB transaction
+        $transaction = DB::transaction(function () use ($event, $request, $orderId, $totalPrice, $promoCode, $discountAmount) {
+            $eventLocked = Event::lockForUpdate()->find($event->id);
 
-        // 6. Build Midtrans Snap parameters
+            if (!$eventLocked || $eventLocked->stock <= 0) {
+                return null;
+            }
+
+            // Immediately reserve 1 stock for this pending order
+            $eventLocked->decrement('stock');
+
+            return Transaction::create([
+                'event_id'        => $event->id,
+                'user_id'         => Auth::id(),
+                'order_id'        => $orderId,
+                'customer_name'   => $request->customer_name,
+                'customer_email'  => $request->customer_email,
+                'customer_phone'  => $request->customer_phone,
+                'total_price'     => $totalPrice,
+                'status'          => 'Pending',
+                'promo_code'      => $promoCode ? $promoCode->code : null,
+                'discount_amount' => $discountAmount,
+            ]);
+        });
+
+        if (!$transaction) {
+            return response()->json([
+                'message' => 'Maaf, tiket untuk event ini sudah habis.'
+            ], 400);
+        }
+
+        // 6. Build Midtrans Snap parameters with 15-minute expiry
         $this->setupMidtrans();
         
         $itemDetails = [
@@ -307,6 +324,10 @@ class PaymentController extends Controller
                 'phone'      => $request->customer_phone,
             ],
             'item_details' => $itemDetails,
+            'expiry' => [
+                'unit'     => 'minute',
+                'duration' => 15,
+            ],
         ];
 
         try {
@@ -323,10 +344,11 @@ class PaymentController extends Controller
                 'order_id'   => $orderId,
             ]);
         } catch (\Exception $e) {
-            // Log error and update transaction status to Expired/Failed if token creation fails
-            $transaction->update([
-                'status' => 'Expired'
-            ]);
+            // Log error, release reserved stock, and update transaction status to Expired if token creation fails
+            DB::transaction(function () use ($transaction, $event) {
+                $transaction->update(['status' => 'Expired']);
+                Event::where('id', $event->id)->increment('stock');
+            });
  
             \Illuminate\Support\Facades\Log::error('Midtrans Snap token creation failed: ' . $e->getMessage());
             return response()->json([
@@ -393,38 +415,23 @@ class PaymentController extends Controller
         if ($status === 'Success') {
             // Run a thread-safe database transaction with pessimistic locking
             $updated = DB::transaction(function () use ($transaction, $notification) {
-                // Lock the event record to prevent race conditions on stock check
-                $event = Event::lockForUpdate()->find($transaction->event_id);
+                $trx = Transaction::lockForUpdate()->find($transaction->id);
 
-                if (!$event) {
-                    $transaction->update(['status' => 'Expired']);
+                if (!$trx || $trx->status === 'Success') {
                     return false;
                 }
 
-                // If transaction is already successful, do nothing (idempotent webhook)
-                if ($transaction->status === 'Success') {
-                    return false;
-                }
-
-                // Prevent negative stock
-                if ($event->stock <= 0) {
-                    $transaction->update([
-                        'status' => 'Expired'
-                    ]);
-                    return false;
-                }
-
-                // Decrement stock, update transaction status, and generate ticket code
-                $event->decrement('stock');
-                $transaction->update([
+                // Note: Stock was already reserved/decremented at checkout creation (Pending).
+                // Update transaction status to Success and generate ticket code
+                $trx->update([
                     'status'       => 'Success',
-                    'payment_type' => $notification->payment_type,
-                    'ticket_code'  => Transaction::generateTicketCode(),
+                    'payment_type' => $notification->payment_type ?? $trx->payment_type,
+                    'ticket_code'  => $trx->ticket_code ?: Transaction::generateTicketCode(),
                 ]);
 
                 // Increment promo code used_count if a promo was used in the transaction
-                if ($transaction->promo_code) {
-                    $promo = PromoCode::where('code', $transaction->promo_code)->first();
+                if ($trx->promo_code) {
+                    $promo = PromoCode::where('code', $trx->promo_code)->first();
                     if ($promo) {
                         $promo->increment('used_count');
                     }
@@ -458,9 +465,16 @@ class PaymentController extends Controller
                 }
             }
         } elseif ($status === 'Expired') {
-            $transaction->update([
-                'status' => 'Expired',
-            ]);
+            DB::transaction(function () use ($transaction) {
+                $trx = Transaction::lockForUpdate()->find($transaction->id);
+
+                if ($trx && $trx->status === 'Pending') {
+                    $trx->update(['status' => 'Expired']);
+                    if ($trx->event_id) {
+                        Event::where('id', $trx->event_id)->increment('stock');
+                    }
+                }
+            });
         }
 
         return response()->json([
@@ -503,31 +517,23 @@ class PaymentController extends Controller
 
                 if ($mappedStatus === 'Success') {
                     $updated = DB::transaction(function () use ($transaction, $status) {
-                        $event = Event::lockForUpdate()->find($transaction->event_id);
+                        $trx = Transaction::lockForUpdate()->find($transaction->id);
                         
-                        // Prevent race condition or duplicate stock decrement
-                        if ($event && $transaction->status !== 'Success') {
-                            if ($event->stock > 0) {
-                                $event->decrement('stock');
-                                $transaction->update([
-                                    'status'       => 'Success',
-                                    'payment_type' => $status->payment_type,
-                                    'ticket_code'  => Transaction::generateTicketCode(),
-                                ]);
-                                
-                                // Increment promo used count if a code was applied
-                                if ($transaction->promo_code) {
-                                    $promo = PromoCode::where('code', $transaction->promo_code)->first();
-                                    if ($promo) {
-                                        $promo->increment('used_count');
-                                    }
+                        if ($trx && $trx->status !== 'Success') {
+                            $trx->update([
+                                'status'       => 'Success',
+                                'payment_type' => $status->payment_type ?? $trx->payment_type,
+                                'ticket_code'  => $trx->ticket_code ?: Transaction::generateTicketCode(),
+                            ]);
+                            
+                            // Increment promo used count if a code was applied
+                            if ($trx->promo_code) {
+                                $promo = PromoCode::where('code', $trx->promo_code)->first();
+                                if ($promo) {
+                                    $promo->increment('used_count');
                                 }
-                                return true;
-                            } else {
-                                $transaction->update([
-                                    'status' => 'Expired'
-                                ]);
                             }
+                            return true;
                         }
                         return false;
                     });
@@ -560,9 +566,15 @@ class PaymentController extends Controller
                         $transaction->refresh();
                     }
                 } elseif ($mappedStatus === 'Expired') {
-                    $transaction->update([
-                        'status' => 'Expired'
-                    ]);
+                    DB::transaction(function () use ($transaction) {
+                        $trx = Transaction::lockForUpdate()->find($transaction->id);
+                        if ($trx && $trx->status === 'Pending') {
+                            $trx->update(['status' => 'Expired']);
+                            if ($trx->event_id) {
+                                Event::where('id', $trx->event_id)->increment('stock');
+                            }
+                        }
+                    });
                     $transaction->refresh();
                 }
             } catch (\Exception $e) {

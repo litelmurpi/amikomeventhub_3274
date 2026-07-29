@@ -13,9 +13,9 @@ graph LR
         A3["WhatsApp Notif<br/>⬛⬛⬛"]
     end
     subgraph B["🔗 PERSON B<br/>Integrasi & Fitur Sosial"]
-        B1["Google SSO<br/>⬛⬛"]
-        B2["Rating & Review<br/>⬛⬛⬛"]
-        B3["Dashboard Grafik<br/>⬛⬛"]
+        B1["Google SSO<br/>✅✅"]
+        B2["Rating & Review<br/>✅✅✅"]
+        B3["Dashboard Grafik<br/>✅✅"]
     end
     subgraph C["🎨 PERSON C<br/>Frontend & DevOps"]
         C1["PWA<br/>⬛⬛⬛"]
@@ -98,9 +98,9 @@ graph LR
 
 | # | Fitur | Tipe | Bobot |
 |---|-------|------|-------|
-| 1 | **Login Google SSO (Socialite)** | Wajib | ⬛⬛ Kecil-Sedang |
-| 2 | **Rating & Review (⭐)** | Wajib | ⬛⬛⬛ Sedang |
-| 3 | **Dashboard Admin Grafik** | Pilihan | ⬛⬛ Kecil |
+| 1 | **Login Google SSO (Socialite)** | Wajib | ✅✅ Selesai |
+| 2 | **Rating & Review (⭐)** | Wajib | ✅✅✅ Selesai |
+| 3 | **Dashboard Admin Grafik** | Pilihan | ✅✅ Selesai |
 
 ### Detail Task
 
@@ -109,51 +109,51 @@ graph LR
 > [!NOTE]
 > Bisa mulai paralel dengan Person A. Tapi pastikan migration `google_id` **tidak conflict** dengan migration multi-tenant Person A.
 
-- [ ] Buat project di [Google Cloud Console](https://console.cloud.google.com/):
+- [x] Buat project di [Google Cloud Console](https://console.cloud.google.com/):
   1. Buat project baru
   2. Enable "Google+ API" atau "Google Identity"
   3. Buat OAuth 2.0 Client ID (Web Application)
   4. Authorized redirect URI: `https://<domain>/auth/google/callback`
   5. Catat Client ID & Client Secret
-- [ ] `composer require laravel/socialite`
-- [ ] Tambah config Google di `config/services.php`
-- [ ] Buat migration `add_google_fields_to_users` (google_id, avatar, password nullable)
-- [ ] Update `User.php` — tambah google_id & avatar ke $fillable
-- [ ] Buat `SocialAuthController.php` — redirectToGoogle() + handleGoogleCallback()
-- [ ] Tambah routes: `GET /auth/google`, `GET /auth/google/callback`
-- [ ] Update `auth/login.blade.php` — tombol "Continue with Google" + divider "atau"
-- [ ] Update `auth/register.blade.php` — tombol "Daftar dengan Google"
-- [ ] Set env vars di `.env`, Laravel Cloud, dan InfinityFree
+- [x] `composer require laravel/socialite`
+- [x] Tambah config Google di `config/services.php`
+- [x] Buat migration `add_google_fields_to_users` (google_id, avatar, password nullable)
+- [x] Update `User.php` — tambah google_id & avatar ke $fillable
+- [x] Buat `SocialAuthController.php` — redirectToGoogle() + handleGoogleCallback()
+- [x] Tambah routes: `GET /auth/google`, `GET /auth/google/callback`
+- [x] Update `auth/login.blade.php` — tombol "Continue with Google" + divider "atau"
+- [x] Update `auth/register.blade.php` — tombol "Daftar dengan Google"
+- [x] Set env vars di `.env`, Laravel Cloud, dan InfinityFree
 
 #### 🟡 Fase 2: Rating & Review
 
 > [!NOTE]
 > **Dependensi**: Tunggu Person A selesai model Organization agar review bisa ditampilkan di profil penyelenggara.
 
-- [ ] Buat migration `create_reviews_table` (user_id FK, event_id FK, rating tinyint 1-5, comment text, unique user_id+event_id)
-- [ ] Buat model `Review.php` — belongsTo User & Event
-- [ ] Update `Event.php` — hasMany Review, accessor `getAverageRatingAttribute()`, `getReviewCountAttribute()`
-- [ ] Update `User.php` — hasMany Review
-- [ ] Buat `ReviewController@store` — validasi:
+- [x] Buat migration `create_reviews_table` (user_id FK, event_id FK, rating tinyint 1-5, comment text, unique user_id+event_id)
+- [x] Buat model `Review.php` — belongsTo User & Event
+- [x] Update `Event.php` — hasMany Review, accessor `getAverageRatingAttribute()`, `getReviewCountAttribute()`
+- [x] Update `User.php` — hasMany Review
+- [x] Buat `ReviewController@store` — validasi:
   - User harus login
   - Event sudah lewat tanggalnya
   - User punya transaksi Success untuk event ini
   - Belum pernah review event ini
-- [ ] Tambah route `POST /event-detail/{slug}/review` (auth middleware)
-- [ ] Update `event-detail.blade.php`:
+- [x] Tambah route `POST /event-detail/{slug}/review` (auth middleware)
+- [x] Update `event-detail.blade.php`:
   - Tampilkan rata-rata rating (bintang) + jumlah review di header
   - Section "Ulasan Peserta" — list review dengan nama, bintang, komentar, tanggal
   - Form rating bintang interaktif (JS star picker) + textarea komentar
   - Form hanya muncul jika user berhak (event lewat + punya tiket)
-- [ ] Update `welcome.blade.php` — tampilkan ⭐ rata-rata di kartu event
+- [x] Update `welcome.blade.php` — tampilkan ⭐ rata-rata di kartu event
 
 #### 🟢 Fase 3: Dashboard Admin Grafik
 
-- [ ] Update `AdminController@dashboard`:
+- [x] Update `AdminController@dashboard`:
   - Query pendapatan per bulan (6 bulan terakhir): `SUM(total_price) GROUP BY MONTH`
   - Query registrasi user per bulan (6 bulan terakhir): `COUNT(*) GROUP BY MONTH`
   - Query event baru per bulan
-- [ ] Update `admin/dashboard.blade.php`:
+- [x] Update `admin/dashboard.blade.php`:
   - Include Chart.js via CDN: `https://cdn.jsdelivr.net/npm/chart.js`
   - Tambah card **Line Chart**: Tren Pendapatan Bulanan
   - Tambah card **Bar Chart**: Pertumbuhan User & Event per Bulan
